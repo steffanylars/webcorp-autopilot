@@ -1,0 +1,703 @@
+pais,depto,municipio,mensajeria,estrato,n,exitos,tasa_cruda,wilson_lcb
+GT,Alta Verapaz,Cahabon,CARGO,normal,4,2,50.0,15.0
+GT,Alta Verapaz,Chahal,FORZA,normal,1,1,100.0,20.7
+GT,Alta Verapaz,Chahal,CARGO,normal,7,2,28.6,8.2
+GT,Alta Verapaz,Chisec,CARGO,normal,15,8,53.3,30.1
+GT,Alta Verapaz,Chisec,FORZA,normal,1,1,100.0,20.7
+GT,Alta Verapaz,Coban,CARGO,normal,10,5,50.0,23.7
+GT,Alta Verapaz,Coban,FORZA,normal,3,2,66.7,20.8
+GT,Alta Verapaz,Fray Bartolome De Las Casas,CARGO,normal,5,3,60.0,23.1
+GT,Alta Verapaz,Fray Bartolome De Las Casas,FORZA,normal,6,3,50.0,18.8
+GT,Alta Verapaz,Lanquin,CARGO,normal,39,18,46.2,31.6
+GT,Alta Verapaz,Lanquin,FORZA,normal,13,7,53.8,29.1
+GT,Alta Verapaz,Panzos,CARGO,normal,2,2,100.0,34.2
+GT,Alta Verapaz,San Cristobal Verapaz,CARGO,normal,7,4,57.1,25.0
+GT,Alta Verapaz,San Juan Chamelco,CARGO,normal,9,5,55.6,26.7
+GT,Alta Verapaz,San Juan Chamelco,FORZA,normal,2,1,50.0,9.5
+GT,Alta Verapaz,San Pedro Carcha,CARGO,normal,13,9,69.2,42.4
+GT,Alta Verapaz,San Pedro Carcha,FORZA,normal,2,1,50.0,9.5
+GT,Alta Verapaz,Santa Catalina La Tinta,CARGO,normal,6,6,100.0,61.0
+GT,Alta Verapaz,Santa Catalina La Tinta,FORZA,normal,1,1,100.0,20.7
+GT,Alta Verapaz,Santa Cruz Verapaz,CARGO,normal,3,2,66.7,20.8
+GT,Alta Verapaz,Santa Cruz Verapaz,MEG,normal,5,0,0.0,0.0
+GT,Alta Verapaz,Santa Cruz Verapaz,FORZA,normal,2,0,0.0,0.0
+GT,Alta Verapaz,Senahu,MEG,normal,17,11,64.7,41.3
+GT,Alta Verapaz,Senahu,FORZA,normal,1,1,100.0,20.7
+GT,Alta Verapaz,Tactic,CARGO,normal,15,11,73.3,48.0
+GT,Alta Verapaz,Tactic,MEG,normal,73,40,54.8,43.4
+GT,Alta Verapaz,Tactic,FORZA,normal,3,1,33.3,6.1
+GT,Alta Verapaz,Tamahu,CARGO,normal,3,2,66.7,20.8
+GT,Alta Verapaz,Tamahu,FORZA,normal,1,0,0.0,0.0
+GT,Alta Verapaz,Tamahu,MEG,normal,2,0,0.0,0.0
+GT,Alta Verapaz,Teleman,CARGO,normal,1,1,100.0,20.7
+GT,Alta Verapaz,Teleman,FORZA,normal,1,0,0.0,0.0
+GT,Alta Verapaz,Tucuru,CARGO,normal,36,21,58.3,42.2
+GT,Alta Verapaz,Tucuru,FORZA,normal,6,4,66.7,30.0
+GT,Baja Verapaz,Cubulco,FORZA,normal,3,1,33.3,6.1
+GT,Baja Verapaz,Granados,FORZA,normal,7,6,85.7,48.7
+GT,Baja Verapaz,Granados,CARGO,normal,45,22,48.9,35.0
+GT,Baja Verapaz,Granados,MEG,normal,2,1,50.0,9.5
+GT,Baja Verapaz,Purulha,CARGO,normal,4,3,75.0,30.1
+GT,Baja Verapaz,Rabinal,FORZA,normal,22,8,36.4,19.7
+GT,Baja Verapaz,Rabinal,CARGO,normal,4,2,50.0,15.0
+GT,Baja Verapaz,Salama,CARGO,normal,18,11,61.1,38.6
+GT,Baja Verapaz,Salama,FORZA,normal,2,1,50.0,9.5
+GT,Baja Verapaz,San Jeronimo,FORZA,normal,25,14,56.0,37.1
+GT,Baja Verapaz,San Jeronimo,CARGO,normal,16,9,56.2,33.2
+GT,Baja Verapaz,San Miguel Chicaj,CARGO,normal,21,16,76.2,54.9
+GT,Baja Verapaz,San Miguel Chicaj,FORZA,normal,11,5,45.5,21.3
+GT,Baja Verapaz,Santa Cruz El Chol,CARGO,normal,22,15,68.2,47.3
+GT,Baja Verapaz,Santa Cruz El Chol,FORZA,normal,6,4,66.7,30.0
+GT,Chimaltenango,Acatenango,CARGO,normal,69,44,63.8,52.0
+GT,Chimaltenango,Acatenango,FORZA,normal,30,15,50.0,33.2
+GT,Chimaltenango,Chimaltenango,CARGO,normal,74,45,60.8,49.4
+GT,Chimaltenango,Chimaltenango,FORZA,normal,10,8,80.0,49.0
+GT,Chimaltenango,El Tejar,CARGO,normal,122,63,51.6,42.9
+GT,Chimaltenango,El Tejar,FORZA,normal,38,20,52.6,37.3
+GT,Chimaltenango,Patzicia,CARGO,normal,1,1,100.0,20.7
+GT,Chimaltenango,Patzicia,FORZA,normal,1,0,0.0,0.0
+GT,Chimaltenango,Patzun,CARGO,normal,45,27,60.0,45.5
+GT,Chimaltenango,Patzun,FORZA,normal,11,7,63.6,35.4
+GT,Chimaltenango,Pochuta,CARGO,normal,39,25,64.1,48.4
+GT,Chimaltenango,Pochuta,FORZA,normal,5,3,60.0,23.1
+GT,Chimaltenango,San Andres Iztapa,FORZA,normal,5,4,80.0,37.6
+GT,Chimaltenango,San Andres Iztapa,CARGO,normal,17,10,58.8,36.0
+GT,Chimaltenango,San Jose Poaquil,CARGO,normal,41,28,68.3,53.0
+GT,Chimaltenango,San Jose Poaquil,MEG,normal,8,5,62.5,30.6
+GT,Chimaltenango,San Juan Comalapa,CARGO,normal,32,25,78.1,61.2
+GT,Chimaltenango,San Juan Comalapa,FORZA,normal,7,5,71.4,35.9
+GT,Chimaltenango,San Martin Jilotepeque,CARGO,normal,22,13,59.1,38.7
+GT,Chimaltenango,San Martin Jilotepeque,FORZA,normal,3,2,66.7,20.8
+GT,Chimaltenango,San Pedro Yepocapa,CARGO,normal,49,27,55.1,41.3
+GT,Chimaltenango,San Pedro Yepocapa,MEG,normal,6,4,66.7,30.0
+GT,Chimaltenango,San Pedro Yepocapa,FORZA,normal,11,5,45.5,21.3
+GT,Chimaltenango,Santa Apolonia,CARGO,normal,5,4,80.0,37.6
+GT,Chimaltenango,Santa Apolonia,FORZA,normal,1,0,0.0,0.0
+GT,Chimaltenango,Santa Cruz Balanya,CARGO,normal,150,96,64.0,56.1
+GT,Chimaltenango,Santa Cruz Balanya,FORZA,normal,12,4,33.3,13.8
+GT,Chimaltenango,Tecpan Guatemala,MEG,normal,8,6,75.0,40.9
+GT,Chimaltenango,Tecpan Guatemala,CARGO,normal,34,18,52.9,36.7
+GT,Chimaltenango,Tecpan Guatemala,FORZA,normal,11,5,45.5,21.3
+GT,Chimaltenango,Zaragoza,CARGO,normal,217,118,54.4,47.7
+GT,Chimaltenango,Zaragoza,FORZA,normal,44,24,54.5,40.1
+GT,Chimaltenango,Zaragoza,MEG,normal,58,30,51.7,39.2
+GT,Chiquimula,Camotan,MEG,normal,167,114,68.3,60.9
+GT,Chiquimula,Camotan,CARGO,normal,369,214,58.0,52.9
+GT,Chiquimula,Camotan,FORZA,normal,79,50,63.3,52.3
+GT,Chiquimula,Chiquimula,CARGO,normal,137,86,62.8,54.4
+GT,Chiquimula,Chiquimula,FORZA,normal,40,26,65.0,49.5
+GT,Chiquimula,Chiquimula,MEG,normal,70,41,58.6,46.9
+GT,Chiquimula,Concepcion las minas,MEG,normal,140,85,60.7,52.4
+GT,Chiquimula,Concepcion las minas,CARGO,normal,177,103,58.2,50.8
+GT,Chiquimula,Concepcion las minas,FORZA,normal,45,23,51.1,37.0
+GT,Chiquimula,Esquipulas,CARGO,normal,328,187,57.0,51.6
+GT,Chiquimula,Esquipulas,FORZA,normal,50,32,64.0,50.1
+GT,Chiquimula,Esquipulas,MEG,normal,1,1,100.0,20.7
+GT,Chiquimula,Ipala,FORZA,normal,17,16,94.1,73.0
+GT,Chiquimula,Ipala,CARGO,normal,61,41,67.2,54.7
+GT,Chiquimula,Ipala,MEG,normal,40,23,57.5,42.2
+GT,Chiquimula,Jocotan,MEG,normal,76,44,57.9,46.7
+GT,Chiquimula,Jocotan,CARGO,normal,5,3,60.0,23.1
+GT,Chiquimula,Jocotan,FORZA,normal,2,1,50.0,9.5
+GT,Chiquimula,Olopa,FORZA,normal,24,20,83.3,64.1
+GT,Chiquimula,Olopa,CARGO,normal,130,82,63.1,54.5
+GT,Chiquimula,Quezaltepeque,CARGO,normal,55,31,56.4,43.3
+GT,Chiquimula,Quezaltepeque,FORZA,normal,14,7,50.0,26.8
+GT,Chiquimula,San Jacinto,CARGO,normal,13,9,69.2,42.4
+GT,Chiquimula,San Jacinto,FORZA,normal,2,1,50.0,9.5
+GT,Chiquimula,San Jose la Arada,CARGO,normal,5,3,60.0,23.1
+GT,Chiquimula,San Jose la Arada,FORZA,normal,2,1,50.0,9.5
+GT,Chiquimula,San Juan Ermita,CARGO,normal,65,29,44.6,33.2
+GT,Chiquimula,San Juan Ermita,FORZA,normal,13,5,38.5,17.7
+GT,El Progreso,El Jicaro,FORZA,normal,35,25,71.4,54.9
+GT,El Progreso,El Jicaro,CARGO,normal,119,68,57.1,48.2
+GT,El Progreso,Guastatoya,CARGO,normal,20,12,60.0,38.7
+GT,El Progreso,Guastatoya,FORZA,normal,10,4,40.0,16.8
+GT,El Progreso,Morazan,CARGO,normal,48,24,50.0,36.4
+GT,El Progreso,Morazan,FORZA,normal,12,6,50.0,25.4
+GT,El Progreso,San Agustin Acasaguastlan,CARGO,normal,62,43,69.4,57.0
+GT,El Progreso,San Agustin Acasaguastlan,FORZA,normal,30,19,63.3,45.5
+GT,El Progreso,San Antonio La Paz,FORZA,normal,11,6,54.5,28.0
+GT,El Progreso,San Antonio La Paz,CARGO,normal,12,4,33.3,13.8
+GT,El Progreso,San Cristobal Acasaguastlan,CARGO,normal,5,4,80.0,37.6
+GT,El Progreso,San Cristobal Acasaguastlan,FORZA,normal,3,0,0.0,0.0
+GT,El Progreso,Sanarate,CARGO,normal,24,14,58.3,38.8
+GT,El Progreso,Sanarate,FORZA,normal,5,2,40.0,11.8
+GT,El Progreso,Sansare,FORZA,normal,2,1,50.0,9.5
+GT,Escuintla,Escuintla,MEG,normal,362,219,60.5,55.4
+GT,Escuintla,Escuintla,CARGO,normal,386,232,60.1,55.1
+GT,Escuintla,Escuintla,FORZA,normal,77,46,59.7,48.6
+GT,Escuintla,Guanagazapa,FORZA,normal,2,1,50.0,9.5
+GT,Escuintla,Guanagazapa,CARGO,normal,2,0,0.0,0.0
+GT,Escuintla,Iztapa,FORZA,normal,15,11,73.3,48.0
+GT,Escuintla,Iztapa,CARGO,normal,21,13,61.9,40.9
+GT,Escuintla,Iztapa,MEG,normal,24,12,50.0,31.4
+GT,Escuintla,La Democracia,CARGO,normal,23,12,52.2,33.0
+GT,Escuintla,La Democracia,FORZA,normal,3,0,0.0,0.0
+GT,Escuintla,La Gomera,CARGO,normal,33,24,72.7,55.8
+GT,Escuintla,La Gomera,MEG,normal,21,11,52.4,32.4
+GT,Escuintla,La Gomera,FORZA,normal,12,7,58.3,32.0
+GT,Escuintla,Masagua,CARGO,normal,24,9,37.5,21.2
+GT,Escuintla,Masagua,FORZA,normal,4,2,50.0,15.0
+GT,Escuintla,Nueva Concepcion,CARGO,normal,78,40,51.3,40.4
+GT,Escuintla,Nueva Concepcion,MEG,normal,4,3,75.0,30.1
+GT,Escuintla,Nueva Concepcion,FORZA,normal,39,15,38.5,24.9
+GT,Escuintla,Palin,FORZA,normal,2,1,50.0,9.5
+GT,Escuintla,Puerto San Jose,CARGO,normal,239,133,55.6,49.3
+GT,Escuintla,Puerto San Jose,MEG,normal,40,24,60.0,44.6
+GT,Escuintla,Puerto San Jose,FORZA,normal,73,33,45.2,34.3
+GT,Escuintla,San Vicente Pacaya,FORZA,normal,12,3,25.0,8.9
+GT,Escuintla,Santa Lucia Cotzumalguapa,MEG,normal,4,4,100.0,51.0
+GT,Escuintla,Santa Lucia Cotzumalguapa,CARGO,normal,55,31,56.4,43.3
+GT,Escuintla,Santa Lucia Cotzumalguapa,FORZA,normal,96,41,42.7,33.3
+GT,Escuintla,Tiquisate,CARGO,normal,72,43,59.7,48.2
+GT,Escuintla,Tiquisate,FORZA,normal,9,5,55.6,26.7
+GT,Guatemala,Amatitlan,MEG,normal,238,164,68.9,62.8
+GT,Guatemala,Amatitlan,CARGO,normal,477,273,57.2,52.8
+GT,Guatemala,Amatitlan,FORZA,normal,35,24,68.6,52.0
+GT,Guatemala,Capital Guatemala,MEG,normal,4351,2836,65.2,63.8
+GT,Guatemala,Capital Guatemala,CARGO,normal,1587,773,48.7,46.3
+GT,Guatemala,Capital Guatemala,FORZA,normal,131,61,46.6,38.2
+GT,Guatemala,Chuarrancho,FORZA,normal,1,1,100.0,20.7
+GT,Guatemala,Ciudad Capital,CARGO,normal,91,51,56.0,45.8
+GT,Guatemala,Ciudad Capital,FORZA,normal,16,7,43.8,23.1
+GT,Guatemala,Fraijanes,CARGO,normal,15,11,73.3,48.0
+GT,Guatemala,Fraijanes,FORZA,normal,12,5,41.7,19.3
+GT,Guatemala,Mixco,FORZA,normal,36,26,72.2,56.0
+GT,Guatemala,Mixco,MEG,normal,52,36,69.2,55.7
+GT,Guatemala,Mixco,CARGO,normal,516,268,51.9,47.6
+GT,Guatemala,Palencia,CARGO,normal,11,8,72.7,43.4
+GT,Guatemala,Palencia,FORZA,normal,2,1,50.0,9.5
+GT,Guatemala,San Jose Pinula,FORZA,normal,67,35,52.2,40.5
+GT,Guatemala,San Jose Pinula,CARGO,normal,8,5,62.5,30.6
+GT,Guatemala,San Jose del Golfo,CARGO,normal,10,8,80.0,49.0
+GT,Guatemala,San Jose del Golfo,FORZA,normal,15,11,73.3,48.0
+GT,Guatemala,San Juan Sacatepequez,CARGO,normal,81,47,58.0,47.2
+GT,Guatemala,San Juan Sacatepequez,FORZA,normal,12,7,58.3,32.0
+GT,Guatemala,San Miguel Petapa,FORZA,normal,8,8,100.0,67.6
+GT,Guatemala,San Miguel Petapa,CARGO,normal,27,19,70.4,51.5
+GT,Guatemala,San Pedro Ayampuc,FORZA,normal,15,8,53.3,30.1
+GT,Guatemala,San Pedro Ayampuc,CARGO,normal,3,2,66.7,20.8
+GT,Guatemala,San Pedro Ayampuc,MEG,normal,1,1,100.0,20.7
+GT,Guatemala,San Pedro Sacatepequez,MEG,normal,27,19,70.4,51.5
+GT,Guatemala,San Pedro Sacatepequez,CARGO,normal,4,2,50.0,15.0
+GT,Guatemala,San Raymundo,CARGO,normal,16,13,81.2,57.0
+GT,Guatemala,San Raymundo,FORZA,normal,1,1,100.0,20.7
+GT,Guatemala,Santa Catarina Pinula,CARGO,normal,44,24,54.5,40.1
+GT,Guatemala,Santa Catarina Pinula,FORZA,normal,11,7,63.6,35.4
+GT,Guatemala,Santa Catarina Pinula,MEG,normal,2,1,50.0,9.5
+GT,Guatemala,Villa Canales,FORZA,normal,13,7,53.8,29.1
+GT,Guatemala,Villa Canales,CARGO,normal,23,9,39.1,22.2
+GT,Guatemala,Villa Canales,MEG,normal,1,0,0.0,0.0
+GT,Guatemala,Villa Nueva,MEG,normal,11,10,90.9,62.3
+GT,Guatemala,Villa Nueva,CARGO,normal,155,90,58.1,50.2
+GT,Guatemala,Villa Nueva,FORZA,normal,42,27,64.3,49.2
+GT,Huehuetenango,Aguacatan,CARGO,normal,1060,688,64.9,62.0
+GT,Huehuetenango,Aguacatan,FORZA,normal,161,100,62.1,54.4
+GT,Huehuetenango,Aguacatan,MEG,normal,37,22,59.5,43.5
+GT,Huehuetenango,Chiantla,CARGO,normal,316,188,59.5,54.0
+GT,Huehuetenango,Chiantla,FORZA,normal,37,24,64.9,48.8
+GT,Huehuetenango,Colotenango,CARGO,normal,15,11,73.3,48.0
+GT,Huehuetenango,Colotenango,FORZA,normal,1,1,100.0,20.7
+GT,Huehuetenango,Concepcion Huista,CARGO,normal,27,17,63.0,44.2
+GT,Huehuetenango,Concepcion Huista,MEG,normal,10,7,70.0,39.7
+GT,Huehuetenango,Concepcion Huista,FORZA,normal,7,4,57.1,25.0
+GT,Huehuetenango,Cuilco,CARGO,normal,56,28,50.0,37.3
+GT,Huehuetenango,Cuilco,MEG,normal,1,1,100.0,20.7
+GT,Huehuetenango,Cuilco,FORZA,normal,5,1,20.0,3.6
+GT,Huehuetenango,Huehuetenango,CARGO,normal,56,27,48.2,35.7
+GT,Huehuetenango,Huehuetenango,MEG,normal,1,1,100.0,20.7
+GT,Huehuetenango,Huehuetenango,FORZA,normal,10,4,40.0,16.8
+GT,Huehuetenango,Jacaltenango,CARGO,normal,42,32,76.2,61.5
+GT,Huehuetenango,Jacaltenango,MEG,normal,4,1,25.0,4.6
+GT,Huehuetenango,Jacaltenango,FORZA,normal,1,0,0.0,0.0
+GT,Huehuetenango,La Libertad,CARGO,normal,200,104,52.0,45.1
+GT,Huehuetenango,La Libertad,FORZA,normal,14,8,57.1,32.6
+GT,Huehuetenango,Malacatancito,CARGO,normal,6,6,100.0,61.0
+GT,Huehuetenango,Malacatancito,FORZA,normal,1,1,100.0,20.7
+GT,Huehuetenango,Malacatancito,MEG,normal,1,1,100.0,20.7
+GT,Huehuetenango,Nenton,MEG,normal,25,19,76.0,56.6
+GT,Huehuetenango,Nenton,CARGO,normal,100,56,56.0,46.2
+GT,Huehuetenango,Nenton,FORZA,normal,24,11,45.8,27.9
+GT,Huehuetenango,San Antonio Huista,FORZA,normal,12,9,75.0,46.8
+GT,Huehuetenango,San Antonio Huista,CARGO,normal,64,35,54.7,42.6
+GT,Huehuetenango,San Antonio Huista,MEG,normal,1,0,0.0,0.0
+GT,Huehuetenango,San Gaspar Ixchil,CARGO,normal,136,93,68.4,60.2
+GT,Huehuetenango,San Gaspar Ixchil,FORZA,normal,10,6,60.0,31.3
+GT,Huehuetenango,San Juan Atitan,CARGO,normal,127,84,66.1,57.5
+GT,Huehuetenango,San Juan Atitan,FORZA,normal,7,4,57.1,25.0
+GT,Huehuetenango,San Juan Ixcoy,CARGO,normal,17,16,94.1,73.0
+GT,Huehuetenango,San Juan Ixcoy,FORZA,normal,2,2,100.0,34.2
+GT,Huehuetenango,San Mateo Ixtatan,CARGO,normal,68,47,69.1,57.4
+GT,Huehuetenango,San Mateo Ixtatan,FORZA,normal,3,1,33.3,6.1
+GT,Huehuetenango,San Miguel Acatan,CARGO,normal,70,45,64.3,52.6
+GT,Huehuetenango,San Miguel Acatan,FORZA,normal,14,9,64.3,38.8
+GT,Huehuetenango,San Pedro Necta,CARGO,normal,101,70,69.3,59.7
+GT,Huehuetenango,San Pedro Necta,FORZA,normal,12,8,66.7,39.1
+GT,Huehuetenango,San Pedro Necta,MEG,normal,2,2,100.0,34.2
+GT,Huehuetenango,San Sebastian Coatan,CARGO,normal,65,44,67.7,55.6
+GT,Huehuetenango,San Sebastian Coatan,FORZA,normal,10,5,50.0,23.7
+GT,Huehuetenango,San Sebastian Huehuetenango,CARGO,normal,32,18,56.2,39.3
+GT,Huehuetenango,San Sebastian Huehuetenango,FORZA,normal,2,2,100.0,34.2
+GT,Huehuetenango,Santa Ana Huista,CARGO,normal,12,6,50.0,25.4
+GT,Huehuetenango,Santa Ana Huista,MEG,normal,1,0,0.0,0.0
+GT,Huehuetenango,Santa Ana Huista,FORZA,normal,1,0,0.0,0.0
+GT,Huehuetenango,Santa Cruz Barillas,FORZA,normal,17,4,23.5,9.6
+GT,Huehuetenango,Santa Eulalia,CARGO,normal,36,25,69.4,53.1
+GT,Huehuetenango,Santa Eulalia,FORZA,normal,2,0,0.0,0.0
+GT,Huehuetenango,Santiago Chimaltenango,CARGO,normal,141,83,58.9,50.6
+GT,Huehuetenango,Santiago Chimaltenango,MEG,normal,2,2,100.0,34.2
+GT,Huehuetenango,Santiago Chimaltenango,FORZA,normal,17,8,47.1,26.2
+GT,Huehuetenango,Tectitan,FORZA,normal,4,4,100.0,51.0
+GT,Huehuetenango,Tectitan,CARGO,normal,34,20,58.8,42.2
+GT,Huehuetenango,Todos Santos Cuchumatanes,CARGO,normal,67,48,71.6,59.9
+GT,Huehuetenango,Todos Santos Cuchumatanes,FORZA,normal,9,6,66.7,35.4
+GT,Izabal,El Estor,CARGO,normal,45,24,53.3,39.1
+GT,Izabal,El Estor,FORZA,normal,12,7,58.3,32.0
+GT,Izabal,Livingston,CARGO,normal,139,90,64.7,56.5
+GT,Izabal,Livingston,FORZA,normal,24,14,58.3,38.8
+GT,Izabal,Los Amates,CARGO,normal,130,79,60.8,52.2
+GT,Izabal,Los Amates,FORZA,normal,149,72,48.3,40.4
+GT,Izabal,Los Amates,MEG,normal,2,0,0.0,0.0
+GT,Izabal,Morales,CARGO,normal,168,92,54.8,47.2
+GT,Izabal,Morales,FORZA,normal,44,20,45.5,31.7
+GT,Izabal,Puerto Barrios,CARGO,normal,674,388,57.6,53.8
+GT,Izabal,Puerto Barrios,MEG,normal,120,60,50.0,41.2
+GT,Izabal,Puerto Barrios,FORZA,normal,217,95,43.8,37.3
+GT,Jalapa,Jalapa,CARGO,normal,177,105,59.3,52.0
+GT,Jalapa,Jalapa,FORZA,normal,23,16,69.6,49.1
+GT,Jalapa,Mataquescuintla,CARGO,normal,49,28,57.1,43.3
+GT,Jalapa,Mataquescuintla,FORZA,normal,6,4,66.7,30.0
+GT,Jalapa,Monjas,CARGO,normal,88,41,46.6,36.5
+GT,Jalapa,Monjas,FORZA,normal,19,11,57.9,36.3
+GT,Jalapa,San Carlos Alzatate,CARGO,normal,68,51,75.0,63.6
+GT,Jalapa,San Carlos Alzatate,FORZA,normal,5,2,40.0,11.8
+GT,Jalapa,San Luis Jilotepeque,CARGO,normal,17,12,70.6,46.9
+GT,Jalapa,San Luis Jilotepeque,FORZA,normal,1,1,100.0,20.7
+GT,Jalapa,San Manuel Chaparron,CARGO,normal,358,196,54.7,49.6
+GT,Jalapa,San Manuel Chaparron,FORZA,normal,4,2,50.0,15.0
+GT,Jalapa,San Pedro Pinula,FORZA,normal,12,7,58.3,32.0
+GT,Jalapa,San Pedro Pinula,CARGO,normal,27,12,44.4,27.6
+GT,Jalapa,San Pedro Pinula,MEG,normal,1,1,100.0,20.7
+GT,Jutiapa,Agua Blanca,CARGO,normal,264,136,51.5,45.5
+GT,Jutiapa,Agua Blanca,FORZA,normal,55,31,56.4,43.3
+GT,Jutiapa,Asuncion Mita,CARGO,normal,468,248,53.0,48.5
+GT,Jutiapa,Asuncion Mita,MEG,normal,305,152,49.8,44.3
+GT,Jutiapa,Asuncion Mita,FORZA,normal,106,55,51.9,42.5
+GT,Jutiapa,Atescatempa,FORZA,normal,36,23,63.9,47.6
+GT,Jutiapa,Atescatempa,CARGO,normal,127,68,53.5,44.9
+GT,Jutiapa,El Adelanto,CARGO,normal,100,60,60.0,50.2
+GT,Jutiapa,El Adelanto,FORZA,normal,22,15,68.2,47.3
+GT,Jutiapa,El Adelanto,MEG,normal,8,6,75.0,40.9
+GT,Jutiapa,El Progreso,CARGO,normal,77,44,57.1,46.0
+GT,Jutiapa,El Progreso,FORZA,normal,26,10,38.5,22.4
+GT,Jutiapa,El Progreso,MEG,normal,8,1,12.5,2.2
+GT,Jutiapa,Jalpatagua,CARGO,normal,32,22,68.8,51.4
+GT,Jutiapa,Jalpatagua,MEG,normal,30,19,63.3,45.5
+GT,Jutiapa,Jalpatagua,FORZA,normal,5,3,60.0,23.1
+GT,Jutiapa,Jerez,CARGO,normal,174,115,66.1,58.8
+GT,Jutiapa,Jerez,MEG,normal,303,161,53.1,47.5
+GT,Jutiapa,Jerez,FORZA,normal,65,35,53.8,41.9
+GT,Jutiapa,Jutiapa,FORZA,normal,36,25,69.4,53.1
+GT,Jutiapa,Jutiapa,CARGO,normal,219,123,56.2,49.5
+GT,Jutiapa,Jutiapa,MEG,normal,10,5,50.0,23.7
+GT,Jutiapa,Moyuta,CARGO,normal,15,11,73.3,48.0
+GT,Jutiapa,Moyuta,FORZA,normal,18,5,27.8,12.5
+GT,Jutiapa,Pasaco,CARGO,normal,38,24,63.2,47.3
+GT,Jutiapa,Pasaco,FORZA,normal,8,4,50.0,21.5
+GT,Jutiapa,Quezada,CARGO,normal,58,40,69.0,56.2
+GT,Jutiapa,Quezada,FORZA,normal,8,6,75.0,40.9
+GT,Jutiapa,San Jose Acatempa,CARGO,normal,1,0,0.0,0.0
+GT,Jutiapa,Santa Catarina Mita,CARGO,normal,155,90,58.1,50.2
+GT,Jutiapa,Santa Catarina Mita,MEG,normal,24,14,58.3,38.8
+GT,Jutiapa,Santa Catarina Mita,FORZA,normal,29,12,41.4,25.5
+GT,Jutiapa,Yupiltepeque,CARGO,normal,53,45,84.9,72.9
+GT,Jutiapa,Yupiltepeque,FORZA,normal,8,4,50.0,21.5
+GT,Jutiapa,Yupiltepeque,MEG,normal,1,1,100.0,20.7
+GT,Jutiapa,Zapotitlan,CARGO,normal,7,6,85.7,48.7
+GT,Jutiapa,Zapotitlan,FORZA,normal,1,0,0.0,0.0
+GT,Peten,Dolores,CARGO,normal,184,107,58.2,50.9
+GT,Peten,Dolores,FORZA,normal,36,20,55.6,39.6
+GT,Peten,La Libertad,CARGO,normal,88,45,51.1,40.9
+GT,Peten,La Libertad,FORZA,normal,38,17,44.7,30.1
+GT,Peten,Las Cruces,CARGO,normal,66,41,62.1,50.1
+GT,Peten,Las Cruces,FORZA,normal,14,9,64.3,38.8
+GT,Peten,Melchor de Mencos,CARGO,normal,48,27,56.2,42.3
+GT,Peten,Melchor de Mencos,FORZA,normal,1,1,100.0,20.7
+GT,Peten,Poptun,CARGO,normal,21,17,81.0,60.0
+GT,Peten,Poptun,FORZA,normal,2,2,100.0,34.2
+GT,Peten,San Andres,CARGO,normal,118,63,53.4,44.4
+GT,Peten,San Andres,FORZA,normal,19,10,52.6,31.7
+GT,Peten,San Benito,CARGO,normal,85,50,58.8,48.2
+GT,Peten,San Benito,FORZA,normal,3,1,33.3,6.1
+GT,Peten,San Francisco,CARGO,normal,4,3,75.0,30.1
+GT,Peten,San Francisco,FORZA,normal,1,1,100.0,20.7
+GT,Peten,San Francisco,MEG,normal,1,1,100.0,20.7
+GT,Peten,San Jose,CARGO,normal,35,22,62.9,46.3
+GT,Peten,San Jose,FORZA,normal,5,3,60.0,23.1
+GT,Peten,San Luis,FORZA,normal,7,5,71.4,35.9
+GT,Peten,San Luis,CARGO,normal,32,16,50.0,33.6
+GT,Peten,Santa Ana,CARGO,normal,39,20,51.3,36.2
+GT,Peten,Santa Ana,FORZA,normal,8,2,25.0,7.1
+GT,Peten,Santa Elena,CARGO,normal,11,4,36.4,15.2
+GT,Peten,Santa Elena,FORZA,normal,3,1,33.3,6.1
+GT,Peten,Sayaxche,CARGO,normal,38,24,63.2,47.3
+GT,Peten,Sayaxche,FORZA,normal,10,7,70.0,39.7
+GT,Quetzaltenango,Almolonga,CARGO,normal,921,527,57.2,54.0
+GT,Quetzaltenango,Almolonga,FORZA,normal,124,74,59.7,50.9
+GT,Quetzaltenango,Almolonga,MEG,normal,2,1,50.0,9.5
+GT,Quetzaltenango,Cabrican,CARGO,normal,56,30,53.6,40.7
+GT,Quetzaltenango,Cabrican,FORZA,normal,10,7,70.0,39.7
+GT,Quetzaltenango,Cabrican,MEG,normal,1,0,0.0,0.0
+GT,Quetzaltenango,Cajola,CARGO,normal,5,5,100.0,56.6
+GT,Quetzaltenango,Cajola,MEG,normal,1,0,0.0,0.0
+GT,Quetzaltenango,Cantel,CARGO,normal,24,16,66.7,46.7
+GT,Quetzaltenango,Cantel,FORZA,normal,4,3,75.0,30.1
+GT,Quetzaltenango,Cantel,MEG,normal,13,7,53.8,29.1
+GT,Quetzaltenango,Coatepeque,CARGO,normal,303,146,48.2,42.6
+GT,Quetzaltenango,Coatepeque,FORZA,normal,34,14,41.2,26.4
+GT,Quetzaltenango,Colomba,CARGO,normal,5,2,40.0,11.8
+GT,Quetzaltenango,Colomba,FORZA,normal,1,0,0.0,0.0
+GT,Quetzaltenango,Concepcion Chiquirichapa,MEG,normal,8,6,75.0,40.9
+GT,Quetzaltenango,Concepcion Chiquirichapa,CARGO,normal,14,8,57.1,32.6
+GT,Quetzaltenango,Concepcion Chiquirichapa,FORZA,normal,5,3,60.0,23.1
+GT,Quetzaltenango,El Palmar,FORZA,normal,1,1,100.0,20.7
+GT,Quetzaltenango,El Palmar,CARGO,normal,4,2,50.0,15.0
+GT,Quetzaltenango,El Palmar,MEG,normal,4,2,50.0,15.0
+GT,Quetzaltenango,Flores Costa Cuca,FORZA,normal,1,1,100.0,20.7
+GT,Quetzaltenango,Flores Costa Cuca,CARGO,normal,6,3,50.0,18.8
+GT,Quetzaltenango,Flores Costa Cuca,MEG,normal,2,0,0.0,0.0
+GT,Quetzaltenango,Genova,CARGO,normal,352,185,52.6,47.3
+GT,Quetzaltenango,Genova,FORZA,normal,59,28,47.5,35.3
+GT,Quetzaltenango,Genova,MEG,normal,3,0,0.0,0.0
+GT,Quetzaltenango,Huitan,CARGO,normal,87,51,58.6,48.1
+GT,Quetzaltenango,Huitan,FORZA,normal,9,6,66.7,35.4
+GT,Quetzaltenango,Huitan,MEG,normal,2,0,0.0,0.0
+GT,Quetzaltenango,La Esperanza,CARGO,normal,12,8,66.7,39.1
+GT,Quetzaltenango,La Esperanza,FORZA,normal,1,1,100.0,20.7
+GT,Quetzaltenango,Olintepeque,CARGO,normal,130,96,73.8,65.7
+GT,Quetzaltenango,Olintepeque,FORZA,normal,22,11,50.0,30.7
+GT,Quetzaltenango,Palestina de los Altos,CARGO,normal,10,8,80.0,49.0
+GT,Quetzaltenango,Palestina de los Altos,FORZA,normal,3,1,33.3,6.1
+GT,Quetzaltenango,Quetzaltenango,CARGO,normal,146,91,62.3,54.2
+GT,Quetzaltenango,Quetzaltenango,MEG,normal,4,4,100.0,51.0
+GT,Quetzaltenango,Quetzaltenango,FORZA,normal,30,19,63.3,45.5
+GT,Quetzaltenango,Salcaja,CARGO,normal,8,5,62.5,30.6
+GT,Quetzaltenango,Salcaja,FORZA,normal,5,2,40.0,11.8
+GT,Quetzaltenango,San Carlos Sija,CARGO,normal,67,43,64.2,52.2
+GT,Quetzaltenango,San Carlos Sija,FORZA,normal,15,3,20.0,7.0
+GT,Quetzaltenango,San Francisco La Union,CARGO,normal,23,18,78.3,58.1
+GT,Quetzaltenango,San Francisco La Union,FORZA,normal,3,2,66.7,20.8
+GT,Quetzaltenango,San Juan Ostuncalco,CARGO,normal,34,26,76.5,60.0
+GT,Quetzaltenango,San Juan Ostuncalco,FORZA,normal,9,6,66.7,35.4
+GT,Quetzaltenango,San Martin Sacatepequez,CARGO,normal,6,5,83.3,43.6
+GT,Quetzaltenango,San Martin Sacatepequez,FORZA,normal,2,2,100.0,34.2
+GT,Quetzaltenango,San Mateo,CARGO,normal,43,21,48.8,34.6
+GT,Quetzaltenango,San Mateo,FORZA,normal,5,3,60.0,23.1
+GT,Quetzaltenango,San Miguel Siguila,MEG,normal,39,28,71.8,56.2
+GT,Quetzaltenango,San Miguel Siguila,CARGO,normal,10,8,80.0,49.0
+GT,Quetzaltenango,Sibilia,CARGO,normal,44,23,52.3,37.9
+GT,Quetzaltenango,Sibilia,FORZA,normal,5,3,60.0,23.1
+GT,Quetzaltenango,Zunil,CARGO,normal,2,1,50.0,9.5
+GT,Quiche,Canilla,CARGO,normal,270,180,66.7,60.8
+GT,Quiche,Canilla,FORZA,normal,31,18,58.1,40.8
+GT,Quiche,Chajul,CARGO,normal,106,60,56.6,47.1
+GT,Quiche,Chajul,FORZA,normal,19,13,68.4,46.0
+GT,Quiche,Chicaman,CARGO,normal,30,23,76.7,59.1
+GT,Quiche,Chicaman,FORZA,normal,2,1,50.0,9.5
+GT,Quiche,Chiche,FORZA,normal,10,6,60.0,31.3
+GT,Quiche,Chiche,CARGO,normal,20,7,35.0,18.1
+GT,Quiche,Chinique,CARGO,normal,67,45,67.2,55.3
+GT,Quiche,Chinique,FORZA,normal,15,12,80.0,54.8
+GT,Quiche,Cunen,FORZA,normal,3,3,100.0,43.8
+GT,Quiche,Cunen,CARGO,normal,17,9,52.9,31.0
+GT,Quiche,Joyabaj,CARGO,normal,35,23,65.7,49.2
+GT,Quiche,Joyabaj,FORZA,normal,6,4,66.7,30.0
+GT,Quiche,Nebaj,FORZA,normal,7,5,71.4,35.9
+GT,Quiche,Nebaj,CARGO,normal,41,19,46.3,32.1
+GT,Quiche,Pachalum,CARGO,normal,8,7,87.5,52.9
+GT,Quiche,Pachalum,FORZA,normal,4,4,100.0,51.0
+GT,Quiche,Patzite,CARGO,normal,20,11,55.0,34.2
+GT,Quiche,Patzite,FORZA,normal,4,3,75.0,30.1
+GT,Quiche,Playa Grande Ixcan,FORZA,normal,8,7,87.5,52.9
+GT,Quiche,Playa Grande Ixcan,CARGO,normal,47,29,61.7,47.4
+GT,Quiche,Sacapulas,CARGO,normal,5,4,80.0,37.6
+GT,Quiche,San Andres Sajcabaja,CARGO,normal,241,140,58.1,51.8
+GT,Quiche,San Andres Sajcabaja,FORZA,normal,39,17,43.6,29.3
+GT,Quiche,San Bartolome Jocotenango,CARGO,normal,206,123,59.7,52.9
+GT,Quiche,San Bartolome Jocotenango,FORZA,normal,32,20,62.5,45.3
+GT,Quiche,San Juan Cotzal,CARGO,normal,65,39,60.0,47.9
+GT,Quiche,San Juan Cotzal,FORZA,normal,13,7,53.8,29.1
+GT,Quiche,San Pedro Jocopilas,FORZA,normal,12,10,83.3,55.2
+GT,Quiche,San Pedro Jocopilas,CARGO,normal,122,53,43.4,35.0
+GT,Quiche,Santa Cruz del Quiche,CARGO,normal,126,81,64.3,55.6
+GT,Quiche,Santa Cruz del Quiche,MEG,normal,14,9,64.3,38.8
+GT,Quiche,Santa Cruz del Quiche,FORZA,normal,50,23,46.0,33.0
+GT,Quiche,Santa Maria Nebaj,CARGO,normal,4,4,100.0,51.0
+GT,Quiche,Uspantan,CARGO,normal,52,41,78.8,66.0
+GT,Quiche,Uspantan,FORZA,normal,7,5,71.4,35.9
+GT,Quiche,Zacualpa,CARGO,normal,2,1,50.0,9.5
+GT,Quiche,Zacualpa,FORZA,normal,1,0,0.0,0.0
+GT,Retalhuleu,Champerico,MEG,normal,41,34,82.9,68.7
+GT,Retalhuleu,Champerico,CARGO,normal,8,4,50.0,21.5
+GT,Retalhuleu,Champerico,FORZA,normal,1,0,0.0,0.0
+GT,Retalhuleu,El Asintal,CARGO,normal,43,27,62.8,47.9
+GT,Retalhuleu,El Asintal,MEG,normal,5,4,80.0,37.6
+GT,Retalhuleu,El Asintal,FORZA,normal,1,1,100.0,20.7
+GT,Retalhuleu,Nuevo San Carlos,MEG,normal,77,47,61.0,49.9
+GT,Retalhuleu,Nuevo San Carlos,CARGO,normal,8,3,37.5,13.7
+GT,Retalhuleu,Nuevo San Carlos,FORZA,normal,2,1,50.0,9.5
+GT,Retalhuleu,Retalhuleu,MEG,normal,53,39,73.6,60.4
+GT,Retalhuleu,Retalhuleu,CARGO,normal,34,18,52.9,36.7
+GT,Retalhuleu,Retalhuleu,FORZA,normal,4,3,75.0,30.1
+GT,Retalhuleu,San Andres Villa Seca,MEG,normal,44,36,81.8,68.0
+GT,Retalhuleu,San Andres Villa Seca,FORZA,normal,11,10,90.9,62.3
+GT,Retalhuleu,San Andres Villa Seca,CARGO,normal,80,42,52.5,41.7
+GT,Retalhuleu,San Felipe,MEG,normal,24,17,70.8,50.8
+GT,Retalhuleu,San Felipe,CARGO,normal,7,5,71.4,35.9
+GT,Retalhuleu,San Martin Zapotitlan,CARGO,normal,24,15,62.5,42.7
+GT,Retalhuleu,San Martin Zapotitlan,FORZA,normal,2,2,100.0,34.2
+GT,Retalhuleu,San Sebastian,MEG,normal,56,43,76.8,64.2
+GT,Retalhuleu,San Sebastian,CARGO,normal,6,3,50.0,18.8
+GT,Retalhuleu,San Sebastian,FORZA,normal,1,0,0.0,0.0
+GT,Retalhuleu,Santa Cruz Mulua,MEG,normal,265,173,65.3,59.4
+GT,Retalhuleu,Santa Cruz Mulua,CARGO,normal,48,29,60.4,46.3
+GT,Retalhuleu,Santa Cruz Mulua,FORZA,normal,2,1,50.0,9.5
+GT,Sacatepequez,Antigua Guatemala,CARGO,normal,230,148,64.3,58.0
+GT,Sacatepequez,Antigua Guatemala,FORZA,normal,35,15,42.9,28.0
+GT,Sacatepequez,Ciudad Vieja,CARGO,normal,32,22,68.8,51.4
+GT,Sacatepequez,Ciudad Vieja,FORZA,normal,5,1,20.0,3.6
+GT,Sacatepequez,Jocotenango,FORZA,normal,3,3,100.0,43.8
+GT,Sacatepequez,Jocotenango,CARGO,normal,6,4,66.7,30.0
+GT,Sacatepequez,Magdalena Milpas Altas,CARGO,normal,12,5,41.7,19.3
+GT,Sacatepequez,Magdalena Milpas Altas,FORZA,normal,4,2,50.0,15.0
+GT,Sacatepequez,Pastores,CARGO,normal,3,2,66.7,20.8
+GT,Sacatepequez,San Antonio Aguas Calientes,CARGO,normal,45,32,71.1,56.6
+GT,Sacatepequez,San Antonio Aguas Calientes,FORZA,normal,7,6,85.7,48.7
+GT,Sacatepequez,San Bartolome Milpas Altas,CARGO,normal,47,25,53.2,39.2
+GT,Sacatepequez,San Bartolome Milpas Altas,FORZA,normal,4,2,50.0,15.0
+GT,Sacatepequez,San Juan Alotenango,CARGO,normal,66,40,60.6,48.5
+GT,Sacatepequez,San Juan Alotenango,FORZA,normal,12,6,50.0,25.4
+GT,Sacatepequez,San Lucas Sacatepequez,CARGO,normal,44,27,61.4,46.6
+GT,Sacatepequez,San Lucas Sacatepequez,FORZA,normal,6,4,66.7,30.0
+GT,Sacatepequez,San Miguel Dueñas,CARGO,normal,4,1,25.0,4.6
+GT,Sacatepequez,Santa Lucia Milpas Altas,CARGO,normal,39,24,61.5,45.9
+GT,Sacatepequez,Santa Lucia Milpas Altas,FORZA,normal,8,5,62.5,30.6
+GT,Sacatepequez,Santa Maria de Jesus,CARGO,normal,23,14,60.9,40.8
+GT,Sacatepequez,Santa Maria de Jesus,FORZA,normal,8,4,50.0,21.5
+GT,Sacatepequez,Santiago Sacatepequez,CARGO,normal,11,10,90.9,62.3
+GT,Sacatepequez,Santiago Sacatepequez,FORZA,normal,3,2,66.7,20.8
+GT,Sacatepequez,Santo Domingo Xenacoj,FORZA,normal,24,19,79.2,59.5
+GT,Sacatepequez,Santo Domingo Xenacoj,CARGO,normal,131,77,58.8,50.2
+GT,Sacatepequez,Sumpango,CARGO,normal,82,58,70.7,60.1
+GT,Sacatepequez,Sumpango,FORZA,normal,9,7,77.8,45.3
+GT,San Marcos,Ayutla,CARGO,normal,61,39,63.9,51.4
+GT,San Marcos,Ayutla,FORZA,normal,12,6,50.0,25.4
+GT,San Marcos,Catarina,CARGO,normal,148,75,50.7,42.7
+GT,San Marcos,Catarina,FORZA,normal,10,6,60.0,31.3
+GT,San Marcos,Comitancillo,CARGO,normal,37,28,75.7,59.9
+GT,San Marcos,Comitancillo,MEG,normal,244,156,63.9,57.7
+GT,San Marcos,Comitancillo,FORZA,normal,7,2,28.6,8.2
+GT,San Marcos,Concepcion Tutuapa,CARGO,normal,5,4,80.0,37.6
+GT,San Marcos,Concepcion Tutuapa,MEG,normal,1,1,100.0,20.7
+GT,San Marcos,El Quetzal,CARGO,normal,18,10,55.6,33.7
+GT,San Marcos,El Quetzal,FORZA,normal,4,2,50.0,15.0
+GT,San Marcos,El Rodeo,CARGO,normal,73,40,54.8,43.4
+GT,San Marcos,El Rodeo,FORZA,normal,8,5,62.5,30.6
+GT,San Marcos,El Tumbador,CARGO,normal,43,25,58.1,43.3
+GT,San Marcos,El Tumbador,FORZA,normal,4,0,0.0,0.0
+GT,San Marcos,Esquipulas Palo Gordo,CARGO,normal,5,3,60.0,23.1
+GT,San Marcos,Ixchiguan,MEG,normal,47,31,66.0,51.7
+GT,San Marcos,Ixchiguan,FORZA,normal,2,2,100.0,34.2
+GT,San Marcos,Ixchiguan,CARGO,normal,8,5,62.5,30.6
+GT,San Marcos,La Blanca,CARGO,normal,5,5,100.0,56.6
+GT,San Marcos,Malacatan,MEG,normal,14,11,78.6,52.4
+GT,San Marcos,Malacatan,CARGO,normal,47,27,57.4,43.3
+GT,San Marcos,Malacatan,FORZA,normal,13,4,30.8,12.7
+GT,San Marcos,Nuevo Progreso,CARGO,normal,34,19,55.9,39.5
+GT,San Marcos,Nuevo Progreso,FORZA,normal,7,5,71.4,35.9
+GT,San Marcos,Ocos,CARGO,normal,120,74,61.7,52.7
+GT,San Marcos,Ocos,FORZA,normal,21,15,71.4,50.0
+GT,San Marcos,Pajapita,CARGO,normal,7,5,71.4,35.9
+GT,San Marcos,Pajapita,FORZA,normal,1,0,0.0,0.0
+GT,San Marcos,Rio Blanco,CARGO,normal,11,10,90.9,62.3
+GT,San Marcos,Rio Blanco,FORZA,normal,1,1,100.0,20.7
+GT,San Marcos,San Cristobal Cucho,MEG,normal,11,7,63.6,35.4
+GT,San Marcos,San Cristobal Cucho,FORZA,normal,1,1,100.0,20.7
+GT,San Marcos,San Cristobal Cucho,CARGO,normal,7,1,14.3,2.6
+GT,San Marcos,San Jose Ojetenam,MEG,normal,3,2,66.7,20.8
+GT,San Marcos,San Jose Ojetenam,CARGO,normal,2,1,50.0,9.5
+GT,San Marcos,San Marcos,CARGO,normal,152,73,48.0,40.2
+GT,San Marcos,San Marcos,FORZA,normal,15,7,46.7,24.8
+GT,San Marcos,San Miguel Ixtahuacan,CARGO,normal,4,3,75.0,30.1
+GT,San Marcos,San Miguel Ixtahuacan,FORZA,normal,1,1,100.0,20.7
+GT,San Marcos,San Pablo,CARGO,normal,98,63,64.3,54.4
+GT,San Marcos,San Pablo,FORZA,normal,6,3,50.0,18.8
+GT,San Marcos,San Pedro Sacatepequez,CARGO,normal,19,10,52.6,31.7
+GT,San Marcos,San Pedro Sacatepequez,FORZA,normal,3,2,66.7,20.8
+GT,San Marcos,San Rafael Pie de la Cuesta,CARGO,normal,1,1,100.0,20.7
+GT,San Marcos,San Rafael Pie de la Cuesta,FORZA,normal,1,1,100.0,20.7
+GT,San Marcos,Sibinal,MEG,normal,44,27,61.4,46.6
+GT,San Marcos,Sibinal,CARGO,normal,23,13,56.5,36.8
+GT,San Marcos,Sibinal,FORZA,normal,7,2,28.6,8.2
+GT,San Marcos,Sipacapa,CARGO,normal,44,29,65.9,51.1
+GT,San Marcos,Sipacapa,FORZA,normal,7,2,28.6,8.2
+GT,San Marcos,Tacana,MEG,normal,8,6,75.0,40.9
+GT,San Marcos,Tacana,CARGO,normal,2,0,0.0,0.0
+GT,San Marcos,Tajumulco,MEG,normal,181,114,63.0,55.7
+GT,San Marcos,Tajumulco,CARGO,normal,43,26,60.5,45.6
+GT,San Marcos,Tajumulco,FORZA,normal,5,3,60.0,23.1
+GT,San Marcos,Tecun Uman,CARGO,normal,34,23,67.6,50.8
+GT,San Marcos,Tecun Uman,FORZA,normal,2,1,50.0,9.5
+GT,San Marcos,Tejutla,MEG,normal,30,24,80.0,62.7
+GT,San Marcos,Tejutla,CARGO,normal,24,17,70.8,50.8
+GT,San Marcos,Tejutla,FORZA,normal,1,0,0.0,0.0
+GT,Santa Rosa,Barberena,FORZA,normal,2,1,50.0,9.5
+GT,Santa Rosa,Barberena,CARGO,normal,13,3,23.1,8.2
+GT,Santa Rosa,Casillas,CARGO,normal,71,47,66.2,54.6
+GT,Santa Rosa,Casillas,FORZA,normal,11,8,72.7,43.4
+GT,Santa Rosa,Chiquimulilla,FORZA,normal,55,42,76.4,63.7
+GT,Santa Rosa,Chiquimulilla,CARGO,normal,256,148,57.8,51.7
+GT,Santa Rosa,Cuilapa,CARGO,normal,8,6,75.0,40.9
+GT,Santa Rosa,Guazacapan,CARGO,normal,120,64,53.3,44.4
+GT,Santa Rosa,Guazacapan,FORZA,normal,31,19,61.3,43.8
+GT,Santa Rosa,Nueva Santa Rosa,CARGO,normal,120,76,63.3,54.4
+GT,Santa Rosa,Nueva Santa Rosa,FORZA,normal,22,11,50.0,30.7
+GT,Santa Rosa,Oratorio,CARGO,normal,79,51,64.6,53.6
+GT,Santa Rosa,Oratorio,FORZA,normal,22,8,36.4,19.7
+GT,Santa Rosa,Pueblo Nuevo Viñas,CARGO,normal,125,81,64.8,56.1
+GT,Santa Rosa,Pueblo Nuevo Viñas,FORZA,normal,29,18,62.1,44.0
+GT,Santa Rosa,Santa Cruz Naranjo,CARGO,normal,22,16,72.7,51.8
+GT,Santa Rosa,Santa Cruz Naranjo,FORZA,normal,8,5,62.5,30.6
+GT,Santa Rosa,Santa Maria Ixhuatan,FORZA,normal,3,3,100.0,43.8
+GT,Santa Rosa,Santa Maria Ixhuatan,CARGO,normal,22,14,63.6,43.0
+GT,Santa Rosa,Santa Rosa de Lima,CARGO,normal,5,2,40.0,11.8
+GT,Santa Rosa,Taxisco,FORZA,normal,2,2,100.0,34.2
+GT,Santa Rosa,Taxisco,CARGO,normal,12,3,25.0,8.9
+GT,Solola,Concepcion,FORZA,normal,4,4,100.0,51.0
+GT,Solola,Concepcion,CARGO,normal,14,7,50.0,26.8
+GT,Solola,Nahuala,CARGO,normal,18,13,72.2,49.1
+GT,Solola,Nahuala,FORZA,normal,2,0,0.0,0.0
+GT,Solola,Panajachel,CARGO,normal,43,32,74.4,59.8
+GT,Solola,Panajachel,FORZA,normal,9,7,77.8,45.3
+GT,Solola,San Andres Semetabaj,MEG,normal,9,7,77.8,45.3
+GT,Solola,San Andres Semetabaj,FORZA,normal,1,1,100.0,20.7
+GT,Solola,San Andres Semetabaj,CARGO,normal,5,1,20.0,3.6
+GT,Solola,San Antonio Palopo,FORZA,normal,3,3,100.0,43.8
+GT,Solola,San Antonio Palopo,CARGO,normal,14,7,50.0,26.8
+GT,Solola,San Jose Chacaya,CARGO,normal,34,21,61.8,45.0
+GT,Solola,San Jose Chacaya,FORZA,normal,6,5,83.3,43.6
+GT,Solola,San Juan La Laguna,CARGO,normal,3,2,66.7,20.8
+GT,Solola,San Juan La Laguna,FORZA,normal,1,1,100.0,20.7
+GT,Solola,San Lucas Toliman,CARGO,normal,58,41,70.7,58.0
+GT,Solola,San Lucas Toliman,FORZA,normal,7,3,42.9,15.8
+GT,Solola,San Marcos La Laguna,CARGO,normal,14,7,50.0,26.8
+GT,Solola,San Marcos La Laguna,FORZA,normal,1,1,100.0,20.7
+GT,Solola,San Pablo La Laguna,CARGO,normal,27,14,51.9,34.0
+GT,Solola,San Pablo La Laguna,FORZA,normal,5,2,40.0,11.8
+GT,Solola,San Pedro La Laguna,CARGO,normal,18,8,44.4,24.6
+GT,Solola,San Pedro La Laguna,FORZA,normal,2,1,50.0,9.5
+GT,Solola,Santa Catarina Ixtahuacan,CARGO,normal,17,12,70.6,46.9
+GT,Solola,Santa Catarina Ixtahuacan,FORZA,normal,3,3,100.0,43.8
+GT,Solola,Santa Catarina Ixtahuacan,MEG,normal,10,6,60.0,31.3
+GT,Solola,Santa Catarina Palopo,CARGO,normal,3,2,66.7,20.8
+GT,Solola,Santa Clara La Laguna,CARGO,normal,14,10,71.4,45.4
+GT,Solola,Santa Clara La Laguna,FORZA,normal,5,4,80.0,37.6
+GT,Solola,Santa Cruz La Laguna,CARGO,normal,57,39,68.4,55.5
+GT,Solola,Santa Cruz La Laguna,FORZA,normal,4,3,75.0,30.1
+GT,Solola,Santa Lucia Utatlan,CARGO,normal,40,29,72.5,57.2
+GT,Solola,Santa Lucia Utatlan,MEG,normal,3,3,100.0,43.8
+GT,Solola,Santa Lucia Utatlan,FORZA,normal,6,5,83.3,43.6
+GT,Solola,Santa Maria Visitacion,MEG,normal,5,3,60.0,23.1
+GT,Solola,Santa Maria Visitacion,CARGO,normal,1,1,100.0,20.7
+GT,Solola,Santiago Atitlan,CARGO,normal,167,112,67.1,59.6
+GT,Solola,Santiago Atitlan,FORZA,normal,17,13,76.5,52.7
+GT,Solola,Solola,CARGO,normal,219,139,63.5,56.9
+GT,Solola,Solola,FORZA,normal,23,13,56.5,36.8
+GT,Suchitepequez,Chicacao,CARGO,normal,772,461,59.7,56.2
+GT,Suchitepequez,Chicacao,FORZA,normal,105,62,59.0,49.5
+GT,Suchitepequez,Chicacao,MEG,normal,28,17,60.7,42.4
+GT,Suchitepequez,Cuyotenango,CARGO,normal,7,6,85.7,48.7
+GT,Suchitepequez,Cuyotenango,FORZA,normal,1,0,0.0,0.0
+GT,Suchitepequez,Mazatenango,CARGO,normal,74,43,58.1,46.7
+GT,Suchitepequez,Mazatenango,FORZA,normal,12,7,58.3,32.0
+GT,Suchitepequez,Mazatenango,MEG,normal,1,1,100.0,20.7
+GT,Suchitepequez,Patulul,CARGO,normal,316,162,51.3,45.8
+GT,Suchitepequez,Patulul,FORZA,normal,41,20,48.8,34.3
+GT,Suchitepequez,Pueblo Nuevo,CARGO,normal,43,22,51.2,36.8
+GT,Suchitepequez,Pueblo Nuevo,MEG,normal,1,1,100.0,20.7
+GT,Suchitepequez,Pueblo Nuevo,FORZA,normal,5,2,40.0,11.8
+GT,Suchitepequez,Rio Bravo,CARGO,normal,35,21,60.0,43.6
+GT,Suchitepequez,Rio Bravo,FORZA,normal,3,1,33.3,6.1
+GT,Suchitepequez,Samayac,CARGO,normal,16,9,56.2,33.2
+GT,Suchitepequez,Samayac,FORZA,normal,4,1,25.0,4.6
+GT,Suchitepequez,San Antonio Suchitepequez,MEG,normal,22,15,68.2,47.3
+GT,Suchitepequez,San Antonio Suchitepequez,CARGO,normal,30,15,50.0,33.2
+GT,Suchitepequez,San Antonio Suchitepequez,FORZA,normal,6,3,50.0,18.8
+GT,Suchitepequez,San Bernardino,CARGO,normal,26,16,61.5,42.5
+GT,Suchitepequez,San Bernardino,FORZA,normal,2,1,50.0,9.5
+GT,Suchitepequez,San Francisco Zapotitlan,FORZA,normal,3,3,100.0,43.8
+GT,Suchitepequez,San Francisco Zapotitlan,CARGO,normal,16,7,43.8,23.1
+GT,Suchitepequez,San Gabriel,CARGO,normal,68,44,64.7,52.8
+GT,Suchitepequez,San Gabriel,FORZA,normal,7,6,85.7,48.7
+GT,Suchitepequez,San Jose El Idolo,CARGO,normal,48,30,62.5,48.4
+GT,Suchitepequez,San Jose El Idolo,FORZA,normal,13,7,53.8,29.1
+GT,Suchitepequez,San Jose El Idolo,MEG,normal,1,0,0.0,0.0
+GT,Suchitepequez,San Lorenzo,CARGO,normal,26,14,53.8,35.5
+GT,Suchitepequez,San Lorenzo,FORZA,normal,2,2,100.0,34.2
+GT,Suchitepequez,San Miguel Panan,MEG,normal,2,1,50.0,9.5
+GT,Suchitepequez,San Miguel Panan,FORZA,normal,1,0,0.0,0.0
+GT,Suchitepequez,San Pablo Jocopilas,CARGO,normal,92,62,67.4,57.3
+GT,Suchitepequez,San Pablo Jocopilas,FORZA,normal,16,6,37.5,18.5
+GT,Suchitepequez,Santa Barbara,FORZA,normal,14,9,64.3,38.8
+GT,Suchitepequez,Santa Barbara,CARGO,normal,65,32,49.2,37.5
+GT,Suchitepequez,Santo Domingo,FORZA,normal,38,25,65.8,49.9
+GT,Suchitepequez,Santo Domingo,CARGO,normal,197,104,52.8,45.8
+GT,Suchitepequez,Santo Tomas La Union,MEG,normal,28,20,71.4,52.9
+GT,Suchitepequez,Santo Tomas La Union,CARGO,normal,3,3,100.0,43.8
+GT,Suchitepequez,Zunilito,CARGO,normal,28,19,67.9,49.3
+GT,Suchitepequez,Zunilito,FORZA,normal,1,1,100.0,20.7
+GT,Totonicapan,Momostenango,CARGO,normal,181,97,53.6,46.3
+GT,Totonicapan,Momostenango,FORZA,normal,16,5,31.2,14.2
+GT,Totonicapan,Momostenango,MEG,normal,4,1,25.0,4.6
+GT,Totonicapan,San Andres Xecul,CARGO,normal,161,106,65.8,58.2
+GT,Totonicapan,San Andres Xecul,FORZA,normal,19,14,73.7,51.2
+GT,Totonicapan,San Andres Xecul,MEG,normal,9,6,66.7,35.4
+GT,Totonicapan,San Bartolo Aguas Calientes,MEG,normal,9,6,66.7,35.4
+GT,Totonicapan,San Bartolo Aguas Calientes,CARGO,normal,1,1,100.0,20.7
+GT,Totonicapan,San Bartolo Aguas Calientes,FORZA,normal,3,0,0.0,0.0
+GT,Totonicapan,San Cristobal,CARGO,normal,29,23,79.3,61.6
+GT,Totonicapan,San Cristobal,MEG,normal,31,20,64.5,46.9
+GT,Totonicapan,San Cristobal,FORZA,normal,21,7,33.3,17.2
+GT,Totonicapan,San Francisco El Alto,CARGO,normal,68,44,64.7,52.8
+GT,Totonicapan,San Francisco El Alto,FORZA,normal,1,1,100.0,20.7
+GT,Totonicapan,San Francisco El Alto,MEG,normal,5,2,40.0,11.8
+GT,Totonicapan,Totonicapan,MEG,normal,85,56,65.9,55.3
+GT,Totonicapan,Totonicapan,CARGO,normal,196,122,62.2,55.3
+GT,Totonicapan,Totonicapan,FORZA,normal,33,19,57.6,40.8
+GT,Zacapa,Cabañas,CARGO,normal,16,7,43.8,23.1
+GT,Zacapa,Cabañas,FORZA,normal,15,5,33.3,15.2
+GT,Zacapa,Gualan,CARGO,normal,369,225,61.0,55.9
+GT,Zacapa,Gualan,FORZA,normal,56,28,50.0,37.3
+GT,Zacapa,Huite,FORZA,normal,4,3,75.0,30.1
+GT,Zacapa,Huite,CARGO,normal,3,2,66.7,20.8
+GT,Zacapa,La Union,CARGO,normal,1,1,100.0,20.7
+GT,Zacapa,Rio Hondo,CARGO,normal,199,119,59.8,52.9
+GT,Zacapa,Rio Hondo,FORZA,normal,138,64,46.4,38.3
+GT,Zacapa,San Diego,CARGO,normal,11,8,72.7,43.4
+GT,Zacapa,San Diego,FORZA,normal,37,17,45.9,31.0
+GT,Zacapa,Teculutan,CARGO,normal,199,127,63.8,56.9
+GT,Zacapa,Teculutan,FORZA,normal,62,37,59.7,47.3
+GT,Zacapa,Usumatlan,CARGO,normal,11,8,72.7,43.4
+GT,Zacapa,Usumatlan,FORZA,normal,14,5,35.7,16.3
+GT,Zacapa,Zacapa,CARGO,normal,507,329,64.9,60.6
+GT,Zacapa,Zacapa,FORZA,normal,76,48,63.2,51.9
+GT,Zacapa,Zacapa,MEG,normal,67,38,56.7,44.8
+SV, Concepcion oriente, Area urbana,FORZA,normal,1,1,100.0,20.7
+SV, Cuscatlan, Suchitoto,FORZA,normal,68,28,41.2,30.3
+SV, La paz, Zacatecoluca,FORZA,normal,38,14,36.8,23.4
+SV, San pablo tacachico, Area urbana,FORZA,normal,10,3,30.0,10.8
+SV, Sonsonate, Area urbana,FORZA,normal,11,3,27.3,9.7
+SV,LA UNION,MEANGUERA DEL GOLFO,FORZA,normal,19,6,31.6,15.4
+SV,SAN SALVADOR,APOPA,FORZA,normal,1,1,100.0,20.7
+SV,SAN VICENTE,SAN VICENTE,FORZA,normal,5,5,100.0,56.6

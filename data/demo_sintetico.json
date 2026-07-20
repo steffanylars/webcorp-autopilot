@@ -1,0 +1,1133 @@
+{
+ "_nota": "DATOS SINTETICOS DE DEMOSTRACION. La instancia publica no tiene acceso a la base de produccion a proposito. Estructura identica a /api/courier_zona y /api/productos_real.",
+ "courier_zona": {
+  "pais": "GT",
+  "couriers": [
+   "CARGO",
+   "FORZA",
+   "MEG"
+  ],
+  "seleccionados": [
+   "CARGO",
+   "FORZA",
+   "MEG"
+  ],
+  "por_depto": [
+   {
+    "depto": "Guatemala",
+    "ordenes": 5200,
+    "efectividad": 66.8
+   },
+   {
+    "depto": "Quetzaltenango",
+    "ordenes": 1900,
+    "efectividad": 64.8
+   },
+   {
+    "depto": "Escuintla",
+    "ordenes": 1450,
+    "efectividad": 45.6
+   },
+   {
+    "depto": "Sacatepéquez",
+    "ordenes": 979,
+    "efectividad": 68.8
+   },
+   {
+    "depto": "Huehuetenango",
+    "ordenes": 939,
+    "efectividad": 54.8
+   },
+   {
+    "depto": "San Marcos",
+    "ordenes": 879,
+    "efectividad": 56.8
+   },
+   {
+    "depto": "Chimaltenango",
+    "ordenes": 759,
+    "efectividad": 61.7
+   },
+   {
+    "depto": "Alta Verapaz",
+    "ordenes": 700,
+    "efectividad": 46.0
+   },
+   {
+    "depto": "Suchitepéquez",
+    "ordenes": 619,
+    "efectividad": 59.9
+   },
+   {
+    "depto": "Petén",
+    "ordenes": 609,
+    "efectividad": 52.7
+   },
+   {
+    "depto": "Izabal",
+    "ordenes": 559,
+    "efectividad": 58.9
+   },
+   {
+    "depto": "Jutiapa",
+    "ordenes": 519,
+    "efectividad": 57.8
+   },
+   {
+    "depto": "Santa Rosa",
+    "ordenes": 479,
+    "efectividad": 63.9
+   },
+   {
+    "depto": "Retalhuleu",
+    "ordenes": 450,
+    "efectividad": 65.8
+   },
+   {
+    "depto": "Zacapa",
+    "ordenes": 429,
+    "efectividad": 62.7
+   },
+   {
+    "depto": "Chiquimula",
+    "ordenes": 409,
+    "efectividad": 60.9
+   },
+   {
+    "depto": "Quiché",
+    "ordenes": 389,
+    "efectividad": 54.0
+   },
+   {
+    "depto": "Jalapa",
+    "ordenes": 350,
+    "efectividad": 59.7
+   },
+   {
+    "depto": "Sololá",
+    "ordenes": 329,
+    "efectividad": 62.0
+   },
+   {
+    "depto": "Totonicapán",
+    "ordenes": 300,
+    "efectividad": 57.0
+   },
+   {
+    "depto": "Baja Verapaz",
+    "ordenes": 279,
+    "efectividad": 55.9
+   },
+   {
+    "depto": "El Progreso",
+    "ordenes": 239,
+    "efectividad": 64.9
+   }
+  ],
+  "matriz": {
+   "Guatemala": [
+    {
+     "courier": "MEG",
+     "ordenes": 1040,
+     "efectividad": 73.0
+    },
+    {
+     "courier": "CARGO",
+     "ordenes": 2184,
+     "efectividad": 70.0
+    },
+    {
+     "courier": "FORZA",
+     "ordenes": 1976,
+     "efectividad": 60.0
+    }
+   ],
+   "Quetzaltenango": [
+    {
+     "courier": "MEG",
+     "ordenes": 380,
+     "efectividad": 71.1
+    },
+    {
+     "courier": "CARGO",
+     "ordenes": 798,
+     "efectividad": 68.0
+    },
+    {
+     "courier": "FORZA",
+     "ordenes": 722,
+     "efectividad": 58.0
+    }
+   ],
+   "Escuintla": [
+    {
+     "courier": "MEG",
+     "ordenes": 290,
+     "efectividad": 52.1
+    },
+    {
+     "courier": "CARGO",
+     "ordenes": 609,
+     "efectividad": 48.9
+    },
+    {
+     "courier": "FORZA",
+     "ordenes": 551,
+     "efectividad": 38.5
+    }
+   ],
+   "Sacatepéquez": [
+    {
+     "courier": "MEG",
+     "ordenes": 196,
+     "efectividad": 75.0
+    },
+    {
+     "courier": "CARGO",
+     "ordenes": 411,
+     "efectividad": 72.0
+    },
+    {
+     "courier": "FORZA",
+     "ordenes": 372,
+     "efectividad": 62.1
+    }
+   ],
+   "Chimaltenango": [
+    {
+     "courier": "MEG",
+     "ordenes": 152,
+     "efectividad": 67.8
+    },
+    {
+     "courier": "CARGO",
+     "ordenes": 319,
+     "efectividad": 64.9
+    },
+    {
+     "courier": "FORZA",
+     "ordenes": 288,
+     "efectividad": 54.9
+    }
+   ],
+   "Suchitepéquez": [
+    {
+     "courier": "MEG",
+     "ordenes": 124,
+     "efectividad": 66.1
+    },
+    {
+     "courier": "CARGO",
+     "ordenes": 260,
+     "efectividad": 63.1
+    },
+    {
+     "courier": "FORZA",
+     "ordenes": 235,
+     "efectividad": 53.2
+    }
+   ],
+   "San Marcos": [
+    {
+     "courier": "MEG",
+     "ordenes": 176,
+     "efectividad": 63.1
+    },
+    {
+     "courier": "CARGO",
+     "ordenes": 369,
+     "efectividad": 59.9
+    },
+    {
+     "courier": "FORZA",
+     "ordenes": 334,
+     "efectividad": 50.0
+    }
+   ],
+   "Huehuetenango": [
+    {
+     "courier": "MEG",
+     "ordenes": 188,
+     "efectividad": 61.2
+    },
+    {
+     "courier": "CARGO",
+     "ordenes": 394,
+     "efectividad": 58.1
+    },
+    {
+     "courier": "FORZA",
+     "ordenes": 357,
+     "efectividad": 47.9
+    }
+   ],
+   "Alta Verapaz": [
+    {
+     "courier": "MEG",
+     "ordenes": 140,
+     "efectividad": 50.7
+    },
+    {
+     "courier": "CARGO",
+     "ordenes": 294,
+     "efectividad": 48.0
+    },
+    {
+     "courier": "FORZA",
+     "ordenes": 266,
+     "efectividad": 41.4
+    }
+   ],
+   "Izabal": [
+    {
+     "courier": "MEG",
+     "ordenes": 112,
+     "efectividad": 65.2
+    },
+    {
+     "courier": "CARGO",
+     "ordenes": 235,
+     "efectividad": 62.1
+    },
+    {
+     "courier": "FORZA",
+     "ordenes": 212,
+     "efectividad": 51.9
+    }
+   ],
+   "Zacapa": [
+    {
+     "courier": "MEG",
+     "ordenes": 86,
+     "efectividad": 68.6
+    },
+    {
+     "courier": "CARGO",
+     "ordenes": 180,
+     "efectividad": 66.1
+    },
+    {
+     "courier": "FORZA",
+     "ordenes": 163,
+     "efectividad": 55.8
+    }
+   ],
+   "Chiquimula": [
+    {
+     "courier": "MEG",
+     "ordenes": 82,
+     "efectividad": 67.1
+    },
+    {
+     "courier": "CARGO",
+     "ordenes": 172,
+     "efectividad": 64.0
+    },
+    {
+     "courier": "FORZA",
+     "ordenes": 155,
+     "efectividad": 54.2
+    }
+   ],
+   "Jutiapa": [
+    {
+     "courier": "MEG",
+     "ordenes": 104,
+     "efectividad": 64.4
+    },
+    {
+     "courier": "CARGO",
+     "ordenes": 218,
+     "efectividad": 61.0
+    },
+    {
+     "courier": "FORZA",
+     "ordenes": 197,
+     "efectividad": 50.8
+    }
+   ],
+   "Santa Rosa": [
+    {
+     "courier": "MEG",
+     "ordenes": 96,
+     "efectividad": 69.8
+    },
+    {
+     "courier": "CARGO",
+     "ordenes": 201,
+     "efectividad": 67.2
+    },
+    {
+     "courier": "FORZA",
+     "ordenes": 182,
+     "efectividad": 57.1
+    }
+   ],
+   "Jalapa": [
+    {
+     "courier": "MEG",
+     "ordenes": 70,
+     "efectividad": 65.7
+    },
+    {
+     "courier": "CARGO",
+     "ordenes": 147,
+     "efectividad": 63.3
+    },
+    {
+     "courier": "FORZA",
+     "ordenes": 133,
+     "efectividad": 52.6
+    }
+   ],
+   "El Progreso": [
+    {
+     "courier": "MEG",
+     "ordenes": 48,
+     "efectividad": 70.8
+    },
+    {
+     "courier": "CARGO",
+     "ordenes": 100,
+     "efectividad": 68.0
+    },
+    {
+     "courier": "FORZA",
+     "ordenes": 91,
+     "efectividad": 58.2
+    }
+   ],
+   "Baja Verapaz": [
+    {
+     "courier": "MEG",
+     "ordenes": 56,
+     "efectividad": 62.5
+    },
+    {
+     "courier": "CARGO",
+     "ordenes": 117,
+     "efectividad": 59.0
+    },
+    {
+     "courier": "FORZA",
+     "ordenes": 106,
+     "efectividad": 49.1
+    }
+   ],
+   "Quiché": [
+    {
+     "courier": "MEG",
+     "ordenes": 78,
+     "efectividad": 60.3
+    },
+    {
+     "courier": "CARGO",
+     "ordenes": 163,
+     "efectividad": 57.1
+    },
+    {
+     "courier": "FORZA",
+     "ordenes": 148,
+     "efectividad": 47.3
+    }
+   ],
+   "Sololá": [
+    {
+     "courier": "MEG",
+     "ordenes": 66,
+     "efectividad": 68.2
+    },
+    {
+     "courier": "CARGO",
+     "ordenes": 138,
+     "efectividad": 65.2
+    },
+    {
+     "courier": "FORZA",
+     "ordenes": 125,
+     "efectividad": 55.2
+    }
+   ],
+   "Totonicapán": [
+    {
+     "courier": "MEG",
+     "ordenes": 60,
+     "efectividad": 63.3
+    },
+    {
+     "courier": "CARGO",
+     "ordenes": 126,
+     "efectividad": 60.3
+    },
+    {
+     "courier": "FORZA",
+     "ordenes": 114,
+     "efectividad": 50.0
+    }
+   ],
+   "Retalhuleu": [
+    {
+     "courier": "MEG",
+     "ordenes": 90,
+     "efectividad": 72.2
+    },
+    {
+     "courier": "CARGO",
+     "ordenes": 189,
+     "efectividad": 68.8
+    },
+    {
+     "courier": "FORZA",
+     "ordenes": 171,
+     "efectividad": 59.1
+    }
+   ],
+   "Petén": [
+    {
+     "courier": "MEG",
+     "ordenes": 122,
+     "efectividad": 59.0
+    },
+    {
+     "courier": "CARGO",
+     "ordenes": 256,
+     "efectividad": 55.9
+    },
+    {
+     "courier": "FORZA",
+     "ordenes": 231,
+     "efectividad": 45.9
+    }
+   ]
+  },
+  "plan_accion": [
+   {
+    "depto": "Escuintla",
+    "peor_courier": "FORZA",
+    "peor_ef": 38.5,
+    "peor_n": 551,
+    "mejor_courier": "MEG",
+    "mejor_ef": 52.1,
+    "mejor_n": 290,
+    "gap": 13.6
+   },
+   {
+    "depto": "Jutiapa",
+    "peor_courier": "FORZA",
+    "peor_ef": 50.8,
+    "peor_n": 197,
+    "mejor_courier": "MEG",
+    "mejor_ef": 64.4,
+    "mejor_n": 104,
+    "gap": 13.6
+   },
+   {
+    "depto": "Baja Verapaz",
+    "peor_courier": "FORZA",
+    "peor_ef": 49.1,
+    "peor_n": 106,
+    "mejor_courier": "MEG",
+    "mejor_ef": 62.5,
+    "mejor_n": 56,
+    "gap": 13.4
+   },
+   {
+    "depto": "Huehuetenango",
+    "peor_courier": "FORZA",
+    "peor_ef": 47.9,
+    "peor_n": 357,
+    "mejor_courier": "MEG",
+    "mejor_ef": 61.2,
+    "mejor_n": 188,
+    "gap": 13.3
+   },
+   {
+    "depto": "Izabal",
+    "peor_courier": "FORZA",
+    "peor_ef": 51.9,
+    "peor_n": 212,
+    "mejor_courier": "MEG",
+    "mejor_ef": 65.2,
+    "mejor_n": 112,
+    "gap": 13.3
+   },
+   {
+    "depto": "Totonicapán",
+    "peor_courier": "FORZA",
+    "peor_ef": 50.0,
+    "peor_n": 114,
+    "mejor_courier": "MEG",
+    "mejor_ef": 63.3,
+    "mejor_n": 60,
+    "gap": 13.3
+   },
+   {
+    "depto": "Quetzaltenango",
+    "peor_courier": "FORZA",
+    "peor_ef": 58.0,
+    "peor_n": 722,
+    "mejor_courier": "MEG",
+    "mejor_ef": 71.1,
+    "mejor_n": 380,
+    "gap": 13.1
+   },
+   {
+    "depto": "San Marcos",
+    "peor_courier": "FORZA",
+    "peor_ef": 50.0,
+    "peor_n": 334,
+    "mejor_courier": "MEG",
+    "mejor_ef": 63.1,
+    "mejor_n": 176,
+    "gap": 13.1
+   },
+   {
+    "depto": "Jalapa",
+    "peor_courier": "FORZA",
+    "peor_ef": 52.6,
+    "peor_n": 133,
+    "mejor_courier": "MEG",
+    "mejor_ef": 65.7,
+    "mejor_n": 70,
+    "gap": 13.1
+   },
+   {
+    "depto": "Retalhuleu",
+    "peor_courier": "FORZA",
+    "peor_ef": 59.1,
+    "peor_n": 171,
+    "mejor_courier": "MEG",
+    "mejor_ef": 72.2,
+    "mejor_n": 90,
+    "gap": 13.1
+   },
+   {
+    "depto": "Petén",
+    "peor_courier": "FORZA",
+    "peor_ef": 45.9,
+    "peor_n": 231,
+    "mejor_courier": "MEG",
+    "mejor_ef": 59.0,
+    "mejor_n": 122,
+    "gap": 13.1
+   },
+   {
+    "depto": "Guatemala",
+    "peor_courier": "FORZA",
+    "peor_ef": 60.0,
+    "peor_n": 1976,
+    "mejor_courier": "MEG",
+    "mejor_ef": 73.0,
+    "mejor_n": 1040,
+    "gap": 13.0
+   },
+   {
+    "depto": "Quiché",
+    "peor_courier": "FORZA",
+    "peor_ef": 47.3,
+    "peor_n": 148,
+    "mejor_courier": "MEG",
+    "mejor_ef": 60.3,
+    "mejor_n": 78,
+    "gap": 13.0
+   },
+   {
+    "depto": "Sololá",
+    "peor_courier": "FORZA",
+    "peor_ef": 55.2,
+    "peor_n": 125,
+    "mejor_courier": "MEG",
+    "mejor_ef": 68.2,
+    "mejor_n": 66,
+    "gap": 13.0
+   },
+   {
+    "depto": "Sacatepéquez",
+    "peor_courier": "FORZA",
+    "peor_ef": 62.1,
+    "peor_n": 372,
+    "mejor_courier": "MEG",
+    "mejor_ef": 75.0,
+    "mejor_n": 196,
+    "gap": 12.9
+   },
+   {
+    "depto": "Chimaltenango",
+    "peor_courier": "FORZA",
+    "peor_ef": 54.9,
+    "peor_n": 288,
+    "mejor_courier": "MEG",
+    "mejor_ef": 67.8,
+    "mejor_n": 152,
+    "gap": 12.9
+   },
+   {
+    "depto": "Suchitepéquez",
+    "peor_courier": "FORZA",
+    "peor_ef": 53.2,
+    "peor_n": 235,
+    "mejor_courier": "MEG",
+    "mejor_ef": 66.1,
+    "mejor_n": 124,
+    "gap": 12.9
+   },
+   {
+    "depto": "Chiquimula",
+    "peor_courier": "FORZA",
+    "peor_ef": 54.2,
+    "peor_n": 155,
+    "mejor_courier": "MEG",
+    "mejor_ef": 67.1,
+    "mejor_n": 82,
+    "gap": 12.9
+   },
+   {
+    "depto": "Zacapa",
+    "peor_courier": "FORZA",
+    "peor_ef": 55.8,
+    "peor_n": 163,
+    "mejor_courier": "MEG",
+    "mejor_ef": 68.6,
+    "mejor_n": 86,
+    "gap": 12.8
+   },
+   {
+    "depto": "Santa Rosa",
+    "peor_courier": "FORZA",
+    "peor_ef": 57.1,
+    "peor_n": 182,
+    "mejor_courier": "MEG",
+    "mejor_ef": 69.8,
+    "mejor_n": 96,
+    "gap": 12.7
+   },
+   {
+    "depto": "El Progreso",
+    "peor_courier": "FORZA",
+    "peor_ef": 58.2,
+    "peor_n": 91,
+    "mejor_courier": "CARGO",
+    "mejor_ef": 68.0,
+    "mejor_n": 100,
+    "gap": 9.8
+   },
+   {
+    "depto": "Alta Verapaz",
+    "peor_courier": "FORZA",
+    "peor_ef": 41.4,
+    "peor_n": 266,
+    "mejor_courier": "MEG",
+    "mejor_ef": 50.7,
+    "mejor_n": 140,
+    "gap": 9.3
+   }
+  ]
+ },
+ "productos_real": {
+  "productos": [
+   {
+    "producto": "Smartwatch deportivo S9",
+    "ordenes": 4180,
+    "efectividad": 64.2,
+    "precio_prom": 89.9
+   },
+   {
+    "producto": "Audifonos inalambricos Pro",
+    "ordenes": 3520,
+    "efectividad": 68.5,
+    "precio_prom": 45.5
+   },
+   {
+    "producto": "Faja moldeadora premium",
+    "ordenes": 2940,
+    "efectividad": 57.8,
+    "precio_prom": 62.0
+   },
+   {
+    "producto": "Kit skincare coreano 5pz",
+    "ordenes": 2310,
+    "efectividad": 71.3,
+    "precio_prom": 78.25
+   },
+   {
+    "producto": "Zapatillas urbanas Flex",
+    "ordenes": 1870,
+    "efectividad": 61.9,
+    "precio_prom": 112.4
+   },
+   {
+    "producto": "Lampara LED de escritorio",
+    "ordenes": 1420,
+    "efectividad": 69.7,
+    "precio_prom": 34.9
+   },
+   {
+    "producto": "Mochila antirrobo urbana",
+    "ordenes": 1180,
+    "efectividad": 66.1,
+    "precio_prom": 58.75
+   },
+   {
+    "producto": "Set de ollas antiadherentes",
+    "ordenes": 960,
+    "efectividad": 73.4,
+    "precio_prom": 145.0
+   },
+   {
+    "producto": "Corrector de postura",
+    "ordenes": 740,
+    "efectividad": 52.6,
+    "precio_prom": 39.9
+   },
+   {
+    "producto": "Reloj de pared vintage",
+    "ordenes": 520,
+    "efectividad": 70.2,
+    "precio_prom": 49.5
+   },
+   {
+    "producto": "Organizador de cocina 3 niveles",
+    "ordenes": 380,
+    "efectividad": 63.8,
+    "precio_prom": 55.6
+   },
+   {
+    "producto": "Difusor de aromas + aceites",
+    "ordenes": 210,
+    "efectividad": 67.5,
+    "precio_prom": 42.3
+   }
+  ]
+ },
+ "operacion": {
+  "por_pais": [
+   {
+    "pais": "Guatemala",
+    "ordenes": 100763,
+    "efectividad": 62
+   },
+   {
+    "pais": "El Salvador",
+    "ordenes": 50219,
+    "efectividad": 58
+   },
+   {
+    "pais": "Honduras",
+    "ordenes": 49604,
+    "efectividad": 57
+   },
+   {
+    "pais": "Panama",
+    "ordenes": 28465,
+    "efectividad": 47
+   },
+   {
+    "pais": "Costa Rica",
+    "ordenes": 9504,
+    "efectividad": 46
+   },
+   {
+    "pais": "Nicaragua",
+    "ordenes": 3246,
+    "efectividad": 39
+   }
+  ],
+  "por_mensajero": [
+   {
+    "mensajero": "MEG",
+    "ordenes": 99509,
+    "efectividad": 57
+   },
+   {
+    "mensajero": "CARGO",
+    "ordenes": 69503,
+    "efectividad": 62
+   },
+   {
+    "mensajero": "FORZA",
+    "ordenes": 12489,
+    "efectividad": 55
+   }
+  ]
+ },
+ "ordenes_no_entregadas": [
+  {
+   "orden": "DEMO-88100",
+   "telefono": "5555-4100",
+   "municipio": "Escuintla",
+   "depto": "Escuintla",
+   "carrier": "FORZA",
+   "estatus": "EN RUTA PARA DEVOLUCION",
+   "subestatus": "NO CONTESTA",
+   "cod": 45.0,
+   "fecha": "2026-06-10"
+  },
+  {
+   "orden": "DEMO-88101",
+   "telefono": "5555-4101",
+   "municipio": "Escuintla",
+   "depto": "Escuintla",
+   "carrier": "FORZA",
+   "estatus": "EN RUTA PARA DEVOLUCION",
+   "subestatus": "YA NO DESEA PRODUCTO",
+   "cod": 58.5,
+   "fecha": "2026-06-11"
+  },
+  {
+   "orden": "DEMO-88102",
+   "telefono": "5555-4102",
+   "municipio": "Escuintla",
+   "depto": "Escuintla",
+   "carrier": "FORZA",
+   "estatus": "EN RUTA PARA DEVOLUCION",
+   "subestatus": "DIRECCION INCORRECTA",
+   "cod": 72.0,
+   "fecha": "2026-06-12"
+  },
+  {
+   "orden": "DEMO-88103",
+   "telefono": "5555-4103",
+   "municipio": "Escuintla",
+   "depto": "Escuintla",
+   "carrier": "FORZA",
+   "estatus": "EN RUTA PARA DEVOLUCION",
+   "subestatus": "RECHAZADO CC",
+   "cod": 85.5,
+   "fecha": "2026-06-13"
+  },
+  {
+   "orden": "DEMO-88104",
+   "telefono": "5555-4104",
+   "municipio": "Escuintla",
+   "depto": "Escuintla",
+   "carrier": "FORZA",
+   "estatus": "EN RUTA PARA DEVOLUCION",
+   "subestatus": "NO CONTESTA",
+   "cod": 99.0,
+   "fecha": "2026-06-14"
+  },
+  {
+   "orden": "DEMO-88105",
+   "telefono": "5555-4105",
+   "municipio": "Escuintla",
+   "depto": "Escuintla",
+   "carrier": "FORZA",
+   "estatus": "EN RUTA PARA DEVOLUCION",
+   "subestatus": "YA NO DESEA PRODUCTO",
+   "cod": 112.5,
+   "fecha": "2026-06-15"
+  },
+  {
+   "orden": "DEMO-88106",
+   "telefono": "5555-4106",
+   "municipio": "Escuintla",
+   "depto": "Escuintla",
+   "carrier": "FORZA",
+   "estatus": "EN RUTA PARA DEVOLUCION",
+   "subestatus": "DIRECCION INCORRECTA",
+   "cod": 126.0,
+   "fecha": "2026-06-16"
+  },
+  {
+   "orden": "DEMO-88107",
+   "telefono": "5555-4107",
+   "municipio": "Escuintla",
+   "depto": "Escuintla",
+   "carrier": "FORZA",
+   "estatus": "EN RUTA PARA DEVOLUCION",
+   "subestatus": "RECHAZADO CC",
+   "cod": 139.5,
+   "fecha": "2026-06-17"
+  },
+  {
+   "orden": "DEMO-88108",
+   "telefono": "5555-4108",
+   "municipio": "Escuintla",
+   "depto": "Escuintla",
+   "carrier": "FORZA",
+   "estatus": "EN RUTA PARA DEVOLUCION",
+   "subestatus": "NO CONTESTA",
+   "cod": 153.0,
+   "fecha": "2026-06-18"
+  },
+  {
+   "orden": "DEMO-88109",
+   "telefono": "5555-4109",
+   "municipio": "Escuintla",
+   "depto": "Escuintla",
+   "carrier": "FORZA",
+   "estatus": "EN RUTA PARA DEVOLUCION",
+   "subestatus": "YA NO DESEA PRODUCTO",
+   "cod": 166.5,
+   "fecha": "2026-06-19"
+  },
+  {
+   "orden": "DEMO-88110",
+   "telefono": "5555-4110",
+   "municipio": "Escuintla",
+   "depto": "Escuintla",
+   "carrier": "FORZA",
+   "estatus": "EN RUTA PARA DEVOLUCION",
+   "subestatus": "DIRECCION INCORRECTA",
+   "cod": 180.0,
+   "fecha": "2026-06-20"
+  },
+  {
+   "orden": "DEMO-88111",
+   "telefono": "5555-4111",
+   "municipio": "Escuintla",
+   "depto": "Escuintla",
+   "carrier": "FORZA",
+   "estatus": "EN RUTA PARA DEVOLUCION",
+   "subestatus": "RECHAZADO CC",
+   "cod": 193.5,
+   "fecha": "2026-06-21"
+  }
+ ],
+ "alertas": {
+  "alertas": [
+   {
+    "sev": "error",
+    "titulo": "Nicaragua en nivel crítico",
+    "detalle": "Nicaragua entrega solo 38.6% en 3,246 órdenes — muy por debajo del umbral operativo de 50%.",
+    "accion": "Auditar courier y calidad de captura en ese país",
+    "valor": 38.6
+   },
+   {
+    "sev": "error",
+    "titulo": "Costa Rica en nivel crítico",
+    "detalle": "Costa Rica entrega solo 45.9% en 9,504 órdenes — bajo el umbral operativo de 50%.",
+    "accion": "Auditar courier y calidad de captura en ese país",
+    "valor": 45.9
+   },
+   {
+    "sev": "error",
+    "titulo": "Panamá en nivel crítico",
+    "detalle": "Panamá entrega solo 47.0% en 28,465 órdenes — bajo el umbral operativo de 50%.",
+    "accion": "Auditar courier y calidad de captura en ese país",
+    "valor": 47.0
+   },
+   {
+    "sev": "warn",
+    "titulo": "FORZA es el carrier más débil del pool",
+    "detalle": "FORZA entrega 54.7% a nivel nacional (n=5,042), 8.8 puntos debajo de MEG.",
+    "accion": "Revisar asignación de zonas de FORZA; ver detalle municipio a municipio en el estimador",
+    "valor": 54.7
+   }
+  ]
+ },
+ "efectividad_semanal": {
+  "serie": [
+   {
+    "yw": 202614,
+    "semana": 14,
+    "desde": "2026-03-30",
+    "ordenes": 4318,
+    "efectividad": 59.9
+   },
+   {
+    "yw": 202615,
+    "semana": 15,
+    "desde": "2026-04-06",
+    "ordenes": 4355,
+    "efectividad": 60.8
+   },
+   {
+    "yw": 202616,
+    "semana": 16,
+    "desde": "2026-04-13",
+    "ordenes": 4392,
+    "efectividad": 61.5
+   },
+   {
+    "yw": 202617,
+    "semana": 17,
+    "desde": "2026-04-20",
+    "ordenes": 4429,
+    "efectividad": 62.1
+   },
+   {
+    "yw": 202618,
+    "semana": 18,
+    "desde": "2026-04-27",
+    "ordenes": 4466,
+    "efectividad": 63.4
+   },
+   {
+    "yw": 202619,
+    "semana": 19,
+    "desde": "2026-05-04",
+    "ordenes": 4503,
+    "efectividad": 64.0
+   },
+   {
+    "yw": 202620,
+    "semana": 20,
+    "desde": "2026-05-11",
+    "ordenes": 4540,
+    "efectividad": 65.2
+   },
+   {
+    "yw": 202621,
+    "semana": 21,
+    "desde": "2026-05-18",
+    "ordenes": 4577,
+    "efectividad": 66.1
+   },
+   {
+    "yw": 202622,
+    "semana": 22,
+    "desde": "2026-05-25",
+    "ordenes": 4614,
+    "efectividad": 66.9
+   },
+   {
+    "yw": 202623,
+    "semana": 23,
+    "desde": "2026-06-01",
+    "ordenes": 4651,
+    "efectividad": 66.2
+   },
+   {
+    "yw": 202624,
+    "semana": 24,
+    "desde": "2026-06-08",
+    "ordenes": 4688,
+    "efectividad": 65.8
+   },
+   {
+    "yw": 202625,
+    "semana": 25,
+    "desde": "2026-06-15",
+    "ordenes": 3825,
+    "efectividad": 66.4
+   },
+   {
+    "yw": 202626,
+    "semana": 26,
+    "desde": "2026-06-22",
+    "ordenes": 3862,
+    "efectividad": 65.9
+   },
+   {
+    "yw": 202627,
+    "semana": 27,
+    "desde": "2026-06-29",
+    "ordenes": 3899,
+    "efectividad": 66.1
+   }
+  ],
+  "clientes": [
+   "COMERCIAL DEMO S.A.",
+   "RETAIL EJEMPLO",
+   "TIENDA MODELO"
+  ],
+  "mensajerias": [
+   "CARGO",
+   "FORZA",
+   "MEG",
+   "SIN ASIGNAR"
+  ],
+  "por_depto_semana": []
+ }
+}

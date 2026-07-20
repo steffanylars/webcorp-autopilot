@@ -1,0 +1,18 @@
+.env
+backend/.env
+__pycache__/
+*.pyc
+*.sqlite
+audit_log.jsonl
+node_modules/
+backend/.venv/
+.venv/
+GUION_VIDEO.md
+artefactos/
+CLAUDE.md
+# artefactos de trabajo local / pesados — no van al repo publico
+.DS_Store
+.claude/
+.impeccable/
+out/
+video/

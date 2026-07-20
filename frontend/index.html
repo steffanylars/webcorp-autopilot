@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Autopilot — WebCorp · The Living Route</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900&family=Atkinson+Hyperlegible+Next:wght@200..800&family=Atkinson+Hyperlegible:wght@400;700&family=Spline+Sans+Mono:wght@300..700&display=swap" rel="stylesheet"/>
+<style>
+/* ════════════════════════════════════════════════════════════
+   THE LIVING ROUTE — cartographic light theme
+   ink petrol · safety-orange agent · hazard-stripe gate
+   ════════════════════════════════════════════════════════════ */
+:root{
+  --chalk:#F3F7F6; --chalk2:#EDF3F1; --card:#FFFFFF; --cardTint:#FAFCFB;
+  --ink:#0C2430; --ink2:#37505B; --ink3:#66808A; --ink4:#9FB3BA;
+  --line:#DEE8E6; --lineHi:#C6D6D3; --dot:#0C243014;
+  --signal:#F4501E; --signalInk:#A03A10; --signalSoft:#FDEAE2; --signalGlow:#F4501E66;
+  --verified:#0C7A57; --verifiedSoft:#E2F3EC;
+  --critical:#C0322B; --criticalSoft:#FAE8E6;
+  --display:'Archivo',-apple-system,sans-serif;
+  --body:'Atkinson Hyperlegible Next','Atkinson Hyperlegible',-apple-system,sans-serif;
+  --mono:'Spline Sans Mono',ui-monospace,monospace;
+  --r-card:20px; --r-btn:12px;
+  --shadow-card:0 1px 3px rgba(12,36,48,.05),0 18px 40px -30px rgba(12,36,48,.28);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  min-height:100vh;background:var(--chalk);color:var(--ink);
+  font-family:var(--body);font-size:14px;
+  background-image:radial-gradient(var(--dot) 1px, transparent 1.4px);
+  background-size:26px 26px;
+}
+::selection{background:var(--signalSoft);color:var(--signalInk)}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-thumb{background:var(--lineHi);border-radius:99px}
+button{font-family:var(--body)}
+button:focus-visible,[tabindex]:focus-visible,textarea:focus-visible{outline:2.5px solid var(--signal);outline-offset:2px;border-radius:6px}
+textarea::placeholder{color:var(--ink4)}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none !important;transition:none !important}
+}
+
+/* ── signage vocabulary ── */
+.signage{font-family:var(--display);font-stretch:118%;font-weight:750;text-transform:uppercase;letter-spacing:.16em}
+.mono{font-family:var(--mono)}
+
+/* ── topbar ── */
+.topbar{display:flex;align-items:center;gap:16px;padding:14px 30px;position:sticky;top:0;z-index:40;
+  background:color-mix(in srgb, var(--chalk) 86%, #fff);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:11px}
+.brand svg{display:block}
+.wordmark b{font-family:var(--display);font-stretch:122%;font-size:15px;font-weight:820;letter-spacing:.12em;display:block;line-height:1.05;text-transform:uppercase}
+.wordmark small{font-family:var(--mono);font-size:9px;letter-spacing:.2em;color:var(--ink3);text-transform:uppercase}
+.status-pill{margin-left:14px;display:inline-flex;align-items:center;gap:9px;padding:7px 13px;border-radius:99px;
+  background:var(--card);border:1px solid var(--line);font-size:11.5px;font-weight:600;color:var(--ink2)}
+.status-pill .sd{position:relative;width:8px;height:8px;flex:none}
+.status-pill .sd i{position:absolute;inset:0;border-radius:99px;background:var(--verified);transition:background .3s}
+.status-pill .sd::after{content:"";position:absolute;inset:0;border-radius:99px;background:inherit;
+  box-shadow:0 0 0 0 currentColor}
+.status-pill.reasoning .sd i{background:var(--signal)}
+.status-pill.waiting .sd i{background:var(--signal)}
+.status-pill.waiting{border-color:#F4501E55;background:var(--signalSoft);color:var(--signalInk)}
+@keyframes sdping{0%{box-shadow:0 0 0 0 currentColor;opacity:.55}100%{box-shadow:0 0 0 7px currentColor;opacity:0}}
+.status-pill .sd i::after{content:"";position:absolute;inset:0;border-radius:99px;color:inherit;animation:sdping 2.1s ease-out infinite;background:transparent;box-shadow:0 0 0 0 var(--verified)}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:16px}
+.next-scan{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--ink3)}
+.next-scan svg{width:13px;height:13px}
+.avatar{width:30px;height:30px;border-radius:10px;display:grid;place-items:center;background:var(--ink);
+  color:#fff;font-size:10.5px;font-weight:750;font-family:var(--display);letter-spacing:.05em}
+
+/* ── the route map (nav + centerpiece) ── */
+.map-band{position:sticky;top:59px;z-index:35;border-bottom:1px solid var(--line);
+  background:color-mix(in srgb, var(--chalk) 90%, #fff);backdrop-filter:blur(8px)}
+.map-scroll{overflow-x:auto;overflow-y:hidden}
+.map-scroll::-webkit-scrollbar{height:5px}
+#routemap{display:block;width:100%;min-width:860px;max-width:1280px;margin:0 auto;height:auto}
+/* rails */
+.rail{fill:none;stroke:var(--lineHi);stroke-width:2.5;stroke-linecap:round}
+.rail.spur,.rail.loop{stroke-dasharray:2 7;stroke-width:2}
+.rail.drawable{transition:stroke-dashoffset 1.5s cubic-bezier(.3,.7,.2,1)}
+/* nodes */
+.node{cursor:pointer}
+.node .halo{fill:transparent;stroke:transparent;stroke-width:2.5;transition:all .25s}
+.node .core{fill:var(--card);stroke:var(--lineHi);stroke-width:2.2;transition:all .25s}
+.node .glyph{color:var(--ink3);transition:color .25s}
+.node:hover .core{stroke:var(--ink2);transform:translateY(-1.5px)}
+.node.active .core{fill:var(--ink);stroke:var(--ink)}
+.node.active .glyph{color:#fff}
+.node.active .halo{stroke:var(--ink);stroke-opacity:.25}
+.node .nlabel{font-family:var(--display);font-stretch:118%;font-weight:700;font-size:10.2px;
+  letter-spacing:.15em;fill:var(--ink3);text-transform:uppercase;transition:fill .25s}
+.node .ncode{font-family:var(--mono);font-size:8px;letter-spacing:.12em;fill:var(--ink4)}
+.node.active .nlabel{fill:var(--ink);font-weight:820}
+.node.flash .halo{stroke:var(--signal);animation:haloflash 1.3s ease-in-out infinite}
+@keyframes haloflash{0%,100%{stroke-opacity:.85;stroke-width:2.5}50%{stroke-opacity:.15;stroke-width:5}}
+.node .pop{transform-origin:center;transform-box:fill-box;opacity:0;transform:scale(.4);
+  animation:nodepop .5s cubic-bezier(.2,1.4,.4,1) forwards}
+@keyframes nodepop{to{opacity:1;transform:scale(1)}}
+.badge-count{font-family:var(--mono);font-weight:600;font-size:9.5px;fill:#fff}
+/* pulse = the agent */
+#pulse{filter:drop-shadow(0 0 6px var(--signalGlow)) drop-shadow(0 0 14px var(--signalGlow));transition:opacity .3s}
+#pulse .pc{fill:var(--signal)}
+#pulse .pr{fill:none;stroke:var(--signal);opacity:0}
+#pulse.locked .pr{opacity:1;animation:pulsering 1.2s ease-out infinite;transform-origin:center;transform-box:fill-box}
+@keyframes pulsering{0%{transform:scale(1);opacity:.8}100%{transform:scale(3.1);opacity:0}}
+.maplegend{font-family:var(--mono);font-size:8.5px;letter-spacing:.22em;fill:var(--ink4);text-transform:uppercase}
+.lockg{color:var(--ink3)}
+
+/* ── workspace ── */
+.workspace{max-width:1020px;margin:0 auto;padding:34px 30px 80px}
+.page{display:none}
+.page.on{display:block;animation:pagein .45s cubic-bezier(.16,1,.3,1)}
+@keyframes pagein{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.kicker{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.kicker .kc{font-family:var(--mono);font-size:10.5px;font-weight:600;color:var(--signalInk);
+  background:var(--signalSoft);padding:3px 8px;border-radius:6px;letter-spacing:.06em}
+.kicker .kt{font-family:var(--display);font-stretch:118%;font-size:10.5px;font-weight:750;color:var(--ink3);
+  letter-spacing:.18em;text-transform:uppercase}
+.kicker .krule{flex:1;height:1px;background:var(--line)}
+.page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:22px;margin-bottom:26px;flex-wrap:wrap}
+.page-head h1{font-family:var(--display);font-size:35px;font-weight:790;letter-spacing:-.028em;line-height:1.02}
+.page-head p{font-size:13.5px;color:var(--ink2);margin-top:10px;max-width:560px;line-height:1.55}
+.page-head p b{color:var(--ink);font-weight:700}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r-card);
+  box-shadow:var(--shadow-card);opacity:0;transform:translateY(12px);
+  animation:cardin .5s cubic-bezier(.16,1,.3,1) forwards}
+@keyframes cardin{to{opacity:1;transform:translateY(0)}}
+.card.lift{transition:transform .25s,box-shadow .25s}
+.card.lift:hover{transform:translateY(-3px);box-shadow:0 26px 52px -32px rgba(12,36,48,.4)}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 19px;border-radius:var(--r-btn);
+  border:none;cursor:pointer;font-size:13px;font-weight:700;transition:transform .12s,box-shadow .2s}
+.btn svg{width:15px;height:15px}
+.btn:active{transform:scale(.97)}
+.btn-ink{background:var(--ink);color:#fff;box-shadow:0 10px 24px -10px rgba(12,36,48,.55)}
+.btn-ink:hover{box-shadow:0 14px 28px -10px rgba(12,36,48,.6)}
+.btn-ghost{background:var(--card);border:1.5px solid var(--lineHi);color:var(--ink2)}
+.btn-ghost:hover{border-color:var(--ink3)}
+.chip{padding:6px 12px;border-radius:99px;border:1px solid var(--line);background:var(--cardTint);
+  color:var(--ink2);font-size:11.5px;cursor:pointer;transition:all .15s}
+.chip:hover{border-color:var(--ink3);color:var(--ink)}
+.ftag{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10.5px;font-weight:500;
+  color:var(--verified);background:var(--verifiedSoft);padding:3.5px 9px;border-radius:6px;white-space:nowrap}
+.ftag i{font-style:italic;font-weight:700}
+.snap{font-family:var(--mono);font-size:10.5px;color:var(--ink3);padding:3.5px 9px;border-radius:6px;
+  background:var(--cardTint);border:1px solid var(--line);white-space:nowrap}
+.hazard{background:repeating-linear-gradient(-45deg,var(--ink) 0 9px,#fff 9px 18px)}
+.origen-chip{font-family:var(--mono);font-size:10px;color:var(--ink3);background:var(--cardTint);
+  border:1px solid var(--line);border-radius:6px;padding:2.5px 7px;cursor:pointer;transition:all .15s}
+.origen-chip:hover{border-color:var(--signal);color:var(--signalInk)}
+
+/* ── PATROL ── */
+.patrol-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:16px}
+.worst-card{padding:26px;position:relative;overflow:hidden}
+.worst-glow{position:absolute;top:-70px;right:-60px;width:250px;height:250px;border-radius:99px;
+  background:radial-gradient(circle,var(--criticalSoft),transparent 68%)}
+.worst-tag{display:inline-flex;align-items:center;gap:7px;font-family:var(--display);font-stretch:115%;
+  font-size:10px;font-weight:780;color:var(--critical);letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px}
+.worst-tag svg{width:14px;height:14px}
+.worst-num{font-family:var(--display);font-size:62px;font-weight:800;letter-spacing:-.045em;color:var(--ink);line-height:.9}
+.worst-pair{font-family:var(--mono);font-size:12.5px;color:var(--ink2);font-weight:500;margin-top:10px}
+.worst-math{display:flex;align-items:center;gap:9px;margin-top:9px;font-family:var(--mono);font-size:11px;color:var(--ink3)}
+.worst-math s{color:var(--ink4)}
+.worst-math .arrow{color:var(--critical)}
+.worst-math b{color:var(--critical);font-weight:600}
+.worst-foot{margin-top:18px;display:flex;gap:8px;flex-wrap:wrap}
+.side-stack{display:flex;flex-direction:column;gap:16px}
+.money-card{padding:20px 22px}
+.money-v{font-family:var(--display);font-size:32px;font-weight:790;letter-spacing:-.03em;color:var(--critical)}
+.money-l{font-size:12px;color:var(--ink2);margin-top:4px;line-height:1.4}
+.money-meta{display:flex;gap:7px;margin-top:12px;flex-wrap:wrap}
+.speed-card{padding:20px 22px;background:linear-gradient(155deg,var(--signalSoft),var(--card) 70%)}
+.speed-l{font-family:var(--display);font-stretch:115%;font-size:9.5px;font-weight:780;color:var(--signalInk);
+  letter-spacing:.16em;text-transform:uppercase;margin-bottom:8px}
+.speed-row{display:flex;align-items:center;gap:11px}
+.speed-row .from{font-family:var(--display);font-size:23px;font-weight:780;color:var(--ink4);text-decoration:line-through;text-decoration-thickness:2px;text-decoration-color:#9FB3BA88}
+.speed-row .to{font-family:var(--display);font-size:23px;font-weight:790;color:var(--signalInk)}
+.speed-row svg{width:17px;height:17px;color:var(--signal)}
+.speed-q{font-size:11.5px;color:var(--ink2);margin-top:8px;font-style:italic;line-height:1.45}
+.promise-card{padding:18px 22px;margin-top:16px}
+.promise-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.promise{display:flex;align-items:center;gap:11px}
+.promise .pi{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;flex:none}
+.promise .pi svg{width:15px;height:15px}
+.promise span{font-size:12px;color:var(--ink2);line-height:1.35}
+.coverage-card{padding:16px 22px;margin-top:16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.coverage-t{font-family:var(--display);font-stretch:115%;font-size:9.5px;font-weight:780;letter-spacing:.15em;
+  color:var(--ink3);text-transform:uppercase;flex:none}
+.cov-chip{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10.5px;
+  padding:4.5px 10px;border-radius:99px;border:1px solid var(--line)}
+.cov-chip.full{color:var(--verified);background:var(--verifiedSoft);border-color:#0C7A5733}
+.cov-chip.part{color:var(--ink3);background:var(--cardTint)}
+.cov-note{font-size:11px;color:var(--ink3);margin-left:auto}
+
+/* ── EVIDENCE ── */
+.ev-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.gauge{padding:22px}
+.gauge-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.gauge-h b{font-family:var(--display);font-size:14.5px;font-weight:760;letter-spacing:-.01em}
+.gauge-n{font-family:var(--mono);font-size:11.5px;font-weight:600;padding:3px 10px;border-radius:99px}
+.brow{margin-bottom:12px}
+.brow-top{display:flex;justify-content:space-between;margin-bottom:5px}
+.brow-top .l{font-size:11px;color:var(--ink3);font-weight:500}
+.brow-top .v{font-family:var(--mono);font-size:11.5px;font-weight:600}
+.btrack{height:9px;background:var(--cardTint);border-radius:99px;overflow:hidden;border:1px solid var(--line)}
+.bfill{height:100%;border-radius:99px;width:0%;transition:width 1.1s cubic-bezier(.2,.7,.3,1)}
+.verdict{display:flex;align-items:center;gap:8px;margin-top:14px;padding:10px 13px;border-radius:12px;
+  font-size:11.5px;font-weight:600}
+.verdict svg{width:15px;height:15px;flex:none}
+.tools-card{margin-top:16px;padding:0;overflow:hidden}
+.tools-h{padding:15px 22px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}
+.tools-h b{font-family:var(--display);font-size:13.5px;font-weight:760}
+.tools-h span{margin-left:auto;font-family:var(--mono);font-size:10.5px;color:var(--ink3)}
+.tool-row{display:flex;align-items:center;gap:14px;padding:12px 22px}
+.tool-row:not(:last-child){border-bottom:1px solid var(--chalk2)}
+.tool-name{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--ink);width:220px;flex:none}
+.tool-desc{font-size:11.5px;color:var(--ink2);flex:1}
+.tool-lock{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:9.5px;font-weight:600;
+  color:var(--ink);padding:3px 8px 3px 5px;border-radius:6px;border:1px solid var(--ink);position:relative;overflow:hidden}
+.tool-lock::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;
+  background:repeating-linear-gradient(-45deg,var(--ink) 0 3px,#fff 3px 6px)}
+.tool-lock svg{width:10px;height:10px;margin-left:5px}
+.ev-foot{margin-top:16px;padding:18px 22px;display:flex;align-items:center;gap:14px;
+  background:linear-gradient(155deg,var(--verifiedSoft),var(--card) 75%)}
+.ev-foot svg{width:20px;height:20px;color:var(--verified);flex:none}
+.ev-foot span{font-size:12.5px;color:var(--ink2);line-height:1.55}
+
+/* ── DISPATCH ── */
+.console{padding:22px;margin-bottom:16px;border:1.5px solid var(--line);transition:border-color .3s,box-shadow .3s}
+.console.thinking{border-color:var(--signal);box-shadow:0 0 0 4px var(--signalSoft),var(--shadow-card)}
+.console-row{display:flex;gap:16px;align-items:flex-start}
+.agent-face{position:relative;width:46px;height:46px;flex:none;border-radius:14px;display:grid;place-items:center;
+  background:var(--ink);box-shadow:0 10px 22px -8px rgba(12,36,48,.6)}
+.agent-face .af-dot{width:11px;height:11px;border-radius:99px;background:var(--signal);
+  box-shadow:0 0 10px var(--signalGlow)}
+.agent-face.thinking .af-dot{animation:afbreathe 1s ease-in-out infinite}
+@keyframes afbreathe{0%,100%{transform:scale(1)}50%{transform:scale(1.45)}}
+textarea#q{width:100%;min-height:48px;resize:none;border:none;outline:none;background:transparent;
+  font-family:var(--body);font-size:16px;color:var(--ink);line-height:1.45}
+.console-foot{display:flex;align-items:center;justify-content:space-between;margin-top:12px;gap:10px;flex-wrap:wrap}
+.console-chips{display:flex;gap:7px;flex-wrap:wrap}
+/* trace */
+.trace-card{padding:6px 22px;margin-bottom:16px}
+.tstep{display:flex;align-items:center;gap:13px;padding:11px 0;opacity:0;transform:translateX(-8px);
+  animation:tracein .35s ease forwards}
+@keyframes tracein{to{opacity:1;transform:translateX(0)}}
+.tstep:not(:last-child){border-bottom:1px solid var(--chalk2)}
+.tstep .ti{width:26px;height:26px;border-radius:9px;display:grid;place-items:center;flex:none;border:1.5px solid}
+.tstep .ti svg{width:13px;height:13px}
+.tstep .ti.spin svg{animation:tspin 1s linear infinite}
+@keyframes tspin{to{transform:rotate(360deg)}}
+.tstep .tt{font-size:12.5px;font-weight:600;flex:1}
+.tstep .tt small{display:block;font-family:var(--mono);font-size:10px;font-weight:400;color:var(--ink4);margin-top:1px}
+.tstep .tms{font-family:var(--mono);font-size:10px;color:var(--ink3)}
+/* answer */
+.rec-card{padding:0;overflow:hidden}
+.rec-h{padding:16px 22px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}
+.rec-h svg{width:16px;height:16px;color:var(--signal)}
+.rec-h b{font-family:var(--display);font-size:14px;font-weight:770}
+.rec-h .origen-chip{margin-left:auto}
+.rec-b{padding:22px}
+.rec-lead{font-size:16.5px;font-weight:650;line-height:1.5;letter-spacing:-.005em;margin-bottom:18px}
+.rec-lead .bad{color:var(--critical)}
+.rec-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
+.rec-stat{border-radius:14px;padding:13px 15px;background:var(--cardTint);border:1px solid var(--line)}
+.rec-stat .l{font-size:10.5px;color:var(--ink3);font-weight:600}
+.rec-stat .v{font-family:var(--display);font-size:25px;font-weight:790;margin-top:3px;letter-spacing:-.02em}
+.rec-stat .s{font-family:var(--mono);font-size:10px;color:var(--ink3);margin-top:3px}
+.rec-foot{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+.queued-bar{margin-top:14px;display:flex;align-items:center;gap:11px;padding:13px 16px;border-radius:14px;
+  background:var(--card);border:1.5px solid var(--signal);position:relative;overflow:hidden;
+  opacity:0;animation:cardin .4s ease forwards}
+.queued-bar::before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;
+  background:repeating-linear-gradient(-45deg,var(--signal) 0 6px,#fff 6px 12px)}
+.queued-bar svg{width:17px;height:17px;color:var(--signalInk);flex:none;margin-left:6px}
+.queued-bar span{font-size:12.5px;font-weight:650;color:var(--ink);flex:1}
+.nv-card{padding:22px;border:1.5px dashed var(--lineHi)}
+.nv-badge{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;font-weight:700;
+  color:var(--ink);border:1.5px solid var(--ink);padding:4px 10px;border-radius:99px;letter-spacing:.08em;margin-bottom:14px}
+.nv-badge svg{width:11px;height:11px}
+.nv-lead{font-size:15.5px;font-weight:650;line-height:1.5;margin-bottom:8px}
+.nv-body{font-size:12.5px;color:var(--ink2);line-height:1.6}
+.empty{padding:44px;text-align:center}
+.empty .ei{width:52px;height:52px;border-radius:16px;margin:0 auto 14px;display:grid;place-items:center;
+  background:var(--cardTint);border:1px solid var(--line);color:var(--ink3)}
+.empty .ei svg{width:22px;height:22px}
+.empty .et{font-size:13.5px;font-weight:600;color:var(--ink2)}
+.disp-foot{margin-top:16px;font-size:11.5px;color:var(--ink3);text-align:center;line-height:1.6}
+
+/* ── GATE ── */
+.gate-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:16px}
+.gate-card{padding:0;overflow:visible;border:1.5px solid var(--ink)}
+.gate-card.done{border-color:var(--verified)}
+.boom-track{position:relative;height:26px;background:var(--verifiedSoft);overflow:visible;border-radius:18px 18px 0 0}
+.boom{position:absolute;inset:0;border-radius:18px 18px 0 0;transform-origin:14px 50%;
+  transition:transform .75s cubic-bezier(.35,1.25,.4,1),opacity .45s .3s}
+.boom.up{transform:rotate(-26deg);opacity:0}
+.boom-pivot{position:absolute;left:8px;top:50%;transform:translateY(-50%);width:12px;height:12px;border-radius:99px;
+  background:var(--ink);z-index:2}
+.gate-body{padding:24px}
+.gate-badge{display:inline-flex;align-items:center;gap:7px;font-family:var(--display);font-stretch:115%;
+  font-size:9.5px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--ink);
+  background:var(--cardTint);border:1px solid var(--lineHi);padding:5px 11px;border-radius:99px;margin-bottom:15px}
+.gate-badge svg{width:12px;height:12px}
+.gate-title{font-family:var(--display);font-size:20px;font-weight:780;line-height:1.25;letter-spacing:-.02em;margin-bottom:16px}
+.gate-stats{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+.gate-stat{flex:1;min-width:110px;background:var(--cardTint);border-radius:12px;padding:11px 13px;border:1px solid var(--line)}
+.gate-stat .l{font-size:9.5px;color:var(--ink3);font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.gate-stat .v{font-family:var(--mono);font-size:14px;font-weight:600;margin-top:4px}
+.gate-actions{display:flex;gap:10px}
+.confirm-btn{position:relative;width:100%;padding:13px;border-radius:var(--r-btn);overflow:hidden;cursor:pointer;
+  border:1.5px solid var(--signal);background:var(--signalSoft);color:var(--signalInk);font-weight:750;font-size:13px}
+.confirm-btn:disabled{cursor:wait}
+.confirm-fill{position:absolute;left:0;top:0;bottom:0;background:#F4501E2E;transition:width 1s linear}
+.confirm-txt{position:relative}
+.gate-hint{font-size:11px;color:var(--ink3);text-align:center;margin-top:12px}
+.gate-hint code{font-family:var(--mono);font-size:10px;background:var(--cardTint);padding:1px 5px;border-radius:4px}
+.gate-done-w{text-align:center;padding:14px 0 6px}
+.gd-ico{width:52px;height:52px;border-radius:16px;background:var(--verified);display:grid;place-items:center;
+  margin:0 auto 13px;animation:popin .45s cubic-bezier(.2,1.4,.4,1)}
+@keyframes popin{from{transform:scale(.4)}to{transform:scale(1)}}
+.gd-ico svg{width:26px;height:26px;color:#fff}
+.gd-t{font-family:var(--display);font-size:17px;font-weight:780}
+.gd-s{font-size:12.5px;color:var(--ink2);margin-top:5px}
+.emit-card{padding:20px 22px}
+.emit-t{font-family:var(--display);font-size:13.5px;font-weight:770}
+.emit-s{font-size:11.5px;color:var(--ink3);margin:4px 0 14px}
+.emit-row{display:flex;align-items:center;gap:12px;padding:11px 0;opacity:.42;transition:opacity .4s}
+.emit-row.live{opacity:1}
+.emit-row:not(:last-child){border-bottom:1px solid var(--chalk2)}
+.emit-ico{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;flex:none;border:1px solid}
+.emit-ico svg{width:16px;height:16px}
+.emit-n{font-size:13px;font-weight:650}
+.emit-d{font-family:var(--mono);font-size:10.5px;color:var(--ink3)}
+.clear{padding:48px;text-align:center}
+.clear .ci{width:58px;height:58px;border-radius:18px;margin:0 auto 15px;display:grid;place-items:center;
+  background:var(--verifiedSoft);color:var(--verified);animation:popin .45s cubic-bezier(.2,1.4,.4,1)}
+.clear .ci svg{width:27px;height:27px}
+.clear .ct{font-family:var(--display);font-size:18px;font-weight:780}
+.clear .cs{font-size:13px;color:var(--ink2);margin-top:6px;max-width:400px;margin-inline:auto;line-height:1.5}
+
+/* ── YIELD ── */
+.solve-card{padding:26px;text-align:center}
+.solver-log{margin:0 auto;max-width:460px;text-align:left;font-family:var(--mono);font-size:11px;color:var(--ink2);
+  background:var(--cardTint);border:1px solid var(--line);border-radius:12px;padding:14px 18px}
+.solver-log div{padding:3px 0;opacity:0;animation:tracein .3s ease forwards;display:flex;gap:8px;align-items:center}
+.solver-log .ok{color:var(--verified);font-weight:600}
+.yield-hero{padding:28px;margin-bottom:16px;background:linear-gradient(150deg,var(--verifiedSoft),var(--card) 65%)}
+.yh-row{display:flex;align-items:flex-end;gap:42px;flex-wrap:wrap}
+.yh-label{font-family:var(--display);font-stretch:115%;font-size:9.5px;font-weight:800;color:var(--verified);
+  letter-spacing:.16em;text-transform:uppercase;margin-bottom:10px}
+.yh-big{display:flex;align-items:baseline;gap:4px}
+.yh-plus{font-family:var(--display);font-size:32px;font-weight:790;color:var(--verified)}
+.yh-num{font-family:var(--display);font-size:64px;font-weight:800;letter-spacing:-.045em;line-height:.88}
+.yh-note{font-size:13px;color:var(--ink2);margin-top:9px}
+.yh-note b{color:var(--verified)}
+.yh-sep{width:1px;height:64px;background:var(--lineHi)}
+.yh-m{height:80px;display:flex;flex-direction:column;justify-content:flex-end}
+.yh-mv{font-family:var(--display);font-size:40px;font-weight:790;letter-spacing:-.03em}
+.yh-ml{font-size:12.5px;color:var(--ink2);margin-top:8px}
+.flows{padding:0;overflow:hidden}
+.flows-h{padding:15px 22px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}
+.flows-h b{font-family:var(--display);font-size:13.5px;font-weight:770}
+.flows-h span{font-family:var(--mono);font-size:10.5px;color:var(--ink3)}
+.flow{display:flex;align-items:center;gap:18px;padding:14px 22px}
+.flow:not(:last-child){border-bottom:1px solid var(--chalk2)}
+.flow-z{width:190px;flex:none}
+.flow-z b{font-size:13px;font-weight:650;display:block}
+.flow-z small{font-family:var(--mono);font-size:10.5px;color:var(--ink3)}
+.flow-mid{display:flex;align-items:center;gap:10px;flex:1}
+.pill{font-family:var(--mono);font-size:11.5px;font-weight:600;padding:4px 10px;border-radius:8px;border:1px solid}
+.flow-rail{flex:1;max-width:110px;height:2px;background:var(--lineHi);border-radius:2px;position:relative;overflow:hidden}
+.flow-rail i{position:absolute;top:0;bottom:0;width:45%;
+  background:linear-gradient(90deg,transparent,var(--signal),transparent);animation:railmove 1.7s ease-in-out infinite}
+@keyframes railmove{0%{left:-45%}100%{left:100%}}
+.flow-mid svg{width:14px;height:14px;color:var(--ink3)}
+.flow-c{width:120px;flex:none}
+.flow-ct{height:6px;background:var(--cardTint);border-radius:99px;overflow:hidden;border:1px solid var(--line);margin-bottom:4px}
+.flow-cf{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--verified),#12A374);width:0%;
+  transition:width 1s cubic-bezier(.2,.7,.3,1)}
+.flow-cp{font-family:var(--mono);font-size:10px;color:var(--ink3)}
+
+/* ── CUSTODY ── */
+.ledger-card{padding:0;overflow:hidden}
+.ledger-h{padding:15px 22px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}
+.ledger-h .ld{width:8px;height:8px;border-radius:99px;background:var(--verified);flex:none}
+.ledger-h b{font-family:var(--display);font-size:13.5px;font-weight:770}
+.ledger-h span{margin-left:auto;font-family:var(--mono);font-size:10.5px;color:var(--ink3)}
+.ledger{position:relative}
+.ledger::before{content:"";position:absolute;left:92px;top:12px;bottom:12px;width:1.5px;background:var(--chalk2)}
+.lentry{display:flex;gap:16px;padding:15px 22px;position:relative;opacity:0;animation:cardin .4s ease forwards;
+  transition:background .25s}
+.lentry.chain-hi{background:var(--signalSoft)}
+.lentry.chain-hi::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3.5px;background:var(--signal)}
+.lt{font-family:var(--mono);font-size:11px;color:var(--ink3);width:62px;flex:none;padding-top:6px;text-align:right}
+.li{width:32px;height:32px;border-radius:10px;flex:none;display:grid;place-items:center;z-index:1;
+  background:var(--card);border:1.5px solid}
+.li svg{width:15px;height:15px}
+.lb{flex:1;min-width:0;padding-top:1px}
+.lt2{font-size:13px;font-weight:650}
+.ld2{font-size:12px;color:var(--ink2);margin-top:2px;line-height:1.45}
+.ltech{margin-top:6px;display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.ltech .plain{font-family:var(--mono);font-size:10px;color:var(--ink4)}
+.larts{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.art{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10px;font-weight:600;
+  padding:5px 9px;border-radius:7px;border:1px solid}
+.art svg{width:11px;height:11px}
+.chain-note{padding:10px 22px;background:var(--signalSoft);border-bottom:1px solid #F4501E33;
+  font-family:var(--mono);font-size:10.5px;color:var(--signalInk);display:none;align-items:center;gap:8px}
+.chain-note.on{display:flex}
+.chain-note svg{width:12px;height:12px}
+
+/* ── toast + footer ── */
+#toast{position:fixed;bottom:24px;left:50%;transform:translate(-50%,90px);z-index:200;
+  background:var(--ink);color:#fff;font-size:12.5px;font-weight:500;padding:12px 20px;border-radius:12px;
+  box-shadow:0 14px 34px -10px rgba(12,36,48,.5);transition:transform .35s cubic-bezier(.2,.9,.3,1);max-width:90vw}
+#toast.show{transform:translate(-50%,0)}
+.site-foot{max-width:1020px;margin:0 auto;padding:0 30px 40px;font-family:var(--mono);font-size:10px;
+  color:var(--ink4);text-align:center;letter-spacing:.04em}
+
+/* ── responsive ── */
+@media(max-width:880px){
+  .patrol-grid,.ev-grid,.gate-grid{grid-template-columns:1fr}
+  .promise-grid{grid-template-columns:1fr}
+  .rec-stats{grid-template-columns:1fr 1fr}
+  .page-head h1{font-size:28px}
+  .workspace{padding:26px 18px 64px}
+  .topbar{padding:12px 18px}
+  .flow-z{width:140px}
+  .cov-note{margin-left:0;width:100%}
+  .yh-sep{display:none}
+  .yh-row{gap:26px}
+  .tool-row{flex-wrap:wrap;gap:8px}
+  .tool-name{width:100%}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════ TOPBAR ═══════ -->
+<header class="topbar">
+  <div class="brand">
+    <!-- logo: an origin, a route, a gate, a delivery -->
+    <svg width="34" height="34" viewBox="0 0 44 44" fill="none" aria-label="Autopilot logo">
+      <circle cx="7" cy="31" r="3.2" fill="#0C2430"/>
+      <path d="M7 31 C 15 31, 15 13, 24 13 L 37 13" stroke="#0C2430" stroke-width="3" stroke-linecap="round" fill="none"/>
+      <path d="M26.5 8.5 L26.5 17.5" stroke="#F4501E" stroke-width="3" stroke-linecap="round"/>
+      <path d="M33 9 L 38 13 L 33 17" stroke="#0C2430" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <circle cx="26.5" cy="13" r="2.1" fill="#F4501E">
+        <animate attributeName="opacity" values="1;.35;1" dur="2.2s" repeatCount="indefinite"/>
+      </circle>
+    </svg>
+    <div class="wordmark"><b>Autopilot</b><small>WebCorp · decision agent</small></div>
+  </div>
+  <div class="status-pill" id="status-pill"><span class="sd"><i></i></span><span id="status-txt">On patrol · watching the network</span></div>
+  <div class="topbar-right">
+    <div class="next-scan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><span class="mono">next scan 04:00</span></div>
+    <div class="avatar" title="marta.solis">MS</div>
+  </div>
+</header>
+
+<!-- ═══════ THE ROUTE MAP — nav + centerpiece ═══════ -->
+<nav class="map-band" aria-label="System route map — click a station to open it">
+  <div class="map-scroll"><svg id="routemap" viewBox="0 0 1200 206" role="group"></svg></div>
+</nav>
+
+<!-- ═══════ WORKSPACE ═══════ -->
+<main class="workspace" id="workspace"></main>
+<div class="site-foot">LIVE AGENT · REAL DATA (SYNTHETIC FALLBACK, DECLARED) · ESTIMATOR SNAPSHOT 2026-06-24 · QWEN CLOUD GLOBAL AI HACKATHON — TRACK 4</div>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+"use strict";
+/* ════════ icons ════════ */
+const ICONS = {
+  db:'<ellipse cx="12" cy="5.5" rx="8" ry="3"/><path d="M4 5.5v13c0 1.7 3.6 3 8 3s8-1.3 8-3v-13"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/>',
+  flask:'<path d="M9 3h6M10 3v6.5L4.5 19a1.5 1.5 0 0 0 1.3 2.3h12.4a1.5 1.5 0 0 0 1.3-2.3L14 9.5V3"/><path d="M8 15h8"/>',
+  cpu:'<rect x="5" y="5" width="14" height="14" rx="3"/><circle cx="12" cy="12" r="2.6"/><path d="M12 1.5v3.5M12 19v3.5M1.5 12H5M19 12h3.5"/>',
+  shield:'<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/>',
+  send:'<path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 19 3a12.88 12.88 0 0 1-2.02 6.95A22 22 0 0 1 13 12l-1 3z"/>',
+  scroll:'<path d="M8 21h12a2 2 0 0 0 2-2v-2H10v2a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v3h4"/><path d="M19 17V5a2 2 0 0 0-2-2H4"/>',
+  lock:'<rect x="4" y="11" width="16" height="10" rx="2.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
+  warn:'<path d="M10.3 3.9 2.6 17a2 2 0 0 0 1.7 3h15.4a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4M12 17h.01"/>',
+  check:'<path d="M20 6 9 17l-5-5"/>',
+  arrow:'<path d="M5 12h14M13 6l6 6-6 6"/>',
+  file:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/>',
+  sheet:'<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/>',
+  mail:'<rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/>',
+  radar:'<path d="M19.07 4.93A10 10 0 0 0 6.99 3.34"/><path d="M4 6h.01M2.29 9.62A10 10 0 1 0 21.31 8.35"/><path d="M12 8a4 4 0 1 0 4 4"/><path d="M12 2v2"/>',
+  loader:'<path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/>',
+  search:'<circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/>',
+  gauge:'<path d="M12 14 15 11"/><circle cx="12" cy="12" r="9"/><path d="M7.5 7.5 6 6M12 3v1M21 12h-1"/>',
+  ask:'<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/>',
+  link:'<path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/>',
+  x:'<path d="M18 6 6 18M6 6l12 12"/>',
+  zap:'<path d="M13 2 3 14h8l-1 8 10-12h-8l1-8Z"/>',
+};
+const ic = (n,s) => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[n]}</svg>`;
+
+/* ════════ state ════════ */
+const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const STATE = {
+  page:"patrol",
+  thinking:false,
+  trace:[],
+  answered:null,        // null | objeto respuesta real del API
+  queue:[],             // pending HITL actions
+  gate:"pending",       // pending | confirming | done
+  gateCd:3,
+  solved:false,
+  chainHi:null,
+};
+const now = () => new Date().toTimeString().slice(0,8);
+const API = new URLSearchParams(location.search).get("api")
+  || (location.protocol.startsWith("http") ? location.origin : "http://localhost:8001");
+async function api(path, opts={}){
+  const r = await fetch(API + path, {headers:{"Content-Type":"application/json"},
+    signal: opts.signal || AbortSignal.timeout(opts.timeout || 120000), ...opts});
+  if(!r.ok){ let d = `HTTP ${r.status}`; try{ d = (await r.json()).detail || d; }catch(_){} throw new Error(d); }
+  return r.json();
+}
+const escq = st => String(st ?? "").replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
+/* markdown mínimo para la respuesta del agente (negritas + saltos) */
+const mdlite = st => escq(st).replace(/\*\*([^*]+)\*\*/g, "<b>$1</b>").replace(/\n/g, "<br/>");
+
+/* ════════ the route map ════════ */
+const NODES = [
+  {id:"patrol",   x:95,   label:"Data",   code:"STN 01", icon:"db"},
+  {id:"evidence", x:300,  label:"Tools ƒ",code:"STN 02", icon:"flask"},
+  {id:"dispatch", x:540,  label:"Agent",  code:"STN 03", icon:"cpu", big:true},
+  {id:"gate",     x:765,  label:"Gate",   code:"STN 04", icon:"shield", gate:true},
+  {id:"yield",    x:950,  label:"Act",    code:"STN 05", icon:"send"},
+  {id:"custody",  x:1115, label:"Ledger", code:"STN 06", icon:"scroll"},
+];
+const MAIN_Y = 84;
+const frOf = x => (x - 95) / (1115 - 95);
+
+function buildMap(){
+  const svg = document.getElementById("routemap");
+  const nodesHtml = NODES.map((n,i) => {
+    const r = n.big ? 18 : 14;
+    let core;
+    if(n.gate){
+      core = `<rect class="core gatecore" x="${n.x-15}" y="${MAIN_Y-15}" width="30" height="30" rx="9"/>
+        <rect x="${n.x-15}" y="${MAIN_Y-15}" width="30" height="30" rx="9" fill="url(#hz)" opacity=".85" pointer-events="none"/>`;
+    } else {
+      core = `<circle class="core" cx="${n.x}" cy="${MAIN_Y}" r="${r}"/>`;
+    }
+    return `<g class="node pop" id="node-${n.id}" data-page="${n.id}" role="button" tabindex="0"
+        aria-label="Open ${n.label} station" style="animation-delay:${.55+i*.13}s">
+      <circle class="halo" cx="${n.x}" cy="${MAIN_Y}" r="${r+7}"/>
+      ${core}
+      <g class="glyph" transform="translate(${n.x-9},${MAIN_Y-9})">${ic(n.icon,18)}</g>
+      <text class="ncode" x="${n.x}" y="${MAIN_Y-27}" text-anchor="middle">${n.code}</text>
+      <text class="nlabel" x="${n.x}" y="${MAIN_Y+40}" text-anchor="middle">${n.label}</text>
+      <g id="gatebadge" style="display:none">
+        <circle cx="${n.x+15}" cy="${MAIN_Y-15}" r="8" fill="#F4501E"/>
+        <text class="badge-count" x="${n.x+15}" y="${MAIN_Y-11.7}" text-anchor="middle" id="gatebadge-n">1</text>
+      </g>
+    </g>`;
+  }).join("");
+
+  svg.innerHTML = `
+    <defs>
+      <pattern id="hz" width="8" height="8" patternTransform="rotate(-45)" patternUnits="userSpaceOnUse">
+        <rect width="8" height="8" fill="#FFFFFF"/><rect width="4" height="8" fill="#0C2430"/>
+      </pattern>
+    </defs>
+    <path id="p-loop" class="rail loop drawable" d="M1115,96 C1178,110 1178,166 1080,166 L210,166 C112,166 36,148 95,96"/>
+    <path id="p-spur" class="rail spur drawable" d="M540,84 C572,50 606,28 668,28"/>
+    <path id="p-main" class="rail drawable" d="M95,${MAIN_Y} L1115,${MAIN_Y}"/>
+    <g class="lockg pop" style="animation-delay:1.3s" transform="translate(659,19)">${ic("lock",17)}</g>
+    <text class="maplegend pop" style="animation-delay:1.4s" x="692" y="31">external · evidence-first · not verified</text>
+    <text class="maplegend pop" style="animation-delay:1.5s" x="600" y="188" text-anchor="middle">proactive loop · cron 04:00 · six countries</text>
+    ${nodesHtml}
+    <g id="pulse" style="opacity:0">
+      <circle class="pr" r="6"/>
+      <circle class="pc" r="5.5"/>
+    </g>`;
+
+  // draw-in intro
+  ["p-main","p-spur","p-loop"].forEach(id => {
+    const p = document.getElementById(id);
+    const L = p.getTotalLength();
+    p.style.strokeDasharray = id === "p-main" ? `${L}` : p.style.strokeDasharray;
+    if(id === "p-main"){ p.style.strokeDashoffset = L; }
+  });
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    const p = document.getElementById("p-main");
+    p.style.strokeDashoffset = 0;
+  }));
+
+  // node handlers
+  svg.querySelectorAll(".node").forEach(g => {
+    g.addEventListener("click", () => goTo(g.dataset.page));
+    g.addEventListener("keydown", e => { if(e.key === "Enter" || e.key === " "){ e.preventDefault(); goTo(g.dataset.page); }});
+  });
+  setTimeout(() => { document.getElementById("pulse").style.opacity = 1; Pulse.patrol(); }, REDUCED ? 0 : 1500);
+}
+
+/* ── the pulse: one orange dot = where the agent is ── */
+const Pulse = (() => {
+  let raf = null, mode = "patrol";
+  const el = () => document.getElementById("pulse");
+  const path = id => document.getElementById(id);
+  function setXY(x,y){ el().setAttribute("transform",`translate(${x},${y})`); }
+  function ptOn(pid, f){ const p = path(pid); const pt = p.getPointAtLength(p.getTotalLength()*Math.min(Math.max(f,0),1)); return pt; }
+  function stop(){ if(raf) cancelAnimationFrame(raf); raf = null; }
+  function patrol(){
+    stop(); mode = "patrol"; el().classList.remove("locked");
+    if(REDUCED){ const pt = ptOn("p-main", frOf(540)); setXY(pt.x,pt.y); return; }
+    const pm = path("p-main"), pl = path("p-loop");
+    const Lm = pm.getTotalLength(), Ll = pl.getTotalLength(), total = Lm + Ll;
+    const speed = total / 16000; // full circulation ≈ 16s
+    let last = performance.now(), d = 0;
+    (function frame(t){
+      d = (d + (t - last) * speed) % total; last = t;
+      const pt = d < Lm ? pm.getPointAtLength(d) : pl.getPointAtLength(d - Lm);
+      setXY(pt.x, pt.y);
+      raf = requestAnimationFrame(frame);
+    })(last);
+  }
+  function travel(fromF, toF, ms, cb){
+    stop(); mode = "travel"; el().classList.remove("locked");
+    if(REDUCED){ const pt = ptOn("p-main", toF); setXY(pt.x,pt.y); if(cb) cb(); return; }
+    const start = performance.now();
+    (function frame(t){
+      const p = Math.min(1,(t-start)/ms), e = 1 - Math.pow(1-p,3);
+      const pt = ptOn("p-main", fromF + (toF-fromF)*e);
+      setXY(pt.x, pt.y);
+      if(p < 1) raf = requestAnimationFrame(frame);
+      else if(cb) cb();
+    })(start);
+  }
+  function lockAt(f){ stop(); mode = "locked"; const pt = ptOn("p-main", f); setXY(pt.x,pt.y); el().classList.add("locked"); }
+  function spurTrip(cb){ // out to the external lock and back
+    stop(); mode = "spur"; el().classList.remove("locked");
+    if(REDUCED){ if(cb) cb(); return; }
+    const ps = path("p-spur"); const L = ps.getTotalLength(); const start = performance.now(); const ms = 1500;
+    (function frame(t){
+      const p = Math.min(1,(t-start)/ms);
+      const f = p < .5 ? p*2 : 2-(p*2); // out and back
+      const pt = ps.getPointAtLength(L*f); setXY(pt.x,pt.y);
+      if(p < 1) raf = requestAnimationFrame(frame); else if(cb) cb();
+    })(start);
+  }
+  return { patrol, travel, lockAt, spurTrip };
+})();
+
+/* ════════ status + nav chrome ════════ */
+function setStatus(){
+  const pill = document.getElementById("status-pill"), txt = document.getElementById("status-txt");
+  pill.classList.remove("reasoning","waiting");
+  if(STATE.queue.length){ pill.classList.add("waiting"); txt.textContent = `${STATE.queue.length} action${STATE.queue.length>1?"s":""} waiting at the Gate`; }
+  else if(STATE.thinking){ pill.classList.add("reasoning"); txt.textContent = "Agent reasoning…"; }
+  else { txt.textContent = "On patrol · watching the network"; }
+}
+function refreshMapState(){
+  NODES.forEach(n => {
+    const g = document.getElementById("node-"+n.id);
+    g.classList.toggle("active", STATE.page === n.id);
+    if(n.gate) g.classList.toggle("flash", STATE.queue.length > 0);
+  });
+  const badge = document.getElementById("gatebadge");
+  if(badge){ badge.style.display = STATE.queue.length ? "" : "none";
+    const bn = document.getElementById("gatebadge-n"); if(bn) bn.textContent = STATE.queue.length; }
+}
+function goTo(page){ STATE.page = page; refreshMapState(); renderPage(); }
+
+/* ════════ helpers ════════ */
+function countUp(el, target, prefix, suffix, ms){
+  if(REDUCED){ el.textContent = prefix + target.toLocaleString("en-US") + suffix; return; }
+  const start = performance.now();
+  (function frame(t){
+    const p = Math.min(1,(t-start)/ms), e = 1 - Math.pow(1-p,3);
+    el.textContent = prefix + Math.round(target*e).toLocaleString("en-US") + suffix;
+    if(p < 1) requestAnimationFrame(frame);
+  })(start);
+}
+let toastTimer = null;
+function toast(msg){
+  const t = document.getElementById("toast");
+  t.textContent = msg; t.classList.add("show");
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove("show"), 2800);
+}
+
+/* ════════ ledger data ════════ */
+const EV_META = {
+  escaneo:{icon:"radar", c:"#66808A", label:"Proactive scan"},
+  pregunta:{icon:"ask", c:"#37505B", label:"Question received"},
+  tool:{icon:"zap", c:"#F4501E", label:"Tool executed"},
+  tool_error:{icon:"warn", c:"#A03A10", label:"Tool arg rejected — recovered"},
+  respuesta:{icon:"cpu", c:"#0C2430", label:"Recommendation drafted"},
+  pendiente:{icon:"shield", c:"#A03A10", label:"Queued for human approval"},
+  aprobado:{icon:"check", c:"#0C7A57", label:"Approved & executed"},
+  externo:{icon:"search", c:"#66808A", label:"External search — nothing found"},
+};
+EV_META.descartado = {icon:"x", c:"#66808A", label:"Dismissed by operator"};
+EV_META.fallback = {icon:"warn", c:"#A03A10", label:"Fallback mode — rules answered"};
+EV_META.bloqueado = {icon:"lock", c:"#0C2430", label:"Blocked by the trust layer"};
+const TIPO_MAP = {
+  pregunta:"pregunta", respuesta:"respuesta", tool_ejecutada:"tool",
+  tool_error:"tool_error", tool_args_invalidos:"tool_error", max_rondas:"tool_error",
+  hitl_pendiente:"pendiente", hitl_aprobado_ejecutado:"aprobado", hitl_descartado:"descartado",
+  fallback_activado:"fallback", trust_bloqueado:"bloqueado",
+  escaneo_inicio:"escaneo", escaneo_fin:"escaneo",
+};
+let LEDGER = [];
+function mapAudit(e){
+  const arts = e.extra?.resultado?.remediacion?.artefactos?.length
+    ? e.extra.resultado.remediacion.artefactos.map(a =>
+        a.tipo === "excel" ? ["XLSX","sheet","#0C7A57"] : [a.tipo.toUpperCase(),"file","#C0322B"])
+    : null;
+  return {
+    t: new Date(e.ts).toTimeString().slice(0,8),
+    type: TIPO_MAP[e.tipo] || "tool",
+    d: e.detalle,
+    tech: e.origen_id ? `origen_id=${e.origen_id}` : e.tipo,
+    chain: e.origen_id || null,
+    arts,
+  };
+}
+async function cargarLedger(){
+  try{
+    const data = await api("/audit?n=40", {timeout:8000});
+    LEDGER = (data.entradas || []).map(mapAudit).reverse();
+    if(STATE.page === "custody") renderPage();
+  }catch(_){}
+}
+function ledgerPush(e){
+  LEDGER.unshift(e);
+  if(STATE.page === "custody") renderPage();
+}
+
+/* ════════ cola HITL real ════════ */
+let pendFirma = null;
+function mapPendiente(pl){
+  const a = pl.argumentos || {};
+  const caso = a.caso ? `${a.caso.municipio || "?"} × ${a.caso.carrier || "?"}` : (a.destino || "operations");
+  return {
+    id: pl.id,
+    title: a.asunto || "(no subject)",
+    msg: a.mensaje || pl.rationale || "",
+    stats: [["Case", caso], ["Evidence", a.origen_id || "—"], ["Queue id", pl.id]],
+  };
+}
+async function cargarPendientes(){
+  try{
+    const data = await api("/pendientes", {timeout:8000});
+    const list = (data.pendientes || []).map(mapPendiente);
+    const firma = list.map(x => x.id).join("|");
+    if(firma === pendFirma) return;
+    pendFirma = firma;
+    STATE.queue = list;
+    if(STATE.gate !== "confirming") STATE.gate = "pending";
+    setStatus(); refreshMapState();
+    if(list.length) Pulse.lockAt(frOf(765)); else if(!STATE.thinking) Pulse.patrol();
+    if(["gate"].includes(STATE.page)) renderPage();
+  }catch(_){}
+}
+
+/* ════════ pages ════════ */
+function kicker(code, txt){
+  return `<div class="kicker"><span class="kc">${code}</span><span class="kt">${txt}</span><span class="krule"></span></div>`;
+}
+
+/* ── 01 PATROL ── */
+function pagePatrol(){
+  return `
+  ${kicker("STN 01","Data intake · autonomous watch")}
+  <div class="page-head">
+    <div>
+      <h1>While you slept, it looked.</h1>
+      <p>Every night at 04:00 the agent walks WebCorp's real network — six countries, <b>318K orders</b>, <b>1.6M tracking events</b> — and ranks what it finds by honest statistics, not hunches.</p>
+    </div>
+    <button class="btn btn-ink" onclick="goTo('dispatch')">${ic("cpu",15)} Dispatch the agent</button>
+  </div>
+  <div class="patrol-grid">
+    <div class="card worst-card lift">
+      <div class="worst-glow"></div>
+      <div style="position:relative">
+        <div class="worst-tag">${ic("warn",14)} Worst reliable pair tonight</div>
+        <div class="worst-num">23.4%</div>
+        <div class="worst-pair">Zacatecoluca (SV) × FORZA</div>
+        <div class="worst-math"><s>raw 36.8%</s><span class="arrow">→</span><b>Wilson LCB 95%</b><span>·</span><span>n=38</span></div>
+        <div class="worst-foot"><span class="ftag"><i>ƒ</i> estimador_wilson</span><span class="snap">snapshot 2026-06-24</span></div>
+      </div>
+    </div>
+    <div class="side-stack">
+      <div class="card money-card lift" style="animation-delay:.06s">
+        <div class="money-v">$2,188</div>
+        <div class="money-l">cash-on-delivery left uncollected by this one pair</div>
+        <div class="money-meta"><span class="snap">24 failed deliveries</span><span class="snap">90 days</span></div>
+      </div>
+      <div class="card speed-card" style="animation-delay:.12s">
+        <div class="speed-l">Detection speed</div>
+        <div class="speed-row"><span class="from">3 days</span>${ic("arrow",17)}<span class="to">seconds</span></div>
+        <div class="speed-q">"They don't notice — it's all in Excel. About 3 days. Or never."</div>
+      </div>
+    </div>
+  </div>
+  <div class="card promise-card" style="animation-delay:.18s">
+    <div class="promise-grid">
+      <div class="promise"><div class="pi" style="background:var(--chalk2);color:var(--ink)">${ic("cpu",15)}</div><span>The model orchestrates — it never computes a number</span></div>
+      <div class="promise"><div class="pi" style="background:var(--verifiedSoft);color:var(--verified)">${ic("gauge",15)}</div><span>Every rate on screen carries its sample size (n)</span></div>
+      <div class="promise"><div class="pi hazard" style="color:#fff">${ic("shield",15)}</div><span>External effect is blocked in code until a human approves</span></div>
+    </div>
+  </div>
+  <div class="card coverage-card" style="animation-delay:.24s">
+    <span class="coverage-t">Coverage, declared</span>
+    <span class="cov-chip full">${ic("check",11)} GT · municipal</span>
+    <span class="cov-chip full">${ic("check",11)} SV · municipal</span>
+    <span class="cov-chip part">HN · country</span>
+    <span class="cov-chip part">PA · country</span>
+    <span class="cov-chip part">CR · country</span>
+    <span class="cov-chip part">NI · country</span>
+    <span class="cov-note">what the data can't see is said out loud — never faked</span>
+  </div>`;
+}
+
+/* ── 02 EVIDENCE ── */
+function gaugeCard(label, raw, wilson, n, good, verdict, delay){
+  const c = good ? "var(--verified)" : "var(--critical)";
+  const cs = good ? "var(--verifiedSoft)" : "var(--criticalSoft)";
+  return `<div class="card gauge lift" style="animation-delay:${delay}s">
+    <div class="gauge-h"><b>${label}</b><span class="gauge-n" style="color:${c};background:${cs}">n=${n}</span></div>
+    <div class="brow"><div class="brow-top"><span class="l">Raw rate</span><span class="v" style="color:var(--ink3)">${raw}%</span></div>
+      <div class="btrack"><div class="bfill" data-w="${raw}" style="background:var(--lineHi)"></div></div></div>
+    <div class="brow"><div class="brow-top"><span class="l">Wilson LCB 95%</span><span class="v" style="color:${c}">${wilson}%</span></div>
+      <div class="btrack"><div class="bfill" data-w="${wilson}" style="background:${c}"></div></div></div>
+    <div class="verdict" style="background:${cs};color:${c}">${ic(good?"check":"warn",15)}<span>${verdict}</span></div>
+  </div>`;
+}
+function pageEvidence(){
+  return `
+  ${kicker("STN 02","Evidence engine")}
+  <div class="page-head"><div>
+    <h1>Luck doesn't count here.</h1>
+    <p>Raw rates lie at small samples. Everything is ranked by the <b>Wilson lower confidence bound</b> — the sample size physically drags the estimate toward caution, so a lucky 100% never outranks a proven 85%.</p>
+  </div></div>
+  <div class="ev-grid">
+    ${gaugeCard("Chahal × FORZA", 100, 20.7, 1, false, "Looks perfect. Means nothing — one delivery is not a pattern.", 0)}
+    ${gaugeCard("Yupiltepeque × CARGO", 84.9, 72.9, 53, true, "Real evidence — 53 deliveries keep the lower bound high.", .08)}
+  </div>
+  <div class="card tools-card" style="animation-delay:.16s">
+    <div class="tools-h"><b>The toolbelt</b><span>every number arrives from here, never from the LLM</span></div>
+    <div class="tool-row"><span class="tool-name">estimador_wilson</span><span class="tool-desc">ranks courier × zone pairs by LCB 95%, each with its n</span><span class="ftag"><i>ƒ</i> calc</span></div>
+    <div class="tool-row"><span class="tool-name">efectividad_semanal</span><span class="tool-desc">weekly effectiveness series for any pair</span><span class="ftag"><i>ƒ</i> calc</span></div>
+    <div class="tool-row"><span class="tool-name">alertas</span><span class="tool-desc">active operational alerts, ranked</span><span class="ftag"><i>ƒ</i> calc</span></div>
+    <div class="tool-row"><span class="tool-name">optimizar_asignacion</span><span class="tool-desc">MILP reassignment under carrier capacity · pairs with n≥30 only</span><span class="ftag"><i>ƒ</i> calc</span></div>
+    <div class="tool-row"><span class="tool-name">buscar_contexto_externo</span><span class="tool-desc">unlocks only after internal evidence ran in the same loop</span><span class="tool-lock">${ic("lock",10)} evidence-first</span></div>
+    <div class="tool-row"><span class="tool-name">notificar_operaciones</span><span class="tool-desc">the only tool with external effect · dedupe 6h</span><span class="tool-lock">${ic("lock",10)} human gate</span></div>
+  </div>
+  <div class="card ev-foot" style="animation-delay:.24s">${ic("flask",20)}
+    <span>The same math that ranks comment sections — pointed at <b style="color:var(--ink)">$2,188</b> of real uncollected cash across 700+ courier × zone pairs.</span>
+  </div>`;
+}
+
+/* ── 03 DISPATCH ── */
+let flowTimers = [];
+function clearFlow(){ flowTimers.forEach(clearTimeout); flowTimers = []; }
+
+function pageDispatch(){
+  const thinkCls = STATE.thinking ? "thinking" : "";
+  let result = "";
+  if(STATE.thinking){
+    result = `<div class="card trace-card" id="trace-card"></div>`;
+  } else if(STATE.answered){
+    result = (STATE.trace.length ? traceRendered() : "") + recReal(STATE.answered);
+  } else {
+    result = `<div class="card empty">
+      <div class="ei">${ic("ask",22)}</div>
+      <div class="et">Ask something — and watch the orange dot travel the route above.</div>
+      <button class="btn btn-ink" style="margin:16px auto 0" onclick="runQuestion()">${ic("zap",14)} Run the demo question</button>
+    </div>`;
+  }
+  return `
+  ${kicker("STN 03","Orchestrator")}
+  <div class="page-head"><div>
+    <h1>Ask. It routes the rest.</h1>
+    <p>You speak plainly; the agent decides which tools to call. Its reasoning travels the route above in real time — and it will stop at the <b>Gate</b> when it needs you.</p>
+  </div></div>
+  <div class="card console ${thinkCls}">
+    <div class="console-row">
+      <div class="agent-face ${thinkCls}"><span class="af-dot"></span></div>
+      <div style="flex:1">
+        <textarea id="q" aria-label="Question for the agent" placeholder="Why is FORZA doing so badly in Zacatecoluca — and what should we do?"></textarea>
+        <div class="console-foot">
+          <div class="console-chips">
+            <button class="chip" onclick="fillQ(this); runQuestion()">Why is FORZA so bad in Zacatecoluca?</button>
+            <button class="chip" onclick="fillQ(this); runQuestion()">Did any road block or extreme weather in Zacatecoluca explain this? Check the data, then search external context.</button>
+            <button class="chip" onclick="fillQ(this); runQuestion()">Which carrier reassignments do you recommend?</button>
+          </div>
+          <button class="btn btn-ink" onclick="runQuestion()">${ic("arrow",14)} Ask</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  ${result}
+  <div class="disp-foot">Answers are written by Qwen · every figure inside them arrives from a tool marked <span class="ftag" style="vertical-align:1px"><i>ƒ</i> calc</span> · all of it lands in the ledger.</div>`;
+}
+function fillQ(el){ const q = document.getElementById("q"); if(q) q.value = el.textContent; }
+
+/* La traza es REAL: durante el razonamiento se lee el audit y cada
+   evento nuevo entra como un paso — tiempos y contenido verdaderos. */
+function traceRendered(){
+  return `<div class="card trace-card" style="margin-bottom:16px">
+    ${STATE.trace.map((st,i) => `
+      <div class="tstep" style="animation-delay:${i*.04}s">
+        <div class="ti" style="color:${st.c};border-color:${st.c}44">${ic(st.icon,13)}</div>
+        <div class="tt">${st.t}<small>${st.s}</small></div>
+        <span class="tms">${st.tms}</span>
+      </div>`).join("")}
+  </div>`;
+}
+
+function recReal(r){
+  const chips = (r.tools_usadas || []).map(tl => `<span class="ftag"><i>ƒ</i> ${escq(tl.tool)}</span>`).join(" ");
+  const fallbackBadge = r.fallback ? `<div class="nv-badge">${ic("warn",11)} FALLBACK · RULES ONLY (no LLM)</div>` : "";
+  const queued = (r.pendientes || []).length ? `
+      <div class="queued-bar">${ic("shield",17)}<span>${r.pendientes.length} action${r.pendientes.length>1?"s":""} queued — nothing moves until you approve.</span>
+        <button class="btn btn-ghost" style="padding:8px 14px" onclick="goTo('gate')">Open the Gate ${ic("arrow",13)}</button></div>` : "";
+  return `<div class="card rec-card">
+    <div class="rec-h">${ic("cpu",16)}<b>Answer</b>${chips ? `<span style="margin-left:auto;display:flex;gap:6px;flex-wrap:wrap">${chips}</span>` : ""}</div>
+    <div class="rec-b">
+      ${fallbackBadge}
+      <div class="rec-lead" style="font-weight:500;font-size:14.5px;line-height:1.65">${mdlite(r.respuesta)}</div>
+      ${queued}
+    </div>
+  </div>`;
+}
+
+let vistoAudit = 0;   // cuántas entradas del audit ya pintamos en la traza
+async function pasoTraza(){
+  // lee el audit real y agrega los eventos nuevos como pasos de la traza
+  try{
+    const data = await api("/audit?n=15", {timeout:6000});
+    const entradas = data.entradas || [];
+    if(vistoAudit === 0) vistoAudit = Math.max(0, entradas.length - 1); // solo lo nuevo
+    const nuevos = entradas.slice(vistoAudit);
+    vistoAudit = entradas.length;
+    const c = document.getElementById("trace-card");
+    nuevos.forEach(e => {
+      const m = EV_META[TIPO_MAP[e.tipo] || "tool"];
+      const paso = {icon:m.icon, c:m.c, t:m.label, s:e.detalle.slice(0,90), tms:new Date(e.ts).toTimeString().slice(3,8)};
+      STATE.trace.push(paso);
+      if(c) c.insertAdjacentHTML("beforeend", `
+        <div class="tstep">
+          <div class="ti" style="color:${paso.c};border-color:${paso.c}44">${ic(paso.icon,13)}</div>
+          <div class="tt">${paso.t}<small>${escq(paso.s)}</small></div>
+          <span class="tms">${paso.tms}</span>
+        </div>`);
+    });
+  }catch(_){}
+}
+
+async function runQuestion(){
+  clearFlow();
+  const qEl = document.getElementById("q");
+  const pregunta = (qEl && qEl.value.trim()) || "Why is FORZA doing so badly in Zacatecoluca — and what should we do?";
+  STATE.thinking = true; STATE.answered = null; STATE.trace = []; STATE.page = "dispatch";
+  vistoAudit = 0;
+  setStatus(); refreshMapState(); renderPage();
+  // coreografía del pulso: data → tools → agent en bucle mientras razona
+  Pulse.travel(frOf(540), frOf(95), 500, () => {
+    flowTimers.push(setTimeout(() => Pulse.travel(frOf(95), frOf(300), 900), 600));
+    flowTimers.push(setTimeout(() => Pulse.travel(frOf(300), frOf(540), 900), 2400));
+  });
+  const poll = setInterval(pasoTraza, 2000);
+  try{
+    const r = await api("/preguntar", {method:"POST", body: JSON.stringify({pregunta, idioma:"en"})});
+    await pasoTraza();
+    STATE.answered = r;
+  }catch(e){
+    STATE.answered = {respuesta: "The agent could not be reached: " + e.message, fallback: true, tools_usadas: [], pendientes: []};
+  }finally{
+    clearInterval(poll);
+    STATE.thinking = false;
+    setStatus(); refreshMapState();
+    if(STATE.page === "dispatch") renderPage();
+    pendFirma = null; await cargarPendientes(); cargarLedger();
+    if(STATE.queue.length){
+      Pulse.travel(frOf(540), frOf(765), 800, () => Pulse.lockAt(frOf(765)));
+      toast(`${STATE.queue.length} action${STATE.queue.length>1?"s":""} queued — the agent is waiting at the Gate`);
+    } else {
+      Pulse.patrol();
+    }
+  }
+}
+
+/* ── 04 GATE ── */
+let gateTimer = null;
+function pageGate(){
+  const item = STATE.queue[0];
+  let body;
+  if(!item){
+    body = `<div class="card clear">
+      <div class="ci">${ic("check",27)}</div>
+      <div class="ct">The gate is clear.</div>
+      <div class="cs">Nothing is waiting. Ask the agent something — anything with external effect will stop right here, physically, until you let it through.</div>
+      <button class="btn btn-ink" style="margin:18px auto 0" onclick="goTo('dispatch')">${ic("cpu",14)} Dispatch the agent</button>
+    </div>`;
+  } else {
+    body = `<div class="gate-grid">
+      <div class="card gate-card ${STATE.gate==='done'?'done':''}" id="gate-card">
+        <div class="boom-track"><div class="boom hazard ${STATE.gate==='done'?'up':''}" id="boom"></div><div class="boom-pivot"></div></div>
+        <div class="gate-body" id="gate-body">${gateBody(item)}</div>
+      </div>
+      <div class="card emit-card" style="animation-delay:.06s">
+        <div class="emit-t">On approval, code emits</div>
+        <div class="emit-s">Numbers are re-queried at generation · emails are drafts — a human sends.</div>
+        <div class="emit-row ${STATE.gate==='done'?'live':''}"><div class="emit-ico" style="color:var(--critical);border-color:#C0322B33">${ic("file",16)}</div><div><div class="emit-n">Carrier notice</div><div class="emit-d">PDF · FORZA</div></div></div>
+        <div class="emit-row ${STATE.gate==='done'?'live':''}"><div class="emit-ico" style="color:var(--verified);border-color:#0C7A5733">${ic("sheet",16)}</div><div><div class="emit-n">Recovery list</div><div class="emit-d">XLSX · 10 orders</div></div></div>
+        <div class="emit-row ${STATE.gate==='done'?'live':''}"><div class="emit-ico" style="color:var(--ink2);border-color:var(--lineHi)">${ic("mail",16)}</div><div><div class="emit-n">Email drafts</div><div class="emit-d">EML ×2 · never auto-sent</div></div></div>
+      </div>
+    </div>`;
+  }
+  return `
+  ${kicker("STN 04","Human gate")}
+  <div class="page-head"><div>
+    <h1>Nothing ships without you.</h1>
+    <p>External effect is blocked <b>in code, not in the prompt</b> — <code style="font-family:var(--mono);font-size:12px;background:var(--cardTint);border:1px solid var(--line);border-radius:5px;padding:1px 6px">aprobado_por_humano</code> can only be set by this screen. Not the model, not a prompt injection.</p>
+  </div></div>
+  ${body}`;
+}
+function gateBody(item){
+  if(STATE.gate === "done"){
+    return `<div class="gate-done-w">
+      <div class="gd-ico">${ic("check",26)}</div>
+      <div class="gd-t">Barrier lifted. Executed.</div>
+      <div class="gd-s">Deterministic artifacts generated — the ledger has the receipt.</div>
+      <button class="btn btn-ghost" style="margin:16px auto 0" onclick="goTo('custody')">See the receipt ${ic("arrow",13)}</button>
+    </div>`;
+  }
+  const stats = item.stats.map(([l,v]) => `<div class="gate-stat"><div class="l">${l}</div><div class="v">${v}</div></div>`).join("");
+  const actions = STATE.gate === "pending"
+    ? `<div class="gate-actions">
+        <button class="btn btn-ink" style="flex:1" onclick="armGate()">Approve &amp; execute</button>
+        <button class="btn btn-ghost" onclick="dismissGate()">Dismiss</button>
+      </div>`
+    : `<button class="confirm-btn" id="confirm-btn" ${STATE.gateCd>0?'disabled':''} onclick="confirmGate()">
+        <span class="confirm-fill" style="width:${(STATE.gateCd/3)*100}%"></span>
+        <span class="confirm-txt">${STATE.gateCd>0 ? 'Confirm execution — '+STATE.gateCd+'s' : 'Confirm now'}</span>
+      </button>`;
+  return `
+    <div class="gate-badge">${ic("shield",12)} Human approval required</div>
+    <div class="gate-title">${item.title}</div>
+    <div class="gate-stats">${stats}</div>
+    ${actions}
+    <div class="gate-hint">Two-step by design — first click arms, second click, after the countdown, executes.</div>`;
+}
+function armGate(){
+  STATE.gate = "confirming"; STATE.gateCd = 3;
+  const gb = document.getElementById("gate-body");
+  if(gb) gb.innerHTML = gateBody(STATE.queue[0]);
+  tickGate();
+}
+function tickGate(){
+  clearTimeout(gateTimer);
+  if(STATE.gate !== "confirming") return;
+  if(STATE.gateCd > 0){
+    gateTimer = setTimeout(() => {
+      STATE.gateCd--;
+      const gb = document.getElementById("gate-body");
+      if(gb) gb.innerHTML = gateBody(STATE.queue[0]);
+      tickGate();
+    }, 1000);
+  }
+}
+async function confirmGate(){
+  if(STATE.gateCd > 0) return;
+  const item = STATE.queue[0]; if(!item) return;
+  const btn = document.getElementById("confirm-btn");
+  if(btn){ btn.disabled = true; btn.querySelector(".confirm-txt").textContent = "Executing…"; }
+  let res;
+  try{
+    res = await api(`/pendientes/${item.id}/aprobar`, {method:"POST"});
+  }catch(e){
+    toast("Could not execute: " + e.message);
+    STATE.gate = "pending"; renderPage(); return;
+  }
+  STATE.gate = "done";
+  const boom = document.getElementById("boom"); if(boom) boom.classList.add("up");
+  // artefactos REALES en la tarjeta de emisión, con links de descarga
+  const rem = res?.resultado?.remediacion;
+  setTimeout(() => {
+    const gb = document.getElementById("gate-body");
+    if(gb) gb.innerHTML = gateBody(item);
+    document.getElementById("gate-card")?.classList.add("done");
+    const emit = document.querySelector(".emit-card");
+    if(emit && rem?.generado){
+      const filas = (rem.artefactos || []).map(a => {
+        const esX = a.tipo === "excel";
+        const col = esX ? "var(--verified)" : "var(--critical)";
+        const icn = esX ? "sheet" : "file";
+        const nom = esX ? `Recovery list · XLSX (${a.ordenes_incluidas || "—"} orders)` : `Carrier notice · ${a.tipo.toUpperCase()}`;
+        return `<a class="emit-row live" style="text-decoration:none;color:inherit" href="${API}/artefactos/${encodeURIComponent(a.archivo)}" target="_blank">
+          <div class="emit-ico" style="color:${col};border-color:${col}33">${ic(icn,16)}</div>
+          <div><div class="emit-n">${escq(nom)}</div><div class="emit-d">download ↓</div></div></a>`;
+      }).join("") + (rem.correos || []).map(cor => `
+        <a class="emit-row live" style="text-decoration:none;color:inherit" href="${cor.mailto}">
+          <div class="emit-ico" style="color:var(--ink2);border-color:var(--lineHi)">${ic("mail",16)}</div>
+          <div><div class="emit-n">Draft → ${escq(cor.para)}</div><div class="emit-d">opens in your mail client · never auto-sent</div></div></a>`).join("");
+      emit.innerHTML = `<div class="emit-t">Code emitted — real files</div>
+        <div class="emit-s">Numbers were re-queried at generation · emails are drafts.</div>` + filas;
+    } else {
+      document.querySelectorAll(".emit-row").forEach((r,i) => setTimeout(() => r.classList.add("live"), i*220));
+    }
+  }, REDUCED ? 0 : 450);
+  cargarLedger();
+  setTimeout(() => {
+    pendFirma = null;
+    STATE.queue = STATE.queue.slice(1); STATE.gate = "pending"; STATE.gateCd = 3;
+    setStatus(); refreshMapState();
+    Pulse.travel(frOf(765), frOf(950), 600, () =>
+      Pulse.travel(frOf(950), frOf(1115), 600, () => STATE.queue.length ? Pulse.lockAt(frOf(765)) : Pulse.patrol()));
+    toast("Approved & executed — real artifacts generated, receipt in the ledger");
+  }, 2600);
+}
+async function dismissGate(){
+  const item = STATE.queue[0]; if(!item) return;
+  try{ await api(`/pendientes/${item.id}/rechazar`, {method:"POST"}); }
+  catch(e){ toast("Could not dismiss: " + e.message); return; }
+  pendFirma = null;
+  STATE.queue = STATE.queue.slice(1); STATE.gate = "pending"; STATE.gateCd = 3;
+  setStatus(); refreshMapState(); renderPage();
+  if(!STATE.queue.length) Pulse.patrol();
+  cargarLedger();
+  toast("Dismissed — nothing left the building");
+}
+
+/* ── 05 YIELD ── */
+let PLAN_REAL = null;   // respuesta real de /tools/optimizar_asignacion
+const SOLVER_LINES = [
+  "→ filtering pairs · keep n ≥ 30 only",
+  "→ objective · expected deliveries on Wilson LCB 95%",
+  "→ constraints · per-carrier capacity",
+  "→ CBC · branch &amp; bound…",
+  "✓ optimal found",
+];
+function pageYield(){
+  if(!STATE.solved){
+    return `
+    ${kicker("STN 05","Optimize & remediate")}
+    <div class="page-head"><div>
+      <h1>What the network could yield.</h1>
+      <p>An exact <b>MILP</b> over the Wilson lower bound, under per-carrier capacity. Only pairs with real evidence (n≥30) participate — and the result is a recommendation. The Gate still holds.</p>
+    </div></div>
+    <div class="card solve-card" id="solve-card">
+      <button class="btn btn-ink" style="margin:6px auto 0" onclick="solveBoard()">${ic("zap",15)} Solve the board</button>
+      <div style="font-size:11.5px;color:var(--ink3);margin-top:12px">PuLP + CBC · exact, not heuristic</div>
+    </div>`;
+  }
+  return `
+  ${kicker("STN 05","Optimize & remediate")}
+  <div class="page-head"><div>
+    <h1>What the network could yield.</h1>
+    <p>An exact <b>MILP</b> over the Wilson lower bound, under per-carrier capacity. Only pairs with real evidence (n≥30) participate — and the result is a recommendation. The Gate still holds.</p>
+  </div></div>
+  <div class="card yield-hero">
+    <div class="yh-row">
+      <div><div class="yh-label">Projected quarterly impact</div>
+        <div class="yh-big"><span class="yh-plus">+</span><span class="yh-num" id="y-num">0</span></div>
+        <div class="yh-note">more deliveries <b>(+${PLAN_REAL.resumen.mejora_pct}%)</b></div></div>
+      <div class="yh-sep"></div>
+      <div class="yh-m"><div class="yh-mv" id="y-cod">$0</div><div class="yh-ml">COD recovered / quarter</div></div>
+      <div class="yh-sep"></div>
+      <div class="yh-m"><div class="yh-mv" id="y-chg">0</div><div class="yh-ml">carrier changes — that's all</div></div>
+      <div style="margin-left:auto;align-self:flex-end"><span class="ftag"><i>ƒ</i> optimizar_asignacion · MILP</span></div>
+    </div>
+  </div>
+  <div class="card flows" style="animation-delay:.08s">
+    <div class="flows-h"><b>Reassignment flow</b><span>n ≥ 30 · target Wilson LCB shown</span></div>
+    ${(PLAN_REAL.recomendaciones || []).slice(0,6).map(px => `
+      <div class="flow">
+        <div class="flow-z"><b>${escq(px.municipio)} (${escq(px.pais)})</b><small>${px.volumen.toLocaleString("en-US")} shipments</small></div>
+        <div class="flow-mid">
+          <span class="pill" style="color:var(--critical);background:var(--criticalSoft);border-color:#C0322B33">${escq(px.carrier_actual)} · ${px.ef_actual_lcb}%</span>
+          <div class="flow-rail"><i></i></div>
+          ${ic("arrow",14)}
+          <span class="pill" style="color:var(--verified);background:var(--verifiedSoft);border-color:#0C7A5733">${escq(px.carrier_recomendado)} · ${px.ef_recomendada_lcb}%</span>
+        </div>
+        <div class="flow-c"><div class="flow-ct"><div class="flow-cf" data-c="${px.ef_recomendada_lcb}"></div></div><span class="flow-cp">+${px.entregas_extra_estimadas} deliveries</span></div>
+      </div>`).join("")}
+    <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">
+      ${(PLAN_REAL.artefactos || []).filter(a=>a.archivo).map(a => `
+        <a class="btn btn-ghost" style="padding:9px 15px;text-decoration:none" href="${API}/artefactos/${encodeURIComponent(a.archivo)}" target="_blank">
+          ${ic(a.tipo==="excel"?"sheet":"file",14)} ${a.tipo==="excel"?"Full plan · XLSX":"Summary · "+a.tipo.toUpperCase()} ↓</a>`).join("")}
+    </div>
+  </div>`;
+}
+async function solveBoard(){
+  const card = document.getElementById("solve-card");
+  card.innerHTML = `<div class="solver-log">${SOLVER_LINES.map((l,i) =>
+    `<div style="animation-delay:${i*0.42}s" class="${l.startsWith('✓')?'ok':''}">${l}</div>`).join("")}</div>`;
+  try{
+    PLAN_REAL = await api("/tools/optimizar_asignacion", {timeout:120000});
+  }catch(e){
+    card.innerHTML = `<div style="color:var(--critical);font-size:13px;padding:8px">Solver unavailable: ${escq(e.message)}</div>`;
+    return;
+  }
+  if(!PLAN_REAL.ok){ card.innerHTML = `<div style="font-size:13px;padding:8px">${escq(PLAN_REAL.razon || "no result")}</div>`; return; }
+  STATE.solved = true;
+  cargarLedger();
+  renderPage();
+}
+
+/* ── 06 CUSTODY ── */
+function pageCustody(){
+  const entries = LEDGER.map((e,i) => {
+    const m = EV_META[e.type];
+    const hi = STATE.chainHi && e.chain === STATE.chainHi ? "chain-hi" : "";
+    return `<div class="lentry ${hi}" style="animation-delay:${.05+i*.05}s">
+      <span class="lt">${e.t}</span>
+      <div class="li" style="color:${m.c};border-color:${m.c}44">${ic(m.icon,15)}</div>
+      <div class="lb">
+        <div class="lt2">${m.label}</div>
+        <div class="ld2">${e.d}</div>
+        <div class="ltech">
+          ${e.tech.split("·").map(s => s.trim()).map(s =>
+            s.startsWith("origen_id")
+              ? `<button class="origen-chip" onclick="toggleChain('${e.chain}')">${s}</button>`
+              : `<span class="plain">${s}</span>`).join("")}
+        </div>
+        ${e.arts ? `<div class="larts">${e.arts.map(([l,icn,c]) =>
+          `<span class="art" style="color:${c};background:${c}10;border-color:${c}30">${ic(icn,11)} ${l}</span>`).join("")}</div>` : ""}
+      </div>
+    </div>`;
+  }).join("");
+  return `
+  ${kicker("STN 06","Chain of custody")}
+  <div class="page-head"><div>
+    <h1>Every decision, addressable.</h1>
+    <p>Append-only JSONL — entries are added, never edited. Each action carries the <b>origen_id</b> of the evidence that caused it. Click one to light up the whole chain: question → tool → queue → approval.</p>
+  </div></div>
+  <div class="card ledger-card">
+    <div class="ledger-h"><span class="ld"></span><b>Live ledger</b><span>append-only · JSONL</span></div>
+    <div class="chain-note ${STATE.chainHi ? 'on':''}">${ic("link",12)}
+      <span>chain of custody · click any origen_id to light up its whole chain · data → decision → artifact, unbroken</span>
+      <button class="origen-chip" style="margin-left:auto" onclick="toggleChain(null)">clear</button>
+    </div>
+    <div class="ledger">${entries}</div>
+  </div>`;
+}
+function toggleChain(chain){
+  STATE.chainHi = (chain && STATE.chainHi !== chain) ? chain : null;
+  renderPage();
+}
+function goChain(chain){ STATE.chainHi = chain || null; goTo("custody"); }
+
+/* ════════ render ════════ */
+const PAGES = { patrol:pagePatrol, evidence:pageEvidence, dispatch:pageDispatch, gate:pageGate, yield:pageYield, custody:pageCustody };
+function renderPage(){
+  const ws = document.getElementById("workspace");
+  ws.innerHTML = `<section class="page on">${PAGES[STATE.page]()}</section>`;
+  requestAnimationFrame(() => {
+    // animated fills
+    document.querySelectorAll(".bfill").forEach(el => setTimeout(() => el.style.width = el.dataset.w+"%", 250));
+    document.querySelectorAll(".flow-cf").forEach(el => setTimeout(() => el.style.width = el.dataset.c+"%", 250));
+    if(STATE.page === "yield" && STATE.solved && PLAN_REAL){
+      const rs = PLAN_REAL.resumen;
+      const n = document.getElementById("y-num"); if(n) countUp(n, Math.round(rs.entregas_extra), "", "", 1100);
+      const c = document.getElementById("y-cod"); if(c) countUp(c, Math.round(rs.usd_estimados), "$", "", 1100);
+      const g = document.getElementById("y-chg"); if(g) countUp(g, rs.zonas_con_cambio, "", "", 1100);
+    }
+    if(STATE.page === "gate" && STATE.gate === "confirming") tickGate();
+  });
+}
+
+/* ════════ boot ════════ */
+buildMap();
+refreshMapState();
+setStatus();
+renderPage();
+cargarLedger();
+cargarPendientes();
+setInterval(cargarPendientes, 6000);
+setInterval(() => { if(STATE.page === "custody") cargarLedger(); }, 8000);
+</script>
+</body>
+</html>

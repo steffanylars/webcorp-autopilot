@@ -1,0 +1,7 @@
+requests
+openai
+fastapi
+uvicorn
+weasyprint
+openpyxl
+pulp
