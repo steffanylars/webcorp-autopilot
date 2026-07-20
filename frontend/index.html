@@ -650,6 +650,7 @@ en:{
   p4_real:"Code emitted — real files", p4_real2:"Numbers were re-queried at generation · emails are drafts.",
   p4_q:"Critical actions waiting", p4_qs:"click one to review it",
   p4_orders:"orders",
+  p4_item:"Notify operations", p4_rat:"Agent's rationale (original wording)",
   k5:"Optimize & remediate", p5_h:"What the network could yield.",
   p5_p:"An exact <b>MILP</b> over the Wilson lower bound, under per-carrier capacity. Only pairs with real evidence (n≥30) participate — and the result is a recommendation. The Gate still holds.",
   p5_what:"What does this do?",
@@ -733,6 +734,7 @@ es:{
   p4_real:"El código emitió — archivos reales", p4_real2:"Los números se reconsultaron al generar · los correos son borradores.",
   p4_q:"Acciones críticas en espera", p4_qs:"haz clic en una para revisarla",
   p4_orders:"órdenes",
+  p4_item:"Notificar a operaciones", p4_rat:"Justificación del agente (texto original)",
   k5:"Optimizar y remediar", p5_h:"Lo que la red podría rendir.",
   p5_p:"Un <b>MILP</b> exacto sobre el límite inferior de Wilson, bajo capacidad por carrier. Solo participan pares con evidencia real (n≥30) — y el resultado es una recomendación. La Barrera sigue en pie.",
   p5_what:"¿Qué hace esto?",
@@ -816,6 +818,7 @@ fr:{
   p4_real:"Le code a émis — fichiers réels", p4_real2:"Chiffres re-consultés à la génération · les e-mails sont des brouillons.",
   p4_q:"Actions critiques en attente", p4_qs:"clique sur une pour la revoir",
   p4_orders:"commandes",
+  p4_item:"Notifier les opérations", p4_rat:"Justification de l'agent (texte original)",
   k5:"Optimiser et remédier", p5_h:"Ce que le réseau pourrait rendre.",
   p5_p:"Un <b>MILP</b> exact sur la borne inférieure de Wilson, sous capacité par transporteur. Seules les paires avec preuve réelle (n≥30) participent — et le résultat est une recommandation. La Barrière tient toujours.",
   p5_what:"À quoi ça sert ?",
@@ -1486,8 +1489,8 @@ function pageGate(){
       ${STATE.queue.map((it,i) => `
         <div class="gq-row ${i===STATE.gateSel?'on':''}" onclick="selGate(${i})" role="button" tabindex="0">
           <span class="gq-idx">${String(i+1).padStart(2,"0")}</span>
-          <span class="gq-t">${escq(it.title)}</span>
-          <span class="gq-case">${escq(it.caso)}</span>
+          <span class="gq-t">${T("p4_item")} — ${escq(it.caso)}</span>
+          <span class="gq-case">${escq(it.origen.slice(0,26))}</span>
         </div>`).join("")}
     </div>` : "";
     body = qlist + `<div class="gate-grid">
@@ -1534,7 +1537,11 @@ function gateBody(item){
       </button>`;
   return `
     <div class="gate-badge">${ic("shield",12)} ${T("p4_badge")}</div>
-    <div class="gate-title">${escq(item.title)}</div>
+    <div class="gate-title">${T("p4_item")} — ${escq(item.caso)}</div>
+    <div style="margin:-6px 0 16px;padding:10px 14px;background:var(--cardTint);border:1px solid var(--line);border-radius:10px">
+      <div style="font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink4);margin-bottom:4px">${T("p4_rat")}</div>
+      <div style="font-size:12px;color:var(--ink2);line-height:1.5;font-style:italic">“${escq(item.title)}”</div>
+    </div>
     <div class="gate-stats">${stats}</div>
     ${actions}
     <div class="gate-hint">${T("p4_hint")}</div>`;
