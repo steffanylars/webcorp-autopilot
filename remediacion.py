@@ -197,6 +197,10 @@ def _css_marca(L: dict) -> str:
 """
 
 
+# Compat: optimizador.py importa esta constante para el CSS de su PDF (es).
+_CSS_MARCA = _css_marca(_L["es"])
+
+
 def _html_pdf(datos: dict, L: dict) -> str:
     c, f = datos["caso"], datos.get("wilson") or {}
     filas_wilson = ""

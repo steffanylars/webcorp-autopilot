@@ -1688,7 +1688,7 @@ function pageYield(){
         <div class="flow-c"><div class="flow-ct"><div class="flow-cf" data-c="${px.ef_recomendada_lcb}"></div></div><span class="flow-cp">${Tn("p5_extra", px.entregas_extra_estimadas)}</span></div>
       </div>`).join("")}
     <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">
-      ${(PLAN_REAL.artefactos || []).filter(a=>a.archivo).map(a => `
+      ${(Array.isArray(PLAN_REAL.artefactos) ? PLAN_REAL.artefactos : []).filter(a=>a && a.archivo).map(a => `
         <a class="btn btn-ghost" style="padding:9px 15px;text-decoration:none" href="${API}/artefactos/${encodeURIComponent(a.archivo)}" target="_blank">
           ${ic(a.tipo==="excel"?"sheet":"file",14)} ${a.tipo==="excel"?T("p5_xl"):T("p5_pdf")} ↓</a>`).join("")}
     </div>
