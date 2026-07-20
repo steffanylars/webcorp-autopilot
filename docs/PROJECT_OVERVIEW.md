@@ -60,6 +60,9 @@ An exact MILP over the Wilson LCB reassigns which courier serves each zone, unde
 constraints, using only pairs with real evidence (n≥30). Result on real data:
 **+921 deliveries per quarter (+6.82%) ≈ $36,440 USD in recovered COD — with only 14 changes.**
 Output is a downloadable plan (XLSX + PDF); the Gate still holds — nothing changes automatically.
+**Full mathematical formulation, real capacity-sensitivity runs (+10/+25/+50%), the raw-rate cross-check
+(+909 vs +921 — the gain is not a metric artifact), declared assumptions and explicit non-goals: see
+[README § The optimizer, mechanistically](../README.md#the-optimizer-mechanistically-no-hand-waving).
 
 ### Human-in-the-loop remediation (`remediacion.py`)
 Approving a queued action is a **two-step flow** (arm → 3-second countdown → confirm). On approval,

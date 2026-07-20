@@ -100,6 +100,48 @@ The engine is domain-portable by replacing one file: `estimador_municipio_mensaj
 
 > **Note on demo data:** the public instance runs **synthetic demonstration data** whenever the real backend is not reachable — the production MySQL database is *deliberately not deployed* to the public instance (data privacy decision: it belongs to a real, operating business). The backend-dependent tools (`courier_zona`, `productos_real`) fall back automatically to `data/demo_sintetico.json` and **declare it** in their `fuente` field, so the agent says so instead of passing synthetic numbers off as real. Results with real WebCorp data are shown in the demo video, recorded locally with the authorization of the family that owns the business.
 
+## The optimizer, mechanistically (no hand-waving)
+
+**Formulation** — a generalized-assignment MILP, solved exactly with PuLP + CBC (`optimizador.py`, docstring and lines 69–93):
+
+$$\max \sum_{z}\sum_{c} v_z \cdot \hat{p}^{\,\mathrm{LCB}}_{c,z} \cdot x_{c,z}$$
+
+subject to
+
+- $\sum_c x_{c,z} = 1$ for every zone $z$ — each zone is served by exactly one courier;
+- $\sum_z v_z\,x_{c,z} \le (1+\gamma)\,V_c$ for every courier $c$ — nobody absorbs unbounded volume overnight ($V_c$ = the courier's current volume in the optimizable universe, $\gamma = 0.25$);
+- $x_{c,z} \in \{0,1\}$, and **only observed pairs with $n \ge 30$ enter the model** — zones where a single courier has evidence are excluded: there is no decision to make there without inventing data.
+
+Here $v_z$ is the zone's order volume over the snapshot window and $\hat{p}^{\mathrm{LCB}}_{c,z}$ is the **Wilson 95% lower confidence bound** of that courier's delivery rate in that zone — the same conservative yardstick used everywhere else in the system, never the raw rate. CBC certifies optimality (`status_solver: "Optimal"`); if the solver is unavailable, a greedy + 2-opt metaheuristic takes over **and declares itself** in the `metodo` field.
+
+**The headline number is the conservative one.** The +921 deliveries/quarter is projected with the Wilson LCB — the pessimistic bound. Re-evaluating the *same* optimal plan with raw rates yields **+909**: the two metrics agree within ~1%, so the gain is not an artifact of the metric choice. Even under the bound designed to underestimate, the money is there.
+
+**Capacity sensitivity (real solver runs, not a justification).** $\gamma$ is a free parameter; the solution barely depends on it:
+
+| Capacity headroom $\gamma$ | Extra deliveries | Gain | USD / quarter | Changes |
+|---|---|---|---|---|
+| +10% | +893 | +6.61% | $35,911 | 14 |
+| **+25% (shipped)** | **+921** | **+6.82%** | **$36,440** | **14** |
+| +50% | +924 | +6.84% | $36,665 | 15 |
+
+The recommendation set is essentially stable from +10% to +50%: the plan is driven by evidence quality, not by the capacity assumption.
+
+## Assumptions & limitations of the optimization (declared, not hidden)
+
+- **Transferability**: the model assumes a courier's historical zone performance holds under a ≤25% volume increase — congestion effects are not modeled. Reassignments are restricted to observed pairs ($n \ge 30$), so we never extrapolate to unseen courier×zone combinations.
+- **Staleness**: effectiveness comes from a ~90-day batch snapshot (`ESTIMADOR_SNAPSHOT_DATE`); in production the estimator re-runs on a schedule and the plan is re-solved with each refresh.
+- **Feedback loop**: reassigning by LCB starves the losing courier of new data in that zone, so it can never statistically "redeem" itself. Mitigation on the roadmap: an explore/exploit split (a small ε of volume kept on the runner-up, bandit-style) to keep estimates alive.
+- **Gaming**: a carrier that knows it is measured against a threshold could mis-mark doubtful deliveries as successful. The append-only ledger keeps per-order traceability for spot audits; independent delivery-confirmation signals are the long-term fix.
+- **USD estimate**: uses the country-level average ticket of *delivered COD orders* (real DB query, Jul 2026) — not all volume is COD, and the figure says so in the tool's declared assumptions.
+
+## Non-goals (deliberate scope decisions)
+
+- **No multi-agent negotiation and no custom MCP server** — one agent with deterministic tools was the honest scope for a working production system.
+- **No demand forecasting** — the optimizer reallocates observed volume; it does not predict it.
+- **No public production database** — privacy decision; the public instance runs on the aggregated CSV plus a declared synthetic fallback.
+- **No auto-execution of reassignments** — the MILP outputs a recommendation; the human Gate is the product, not a demo constraint.
+- **No Bayesian shrinkage yet** — Wilson LCB on observed pairs only; shrinkage across thin municipalities is documented future work.
+
 ## Known limitations (documented, not hidden)
 
 - SQLite queues/dedupe are single-instance; multi-instance needs a shared store (Redis).
