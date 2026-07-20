@@ -1,0 +1,67 @@
+{
+  "_nota": "Semaforo de efectividad por pais/municipio para el mapa del panel. CA: cifras alineadas al snapshot del estimador 2026-06-24 (agregados). AR y UY: DATOS SINTETICOS DE DEMO (preview de expansion) — siempre marcados demo:true. Umbrales: <50 rojo, 50-65 ambar, >65 verde.",
+  "snapshot": "2026-06-24",
+  "paises": {
+    "GT": {"nombre": "Guatemala", "ef": 62.8, "n": 98450, "municipios": [
+      {"nombre": "Guatemala",              "ef": 71.2, "n": 18240},
+      {"nombre": "Mixco",                  "ef": 68.9, "n": 6410},
+      {"nombre": "Villa Nueva",            "ef": 66.4, "n": 5980},
+      {"nombre": "Quetzaltenango",         "ef": 63.7, "n": 3120},
+      {"nombre": "Escuintla",              "ef": 54.1, "n": 4470},
+      {"nombre": "Puerto San José",        "ef": 34.3, "n": 73},
+      {"nombre": "Santa Lucía Cotzumalguapa", "ef": 33.3, "n": 96},
+      {"nombre": "Coatepeque",             "ef": 26.4, "n": 34},
+      {"nombre": "Nueva Concepción",       "ef": 24.9, "n": 39}
+    ]},
+    "SV": {"nombre": "El Salvador", "ef": 58.0, "n": 50219, "municipios": [
+      {"nombre": "San Salvador",   "ef": 69.8, "n": 12630},
+      {"nombre": "Santa Ana",      "ef": 64.2, "n": 4210},
+      {"nombre": "Soyapango",      "ef": 61.5, "n": 3890},
+      {"nombre": "San Miguel",     "ef": 57.3, "n": 3140},
+      {"nombre": "Usulután",       "ef": 51.9, "n": 1080},
+      {"nombre": "Zacatecoluca",   "ef": 23.4, "n": 38}
+    ]},
+    "HN": {"nombre": "Honduras", "ef": 60.9, "n": 41320, "municipios": [
+      {"nombre": "Tegucigalpa",    "ef": 67.1, "n": 11840, "demo": true},
+      {"nombre": "San Pedro Sula", "ef": 63.4, "n": 9260,  "demo": true},
+      {"nombre": "La Ceiba",       "ef": 58.7, "n": 2110,  "demo": true},
+      {"nombre": "Choloma",        "ef": 52.2, "n": 1660,  "demo": true},
+      {"nombre": "Comayagua",      "ef": 47.8, "n": 940,   "demo": true}
+    ]},
+    "NI": {"nombre": "Nicaragua", "ef": 57.4, "n": 30995, "municipios": [
+      {"nombre": "Managua",  "ef": 66.3, "n": 9870, "demo": true},
+      {"nombre": "León",     "ef": 60.8, "n": 2350, "demo": true},
+      {"nombre": "Masaya",   "ef": 55.1, "n": 1780, "demo": true},
+      {"nombre": "Granada",  "ef": 49.6, "n": 1120, "demo": true},
+      {"nombre": "Rivas",    "ef": 44.2, "n": 630,  "demo": true}
+    ]},
+    "CR": {"nombre": "Costa Rica", "ef": 66.7, "n": 38410, "municipios": [
+      {"nombre": "San José",   "ef": 74.5, "n": 10480, "demo": true},
+      {"nombre": "Alajuela",   "ef": 69.2, "n": 5230,  "demo": true},
+      {"nombre": "Heredia",    "ef": 67.8, "n": 3910,  "demo": true},
+      {"nombre": "Cartago",    "ef": 63.1, "n": 3340,  "demo": true},
+      {"nombre": "Puntarenas", "ef": 53.7, "n": 1490,  "demo": true}
+    ]},
+    "PA": {"nombre": "Panamá", "ef": 64.3, "n": 27180, "municipios": [
+      {"nombre": "Ciudad de Panamá", "ef": 72.6, "n": 9840, "demo": true},
+      {"nombre": "San Miguelito",    "ef": 66.9, "n": 3620, "demo": true},
+      {"nombre": "Colón",            "ef": 55.4, "n": 1870, "demo": true},
+      {"nombre": "David",            "ef": 61.2, "n": 1410, "demo": true}
+    ]},
+    "AR": {"nombre": "Argentina", "ef": 68.9, "n": 22640, "demo": true, "municipios": [
+      {"nombre": "Buenos Aires (CABA)", "ef": 76.4, "n": 8120, "demo": true},
+      {"nombre": "La Plata",            "ef": 70.1, "n": 2210, "demo": true},
+      {"nombre": "Córdoba",             "ef": 67.3, "n": 3480, "demo": true},
+      {"nombre": "Rosario",             "ef": 64.8, "n": 2960, "demo": true},
+      {"nombre": "Mendoza",             "ef": 58.2, "n": 1730, "demo": true},
+      {"nombre": "San Miguel de Tucumán","ef": 48.7, "n": 890, "demo": true}
+    ]},
+    "UY": {"nombre": "Uruguay", "ef": 72.3, "n": 9840, "demo": true, "municipios": [
+      {"nombre": "Montevideo",     "ef": 77.9, "n": 5230, "demo": true},
+      {"nombre": "Canelones",      "ef": 71.4, "n": 1840, "demo": true},
+      {"nombre": "Maldonado",      "ef": 68.6, "n": 1120, "demo": true},
+      {"nombre": "Salto",          "ef": 61.7, "n": 640,  "demo": true},
+      {"nombre": "Paysandú",       "ef": 49.3, "n": 410,  "demo": true}
+    ]}
+  }
+}

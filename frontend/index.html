@@ -443,6 +443,45 @@ textarea#q{width:100%;min-height:48px;resize:none;border:none;outline:none;backg
 .explain-t svg{width:15px;height:15px;color:var(--signalInk)}
 .explain-b{font-size:12.5px;color:var(--ink2);line-height:1.65}
 .explain-b b{color:var(--ink)}
+/* ── mapa semáforo LatAm ── */
+.geo-card{padding:0;overflow:hidden;margin-top:16px}
+.geo-head{padding:15px 22px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.geo-head b{font-family:var(--display);font-size:13.5px;font-weight:770}
+.geo-head span.sub{font-size:11.5px;color:var(--ink3)}
+.geo-legend{margin-left:auto;display:flex;gap:10px;flex-wrap:wrap}
+.geo-lg{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10px;color:var(--ink3)}
+.geo-lg i{width:10px;height:10px;border-radius:3px;display:inline-block}
+.geo-body{display:grid;grid-template-columns:1.15fr 1fr;gap:0}
+.geo-map{position:relative;padding:14px;background:var(--cardTint)}
+.geo-map svg{display:block;width:100%;height:auto;max-height:520px}
+.geo-ctx{fill:#E7EFED;stroke:#D3DFDC;stroke-width:.6}
+.geo-op{stroke:#fff;stroke-width:.9;cursor:pointer;transition:filter .15s,opacity .15s}
+.geo-op:hover{filter:brightness(1.12)}
+.geo-op.sel{stroke:var(--ink);stroke-width:1.6}
+.geo-tip{position:absolute;pointer-events:none;background:var(--ink);color:#fff;font-size:11.5px;
+  padding:7px 11px;border-radius:9px;opacity:0;transition:opacity .12s;white-space:nowrap;z-index:5;
+  box-shadow:0 10px 24px -8px rgba(12,36,48,.5)}
+.geo-tip b{font-weight:700}
+.geo-tip .mono{font-size:10px;opacity:.8}
+.geo-detail{padding:16px 20px;border-left:1px solid var(--line);min-height:320px}
+.geo-d-h{display:flex;align-items:baseline;gap:10px;margin-bottom:4px}
+.geo-d-h b{font-family:var(--display);font-size:16px;font-weight:780}
+.geo-d-ef{font-family:var(--display);font-size:26px;font-weight:800;letter-spacing:-.02em}
+.geo-d-n{font-family:var(--mono);font-size:10.5px;color:var(--ink3)}
+.geo-mun{margin-top:10px}
+.geo-mun-t{font-family:var(--display);font-stretch:115%;font-size:9.5px;font-weight:780;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink3);margin-bottom:6px}
+.geo-row{display:flex;align-items:center;gap:9px;padding:6.5px 0;font-size:12px}
+.geo-row:not(:last-child){border-bottom:1px solid var(--chalk2)}
+.geo-dot{width:9px;height:9px;border-radius:99px;flex:none}
+.geo-row b{flex:1;font-weight:600;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.geo-row .ef{font-family:var(--mono);font-size:11.5px;font-weight:600;width:52px;text-align:right}
+.geo-row .nn{font-family:var(--mono);font-size:10px;color:var(--ink4);width:70px;text-align:right}
+.geo-demo{font-family:var(--mono);font-size:8.5px;color:var(--ink3);background:var(--chalk2);
+  border-radius:4px;padding:1.5px 5px;flex:none}
+.geo-empty{color:var(--ink3);font-size:12px;padding:30px 6px;text-align:center}
+.geo-foot{padding:10px 22px;border-top:1px solid var(--line);font-family:var(--mono);font-size:9.5px;color:var(--ink4)}
+@media(max-width:880px){.geo-body{grid-template-columns:1fr}.geo-detail{border-left:none;border-top:1px solid var(--line)}}
 .site-foot{max-width:1020px;margin:0 auto;padding:0 30px 40px;font-family:var(--mono);font-size:10px;
   color:var(--ink4);text-align:center;letter-spacing:.04em}
 
@@ -569,6 +608,11 @@ en:{
   p1_pr3:"External effect is blocked in code until a human approves",
   p1_cov:"Coverage, declared", p1_mun:"municipal", p1_country:"country",
   p1_covnote:"what the data can't see is said out loud — never faked",
+  gm_t:"The network, on the map", gm_sub:"effectiveness traffic-light · click a colored country",
+  gm_r:"< 50 critical", gm_a:"50–65 watch", gm_g:"≥ 65 healthy",
+  gm_pick:"Click a colored country to see its municipalities.",
+  gm_mun:"Municipalities · traffic-light", gm_orders:"orders", gm_demo:"demo",
+  gm_note:"AR & UY (and municipal detail outside GT/SV) are synthetic demo data — declared, never passed off as real · CA aggregates follow the 2026-06-24 snapshot",
   k2:"Evidence engine", p2_h:"Luck doesn't count here.",
   p2_p:"Raw rates lie at small samples. Everything is ranked by the <b>Wilson lower confidence bound</b> — the sample size physically drags the estimate toward caution, so a lucky 100% never outranks a proven 85%.",
   p2_raw:"Raw rate", p2_v1:"Looks perfect. Means nothing — one delivery is not a pattern.",
@@ -647,6 +691,11 @@ es:{
   p1_pr3:"El efecto externo está bloqueado en código hasta que un humano aprueba",
   p1_cov:"Cobertura, declarada", p1_mun:"municipal", p1_country:"país",
   p1_covnote:"lo que los datos no ven se dice en voz alta — nunca se finge",
+  gm_t:"La red, en el mapa", gm_sub:"semáforo de efectividad · haz clic en un país coloreado",
+  gm_r:"< 50 crítico", gm_a:"50–65 en observación", gm_g:"≥ 65 sano",
+  gm_pick:"Haz clic en un país coloreado para ver sus municipios.",
+  gm_mun:"Municipios · semáforo", gm_orders:"órdenes", gm_demo:"demo",
+  gm_note:"AR y UY (y el detalle municipal fuera de GT/SV) son datos sintéticos de demo — declarados, nunca se hacen pasar por reales · los agregados de CA siguen el snapshot 2026-06-24",
   k2:"Motor de evidencia", p2_h:"Aquí la suerte no cuenta.",
   p2_p:"Las tasas crudas mienten con muestras chicas. Todo se ordena por el <b>límite inferior de Wilson</b> — el tamaño de muestra arrastra físicamente el estimado hacia la cautela: un 100% con suerte nunca le gana a un 85% probado.",
   p2_raw:"Tasa cruda", p2_v1:"Se ve perfecto. No significa nada — una entrega no es un patrón.",
@@ -725,6 +774,11 @@ fr:{
   p1_pr3:"L'effet externe est bloqué dans le code jusqu'à approbation humaine",
   p1_cov:"Couverture, déclarée", p1_mun:"municipal", p1_country:"pays",
   p1_covnote:"ce que les données ne voient pas est dit à voix haute — jamais simulé",
+  gm_t:"Le réseau, sur la carte", gm_sub:"feu tricolore d'efficacité · clique sur un pays coloré",
+  gm_r:"< 50 critique", gm_a:"50–65 à surveiller", gm_g:"≥ 65 sain",
+  gm_pick:"Clique sur un pays coloré pour voir ses municipalités.",
+  gm_mun:"Municipalités · feu tricolore", gm_orders:"commandes", gm_demo:"démo",
+  gm_note:"AR et UY (et le détail municipal hors GT/SV) sont des données synthétiques de démo — déclarées, jamais présentées comme réelles · les agrégats CA suivent l'instantané 2026-06-24",
   k2:"Moteur de preuve", p2_h:"Ici, la chance ne compte pas.",
   p2_p:"Les taux bruts mentent sur les petits échantillons. Tout est classé par la <b>borne inférieure de Wilson</b> — la taille d'échantillon tire l'estimation vers la prudence : un 100% chanceux ne bat jamais un 85% prouvé.",
   p2_raw:"Taux brut", p2_v1:"Ça semble parfait. Ça ne veut rien dire — une livraison n'est pas un motif.",
@@ -1097,6 +1151,21 @@ function pagePatrol(){
       </div>
     </div>
   </div>
+  <div class="card geo-card" style="animation-delay:.15s">
+    <div class="geo-head">
+      <b>${T("gm_t")}</b><span class="sub">${T("gm_sub")}</span>
+      <div class="geo-legend">
+        <span class="geo-lg"><i style="background:#C0322B"></i>${T("gm_r")}</span>
+        <span class="geo-lg"><i style="background:#D97706"></i>${T("gm_a")}</span>
+        <span class="geo-lg"><i style="background:#0C7A57"></i>${T("gm_g")}</span>
+      </div>
+    </div>
+    <div class="geo-body">
+      <div class="geo-map"><svg id="geo-svg" viewBox="0 0 560 600" role="img" aria-label="Latin America effectiveness map"></svg><div class="geo-tip" id="geo-tip"></div></div>
+      <div class="geo-detail" id="geo-detail"></div>
+    </div>
+    <div class="geo-foot">${T("gm_note")}</div>
+  </div>
   <div class="card promise-card" style="animation-delay:.18s">
     <div class="promise-grid">
       <div class="promise"><div class="pi" style="background:var(--chalk2);color:var(--ink)">${ic("cpu",15)}</div><span>${T("p1_pr1")}</span></div>
@@ -1114,6 +1183,93 @@ function pagePatrol(){
     <span class="cov-chip part">NI · ${T("p1_country")}</span>
     <span class="cov-note">${T("p1_covnote")}</span>
   </div>`;
+}
+
+/* ── mapa semáforo LatAm (página Data) ──
+   Semáforo: <50 rojo · 50–65 ámbar · ≥65 verde. Siluetas: Natural Earth 110m
+   (frontend/latam.json). Datos: frontend/mapa_semaforo.json — CA alineado al
+   snapshot; AR/UY y detalle municipal fuera de GT/SV son demo declarado. */
+const GEO = { shapes:null, data:null, sel:"SV", loading:false };
+const semColor = ef => ef < 50 ? "#C0322B" : ef < 65 ? "#D97706" : "#0C7A57";
+// proyección equirectangular simple sobre el bbox de LatAm
+const GEO_B = { lon0:-118, lon1:-34, lat0:-56, lat1:33, W:560, H:600 };
+const gx = lon => (lon - GEO_B.lon0) / (GEO_B.lon1 - GEO_B.lon0) * GEO_B.W;
+const gy = lat => (GEO_B.lat1 - lat) / (GEO_B.lat1 - GEO_B.lat0) * GEO_B.H;
+function geoPath(geom){
+  const ring = r => r.map((c,i) => `${i?"L":"M"}${gx(c[0]).toFixed(1)},${gy(c[1]).toFixed(1)}`).join("") + "Z";
+  const polys = geom.type === "Polygon" ? [geom.coordinates] : geom.coordinates;
+  return polys.map(p => p.map(ring).join("")).join("");
+}
+async function initGeoMap(){
+  const svg = document.getElementById("geo-svg");
+  if(!svg) return;
+  if(GEO.shapes && GEO.data){ drawGeo(); return; }
+  if(GEO.loading) return;
+  GEO.loading = true;
+  try{
+    const [sh, da] = await Promise.all([
+      fetch("latam.json").then(r => r.json()),
+      fetch("mapa_semaforo.json").then(r => r.json()),
+    ]);
+    GEO.shapes = sh; GEO.data = da;
+    drawGeo();
+  }catch(e){
+    console.warn("mapa semáforo no disponible:", e.message);
+    const card = document.querySelector(".geo-card"); if(card) card.style.display = "none";
+  }finally{ GEO.loading = false; }
+}
+function drawGeo(){
+  const svg = document.getElementById("geo-svg");
+  if(!svg || !GEO.shapes) return;
+  const P = GEO.data.paises;
+  const ctx = [], ops = [];
+  GEO.shapes.features.forEach(f => {
+    const d = geoPath(f.geometry);
+    if(f.oper && P[f.id]){
+      ops.push(`<path class="geo-op ${GEO.sel===f.id?'sel':''}" d="${d}" fill="${semColor(P[f.id].ef)}" data-id="${f.id}"
+        role="button" tabindex="0" aria-label="${P[f.id].nombre} ${P[f.id].ef}%"></path>`);
+    } else {
+      ctx.push(`<path class="geo-ctx" d="${d}"></path>`);
+    }
+  });
+  svg.innerHTML = ctx.join("") + ops.join("");
+  const tip = document.getElementById("geo-tip");
+  svg.querySelectorAll(".geo-op").forEach(p => {
+    const id = p.dataset.id, c = P[id];
+    p.addEventListener("mousemove", e => {
+      const box = svg.closest(".geo-map").getBoundingClientRect();
+      tip.style.left = (e.clientX - box.left + 14) + "px";
+      tip.style.top  = (e.clientY - box.top - 12) + "px";
+      tip.innerHTML = `<b>${c.nombre}</b> · ${c.ef}% <span class="mono">n=${c.n.toLocaleString("en-US")}${c.demo?" · "+T("gm_demo"):""}</span>`;
+      tip.style.opacity = 1;
+    });
+    p.addEventListener("mouseleave", () => tip.style.opacity = 0);
+    const sel = () => { GEO.sel = id; drawGeo(); };
+    p.addEventListener("click", sel);
+    p.addEventListener("keydown", e => { if(e.key === "Enter" || e.key === " "){ e.preventDefault(); sel(); } });
+  });
+  geoDetail();
+}
+function geoDetail(){
+  const el = document.getElementById("geo-detail");
+  if(!el || !GEO.data) return;
+  const c = GEO.data.paises[GEO.sel];
+  if(!c){ el.innerHTML = `<div class="geo-empty">${T("gm_pick")}</div>`; return; }
+  el.innerHTML = `
+    <div class="geo-d-h"><b>${escq(c.nombre)}</b>${c.demo?`<span class="geo-demo">${T("gm_demo")}</span>`:""}</div>
+    <div class="geo-d-ef" style="color:${semColor(c.ef)}">${c.ef}%</div>
+    <div class="geo-d-n">n=${c.n.toLocaleString("en-US")} ${T("gm_orders")} · snapshot ${GEO.data.snapshot}</div>
+    <div class="geo-mun">
+      <div class="geo-mun-t">${T("gm_mun")}</div>
+      ${(c.municipios||[]).map(m => `
+        <div class="geo-row">
+          <span class="geo-dot" style="background:${semColor(m.ef)}"></span>
+          <b>${escq(m.nombre)}</b>
+          ${m.demo?`<span class="geo-demo">${T("gm_demo")}</span>`:""}
+          <span class="ef" style="color:${semColor(m.ef)}">${m.ef}%</span>
+          <span class="nn">n=${m.n.toLocaleString("en-US")}</span>
+        </div>`).join("")}
+    </div>`;
 }
 
 /* ── 02 EVIDENCE ── */
@@ -1596,6 +1752,7 @@ function renderPage(){
   const ws = document.getElementById("workspace");
   ws.innerHTML = `<section class="page on">${PAGES[STATE.page]()}</section>`;
   requestAnimationFrame(() => {
+    if(STATE.page === "patrol") initGeoMap();
     // animated fills
     document.querySelectorAll(".bfill").forEach(el => setTimeout(() => el.style.width = el.dataset.w+"%", 250));
     document.querySelectorAll(".flow-cf").forEach(el => setTimeout(() => el.style.width = el.dataset.c+"%", 250));
