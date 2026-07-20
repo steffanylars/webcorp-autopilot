@@ -88,7 +88,7 @@ def _cargar_estimador():
 
 
 def estimador_wilson(depto: str = "", municipio: str = "", carrier: str = "",
-                      min_n: int = 30, top: int = 5) -> dict:
+                      pais: str = "", min_n: int = 30, top: int = 5) -> dict:
     """
     Rankea pares municipio×carrier por Wilson LCB (no por tasa cruda).
 
@@ -103,6 +103,8 @@ def estimador_wilson(depto: str = "", municipio: str = "", carrier: str = "",
         'snapshot_date', y 'nota_metodologica'.
     """
     rows = _cargar_estimador()
+    if pais:
+        rows = [r for r in rows if r["pais"].strip().upper() == pais.strip().upper()]
     if depto:
         rows = [r for r in rows if r["depto"].strip().lower() == depto.strip().lower()]
     if municipio:
@@ -167,6 +169,7 @@ TOOL_SCHEMA_ESTIMADOR_WILSON = {
         "parameters": {
             "type": "object",
             "properties": {
+                "pais": {"type": "string", "description": "Pais a filtrar (ISO2: GT o SV — unicos con cobertura municipal). Vacio para todos."},
                 "depto": {"type": "string", "description": "Departamento a filtrar, ej. 'Escuintla'. Vacio para todos."},
                 "municipio": {"type": "string", "description": "Municipio a filtrar. Vacio para todos."},
                 "carrier": {"type": "string", "description": "Mensajeria a filtrar, ej. 'FORZA', 'CARGO', 'MEG'. Vacio para todas."},
