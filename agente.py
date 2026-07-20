@@ -132,9 +132,38 @@ def _pendientes_conn():
     return conn
 
 
+def _clave_caso(tool: str, argumentos: dict) -> str:
+    """Clave de dedupe EN COLA: mismo tool + mismo caso (municipio×carrier),
+    o mismo asunto si no hay caso estructurado. Evita que preguntas repetidas
+    llenen la Barrera con duplicados del mismo problema."""
+    caso = (argumentos or {}).get("caso") or {}
+    if caso.get("municipio") and caso.get("carrier"):
+        return f"{tool}|{str(caso['municipio']).strip().lower()}|{str(caso['carrier']).strip().upper()}"
+    asunto = str((argumentos or {}).get("asunto", "")).strip().lower()
+    return f"{tool}|asunto|{asunto[:80]}"
+
+
 def encolar_pendiente(tool: str, argumentos: dict, rationale: str) -> str:
-    pid = str(uuid.uuid4())[:8]
     conn = _pendientes_conn()
+    # Dedupe en cola: si ya hay un pendiente SIN RESOLVER para el mismo caso,
+    # se reutiliza — la cola muestra un problema una sola vez.
+    clave_nueva = _clave_caso(tool, argumentos)
+    rows = conn.execute(
+        "SELECT id, argumentos FROM pendientes WHERE estado='pendiente' AND tool=?",
+        (tool,),
+    ).fetchall()
+    for pid_prev, args_prev in rows:
+        try:
+            if _clave_caso(tool, json.loads(args_prev)) == clave_nueva:
+                conn.close()
+                _audit("hitl_dedupe_cola",
+                       f"{tool} ya esta en cola para el mismo caso; no se duplica",
+                       pid_prev)
+                return pid_prev
+        except Exception:
+            continue
+
+    pid = str(uuid.uuid4())[:8]
     conn.execute(
         "INSERT INTO pendientes (id, tool, argumentos, rationale, creado) VALUES (?,?,?,?,?)",
         (pid, tool, json.dumps(argumentos, ensure_ascii=False), rationale, time.time()),

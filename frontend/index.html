@@ -578,6 +578,7 @@ const STATE = {
   queue:[],             // pending HITL actions
   gateSel:0,            // índice del pendiente seleccionado en la Barrera
   gate:"pending",       // pending | confirming | done
+  lastRem:null,         // {rem,title,caso} — artefactos de la última aprobación (persisten hasta "Continuar")
   gateCd:3,
   solved:false,
   chainHi:null,
@@ -651,6 +652,7 @@ en:{
   p4_q:"Critical actions waiting", p4_qs:"click one to review it",
   p4_orders:"orders",
   p4_item:"Notify operations", p4_rat:"Agent's rationale (original wording)",
+  p4_next:"Continue", p4_stay:"Your files stay here until you continue — download them first.",
   k5:"Optimize & remediate", p5_h:"What the network could yield.",
   p5_p:"An exact <b>MILP</b> over the Wilson lower bound, under per-carrier capacity. Only pairs with real evidence (n≥30) participate — and the result is a recommendation. The Gate still holds.",
   p5_what:"What does this do?",
@@ -735,6 +737,7 @@ es:{
   p4_q:"Acciones críticas en espera", p4_qs:"haz clic en una para revisarla",
   p4_orders:"órdenes",
   p4_item:"Notificar a operaciones", p4_rat:"Justificación del agente (texto original)",
+  p4_next:"Continuar", p4_stay:"Tus archivos se quedan aquí hasta que continúes — descárgalos primero.",
   k5:"Optimizar y remediar", p5_h:"Lo que la red podría rendir.",
   p5_p:"Un <b>MILP</b> exacto sobre el límite inferior de Wilson, bajo capacidad por carrier. Solo participan pares con evidencia real (n≥30) — y el resultado es una recomendación. La Barrera sigue en pie.",
   p5_what:"¿Qué hace esto?",
@@ -819,6 +822,7 @@ fr:{
   p4_q:"Actions critiques en attente", p4_qs:"clique sur une pour la revoir",
   p4_orders:"commandes",
   p4_item:"Notifier les opérations", p4_rat:"Justification de l'agent (texte original)",
+  p4_next:"Continuer", p4_stay:"Tes fichiers restent ici jusqu'à ce que tu continues — télécharge-les d'abord.",
   k5:"Optimiser et remédier", p5_h:"Ce que le réseau pourrait rendre.",
   p5_p:"Un <b>MILP</b> exact sur la borne inférieure de Wilson, sous capacité par transporteur. Seules les paires avec preuve réelle (n≥30) participent — et le résultat est une recommandation. La Barrière tient toujours.",
   p5_what:"À quoi ça sert ?",
@@ -1107,10 +1111,10 @@ async function cargarPendientes(){
     if(firma === pendFirma) return;
     pendFirma = firma;
     STATE.queue = list;
-    if(STATE.gate !== "confirming") STATE.gate = "pending";
+    if(!["confirming","done"].includes(STATE.gate)) STATE.gate = "pending";
     setStatus(); refreshMapState();
     if(list.length) Pulse.lockAt(frOf(765)); else if(!STATE.thinking) Pulse.patrol();
-    if(["gate"].includes(STATE.page)) renderPage();
+    if(STATE.page === "gate" && STATE.gate !== "done") renderPage();
   }catch(_){}
 }
 
@@ -1471,7 +1475,62 @@ function selGate(i){
   clearTimeout(gateTimer);
   renderPage();
 }
+/* filas de artefactos REALES (persisten en re-renders — vienen del estado) */
+function emitRowsReal(rem){
+  if(!rem || !rem.generado) return "";
+  return (rem.artefactos || []).map(a => {
+    const esX = a.tipo === "excel";
+    const col = esX ? "var(--verified)" : "var(--critical)";
+    const icn = esX ? "sheet" : "file";
+    const nom = esX ? `${T("p4_e2")} · XLSX (${a.ordenes_incluidas || "—"} ${T("p4_orders")})` : `${T("p4_e1")} · ${a.tipo.toUpperCase()}`;
+    return `<a class="emit-row live" style="text-decoration:none;color:inherit" href="${API}/artefactos/${encodeURIComponent(a.archivo)}" target="_blank">
+      <div class="emit-ico" style="color:${col};border-color:${col}33">${ic(icn,16)}</div>
+      <div><div class="emit-n">${escq(nom)}</div><div class="emit-d">${T("p4_dl")}</div></div></a>`;
+  }).join("") + (rem.correos || []).map(cor => `
+    <a class="emit-row live" style="text-decoration:none;color:inherit" href="${cor.mailto}">
+      <div class="emit-ico" style="color:var(--ink2);border-color:var(--lineHi)">${ic("mail",16)}</div>
+      <div><div class="emit-n">${T("p4_draft")}${escq(cor.para)}</div><div class="emit-d">${T("p4_mailc")}</div></div></a>`).join("");
+}
+function gateNext(){
+  STATE.lastRem = null; STATE.gate = "pending"; STATE.gateCd = 3; STATE.gateSel = 0;
+  renderPage();
+}
 function pageGate(){
+  // ── estado "ejecutado": los artefactos se QUEDAN hasta que el humano continúe ──
+  if(STATE.gate === "done" && STATE.lastRem){
+    const lr = STATE.lastRem;
+    const filas = emitRowsReal(lr.rem);
+    return `
+    ${kicker("STN 04",T("k4"))}
+    <div class="page-head"><div>
+      <h1>${T("p4_h")}</h1>
+      <p>${T("p4_p1")} <code style="font-family:var(--mono);font-size:12px;background:var(--cardTint);border:1px solid var(--line);border-radius:5px;padding:1px 6px">aprobado_por_humano</code> ${T("p4_p2")}</p>
+    </div></div>
+    <div class="gate-grid">
+      <div class="card gate-card done" id="gate-card">
+        <div class="boom-track"><div class="boom hazard up" id="boom"></div><div class="boom-pivot"></div></div>
+        <div class="gate-body">
+          <div class="gate-done-w">
+            <div class="gd-ico">${ic("check",26)}</div>
+            <div class="gd-t">${T("p4_done")}</div>
+            <div class="gd-s">${escq(lr.caso || "")} · ${T("p4_done2")}</div>
+            <div style="font-size:11.5px;color:var(--ink3);margin-top:10px">${T("p4_stay")}</div>
+            <div style="display:flex;gap:10px;justify-content:center;margin-top:16px">
+              <button class="btn btn-ink" onclick="gateNext()">${T("p4_next")} ${ic("arrow",13)}</button>
+              <button class="btn btn-ghost" onclick="goTo('custody')">${T("p4_rcpt")}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card emit-card" style="animation-delay:.06s">
+        <div class="emit-t">${T("p4_real")}</div>
+        <div class="emit-s">${T("p4_real2")}</div>
+        ${filas || `
+        <div class="emit-row live"><div class="emit-ico" style="color:var(--critical);border-color:#C0322B33">${ic("file",16)}</div><div><div class="emit-n">${T("p4_e1")}</div><div class="emit-d">PDF</div></div></div>
+        <div class="emit-row live"><div class="emit-ico" style="color:var(--ink2);border-color:var(--lineHi)">${ic("mail",16)}</div><div><div class="emit-n">${T("p4_e3")}</div><div class="emit-d">${T("p4_e3b")}</div></div></div>`}
+      </div>
+    </div>`;
+  }
   const item = gateSelItem();
   let body;
   if(!item){
@@ -1577,45 +1636,19 @@ async function confirmGate(){
     toast(T("t_errex") + e.message);
     STATE.gate = "pending"; renderPage(); return;
   }
-  STATE.gate = "done";
+  // Éxito: los artefactos se guardan en el ESTADO y se quedan en pantalla
+  // hasta que el humano pulse "Continuar" — nada desaparece solo.
+  const rem = res?.resultado?.remediacion || null;
+  STATE.lastRem = { rem, title: item.title, caso: item.caso };
+  pendFirma = null;
+  STATE.queue = STATE.queue.filter(x => x.id !== item.id);
+  STATE.gateSel = 0; STATE.gate = "done"; STATE.gateCd = 3;
   const boom = document.getElementById("boom"); if(boom) boom.classList.add("up");
-  // artefactos REALES en la tarjeta de emisión, con links de descarga
-  const rem = res?.resultado?.remediacion;
-  setTimeout(() => {
-    const gb = document.getElementById("gate-body");
-    if(gb) gb.innerHTML = gateBody(item);
-    document.getElementById("gate-card")?.classList.add("done");
-    const emit = document.querySelector(".emit-card");
-    if(emit && rem?.generado){
-      const filas = (rem.artefactos || []).map(a => {
-        const esX = a.tipo === "excel";
-        const col = esX ? "var(--verified)" : "var(--critical)";
-        const icn = esX ? "sheet" : "file";
-        const nom = esX ? `${T("p4_e2")} · XLSX (${a.ordenes_incluidas || "—"} ${T("p4_orders")})` : `${T("p4_e1")} · ${a.tipo.toUpperCase()}`;
-        return `<a class="emit-row live" style="text-decoration:none;color:inherit" href="${API}/artefactos/${encodeURIComponent(a.archivo)}" target="_blank">
-          <div class="emit-ico" style="color:${col};border-color:${col}33">${ic(icn,16)}</div>
-          <div><div class="emit-n">${escq(nom)}</div><div class="emit-d">${T("p4_dl")}</div></div></a>`;
-      }).join("") + (rem.correos || []).map(cor => `
-        <a class="emit-row live" style="text-decoration:none;color:inherit" href="${cor.mailto}">
-          <div class="emit-ico" style="color:var(--ink2);border-color:var(--lineHi)">${ic("mail",16)}</div>
-          <div><div class="emit-n">${T("p4_draft")}${escq(cor.para)}</div><div class="emit-d">${T("p4_mailc")}</div></div></a>`).join("");
-      emit.innerHTML = `<div class="emit-t">${T("p4_real")}</div>
-        <div class="emit-s">${T("p4_real2")}</div>` + filas;
-    } else {
-      document.querySelectorAll(".emit-row").forEach((r,i) => setTimeout(() => r.classList.add("live"), i*220));
-    }
-  }, REDUCED ? 0 : 450);
-  cargarLedger();
-  setTimeout(() => {
-    pendFirma = null;
-    STATE.queue = STATE.queue.filter(x => x.id !== item.id);
-    STATE.gateSel = 0; STATE.gate = "pending"; STATE.gateCd = 3;
-    setStatus(); refreshMapState();
-    if(STATE.page === "gate") renderPage();
-    Pulse.travel(frOf(765), frOf(950), 600, () =>
-      Pulse.travel(frOf(950), frOf(1115), 600, () => STATE.queue.length ? Pulse.lockAt(frOf(765)) : Pulse.patrol()));
-    toast(T("t_appr"));
-  }, 2600);
+  setTimeout(() => { if(STATE.page === "gate") renderPage(); }, REDUCED ? 0 : 700);
+  setStatus(); refreshMapState(); cargarLedger();
+  Pulse.travel(frOf(765), frOf(950), 600, () =>
+    Pulse.travel(frOf(950), frOf(1115), 600, () => STATE.queue.length ? Pulse.lockAt(frOf(765)) : Pulse.patrol()));
+  toast(T("t_appr"));
 }
 async function dismissGate(){
   const item = gateSelItem(); if(!item) return;
