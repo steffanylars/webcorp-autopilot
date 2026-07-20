@@ -301,7 +301,7 @@ def _ordenes_no_entregadas(municipio: str, carrier: str, pais: str = "GT",
 
 def notificar_operaciones(asunto: str, mensaje: str, origen_id: str,
                            destino: str = "operaciones", canal: str = "webhook",
-                           caso: dict = None) -> dict:
+                           caso: dict = None, idioma: str = "es") -> dict:
     """
     Manda una notificacion real a operaciones sobre una excepcion detectada.
     SOLO se llama despues de aprobacion humana explicita (accion con efecto
@@ -376,7 +376,7 @@ def notificar_operaciones(asunto: str, mensaje: str, origen_id: str,
             remediacion_info = remediacion.generar(
                 asunto=asunto, accion=mensaje, origen_id=origen_id,
                 caso=caso, wilson=fila, snapshot=_snapshot_estimador(),
-                ordenes=ordenes,
+                ordenes=ordenes, idioma=idioma,
             )
         except Exception as e:
             remediacion_info = {"generado": False,

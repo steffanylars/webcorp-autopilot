@@ -47,6 +47,10 @@ class PreguntaIn(BaseModel):
     idioma: str = "es"   # es | en | fr — el panel manda su idioma activo
 
 
+class AprobarIn(BaseModel):
+    idioma: str = "es"   # idioma de los artefactos de remediacion
+
+
 @app.get("/")
 def salud():
     return {"status": "ok", "servicio": "WebCorp Autopilot Agent API"}
@@ -69,8 +73,9 @@ def pendientes():
 
 
 @app.post("/pendientes/{pid}/aprobar")
-def aprobar(pid: str):
-    res = agente.resolver_pendiente(pid, aprobado=True)
+def aprobar(pid: str, body: AprobarIn = None):
+    idioma = body.idioma if body else "es"
+    res = agente.resolver_pendiente(pid, aprobado=True, idioma=idioma)
     if not res["ok"]:
         raise HTTPException(404, res.get("razon", "no encontrado"))
     return res

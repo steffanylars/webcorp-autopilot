@@ -420,6 +420,29 @@ textarea#q{width:100%;min-height:48px;resize:none;border:none;outline:none;backg
   background:var(--ink);color:#fff;font-size:12.5px;font-weight:500;padding:12px 20px;border-radius:12px;
   box-shadow:0 14px 34px -10px rgba(12,36,48,.5);transition:transform .35s cubic-bezier(.2,.9,.3,1);max-width:90vw}
 #toast.show{transform:translate(-50%,0)}
+.lang-sw{display:flex;gap:4px;background:var(--card);border:1px solid var(--line);border-radius:99px;padding:3px}
+.lang-sw button{border:none;background:transparent;cursor:pointer;font-family:var(--mono);font-size:10.5px;
+  font-weight:600;color:var(--ink3);padding:4px 9px;border-radius:99px;transition:all .15s}
+.lang-sw button.on{background:var(--ink);color:#fff}
+.lang-sw button:hover:not(.on){color:var(--ink)}
+.gq-card{padding:0;overflow:hidden;margin-bottom:16px}
+.gq-h{padding:13px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:9px}
+.gq-h svg{width:15px;height:15px;color:var(--critical)}
+.gq-h b{font-family:var(--display);font-size:13px;font-weight:770}
+.gq-h span{margin-left:auto;font-family:var(--mono);font-size:10.5px;color:var(--ink3)}
+.gq-row{display:flex;align-items:center;gap:12px;padding:11px 20px;cursor:pointer;transition:background .15s}
+.gq-row:not(:last-child){border-bottom:1px solid var(--chalk2)}
+.gq-row:hover{background:var(--cardTint)}
+.gq-row.on{background:var(--signalSoft)}
+.gq-row.on::before{content:"";width:3.5px;align-self:stretch;background:var(--signal);margin:-11px 0 -11px -20px;border-radius:0}
+.gq-idx{font-family:var(--mono);font-size:10px;color:var(--ink4);width:20px;flex:none}
+.gq-t{font-size:12.5px;font-weight:600;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gq-case{font-family:var(--mono);font-size:10px;color:var(--ink3);flex:none}
+.explain-card{padding:18px 22px;margin-bottom:16px;background:linear-gradient(155deg,var(--chalk2),var(--card) 70%)}
+.explain-t{font-family:var(--display);font-size:13px;font-weight:770;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.explain-t svg{width:15px;height:15px;color:var(--signalInk)}
+.explain-b{font-size:12.5px;color:var(--ink2);line-height:1.65}
+.explain-b b{color:var(--ink)}
 .site-foot{max-width:1020px;margin:0 auto;padding:0 30px 40px;font-family:var(--mono);font-size:10px;
   color:var(--ink4);text-align:center;letter-spacing:.04em}
 
@@ -459,7 +482,8 @@ textarea#q{width:100%;min-height:48px;resize:none;border:none;outline:none;backg
   </div>
   <div class="status-pill" id="status-pill"><span class="sd"><i></i></span><span id="status-txt">On patrol · watching the network</span></div>
   <div class="topbar-right">
-    <div class="next-scan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><span class="mono">next scan 04:00</span></div>
+    <div class="lang-sw" id="lang-sw" role="group" aria-label="Language"></div>
+    <div class="next-scan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><span class="mono" id="next-scan-txt">next scan 04:00</span></div>
     <div class="avatar" title="marta.solis">MS</div>
   </div>
 </header>
@@ -510,13 +534,278 @@ const STATE = {
   thinking:false,
   trace:[],
   answered:null,        // null | objeto respuesta real del API
+  q:"",                 // texto del textarea — persiste entre re-renders
+  lastQ:"",             // última pregunta enviada (se muestra durante el razonamiento)
   queue:[],             // pending HITL actions
+  gateSel:0,            // índice del pendiente seleccionado en la Barrera
   gate:"pending",       // pending | confirming | done
   gateCd:3,
   solved:false,
   chainHi:null,
 };
 const now = () => new Date().toTimeString().slice(0,8);
+
+/* ════════ i18n — ES/EN/FR. El idioma viaja al agente (respuestas) y a la
+   aprobación (artefactos PDF/Excel/correos se generan en este idioma). ════════ */
+let LANG = localStorage.getItem("apilot_lang") || "en";
+const I18N = {
+en:{
+  next_scan:"next scan 04:00", site_foot:"LIVE AGENT · REAL DATA (SYNTHETIC FALLBACK, DECLARED) · ESTIMATOR SNAPSHOT 2026-06-24 · QWEN CLOUD GLOBAL AI HACKATHON — TRACK 4",
+  st_patrol:"On patrol · watching the network", st_reason:"Agent reasoning…", st_wait:"{n} action(s) waiting at the Gate",
+  n_data:"Data", n_tools:"Tools ƒ", n_agent:"Agent", n_gate:"Gate", n_act:"Act", n_ledger:"Ledger",
+  legend_ext:"external · evidence-first · not verified", legend_loop:"proactive loop · cron 04:00 · six countries",
+  ev_escaneo:"Proactive scan", ev_pregunta:"Question received", ev_tool:"Tool executed",
+  ev_tool_error:"Tool arg rejected — recovered", ev_respuesta:"Recommendation drafted",
+  ev_pendiente:"Queued for human approval", ev_aprobado:"Approved & executed",
+  ev_externo:"External search — nothing found", ev_descartado:"Dismissed by operator",
+  ev_fallback:"Fallback mode — rules answered", ev_bloqueado:"Blocked by the trust layer",
+  k1:"Data intake · autonomous watch", p1_h:"While you slept, it looked.",
+  p1_p:"Every night at 04:00 the agent walks WebCorp's real network — six countries, <b>318K orders</b>, <b>1.6M tracking events</b> — and ranks what it finds by honest statistics, not hunches.",
+  p1_btn:"Dispatch the agent", p1_worst:"Worst reliable pair tonight", p1_raw:"raw 36.8%",
+  p1_money:"cash-on-delivery left uncollected by this one pair", p1_fails:"24 failed deliveries", p1_90:"90 days",
+  p1_speed:"Detection speed", p1_days:"3 days", p1_sec:"seconds",
+  p1_quote:"“They don't notice — it's all in Excel. About 3 days. Or never.”",
+  p1_pr1:"The model orchestrates — it never computes a number", p1_pr2:"Every rate on screen carries its sample size (n)",
+  p1_pr3:"External effect is blocked in code until a human approves",
+  p1_cov:"Coverage, declared", p1_mun:"municipal", p1_country:"country",
+  p1_covnote:"what the data can't see is said out loud — never faked",
+  k2:"Evidence engine", p2_h:"Luck doesn't count here.",
+  p2_p:"Raw rates lie at small samples. Everything is ranked by the <b>Wilson lower confidence bound</b> — the sample size physically drags the estimate toward caution, so a lucky 100% never outranks a proven 85%.",
+  p2_raw:"Raw rate", p2_v1:"Looks perfect. Means nothing — one delivery is not a pattern.",
+  p2_v2:"Real evidence — 53 deliveries keep the lower bound high.",
+  p2_belt:"The toolbelt", p2_belt2:"every number arrives from here, never from the LLM",
+  p2_t1:"ranks courier × zone pairs by LCB 95%, each with its n", p2_t2:"weekly effectiveness series for any pair",
+  p2_t3:"active operational alerts, ranked", p2_t4:"MILP reassignment under carrier capacity · pairs with n≥30 only",
+  p2_t5:"unlocks only after internal evidence ran in the same loop", p2_t6:"the only tool with external effect · dedupe 6h",
+  p2_lock1:"evidence-first", p2_lock2:"human gate",
+  p2_foot:"The same math that ranks comment sections — pointed at <b style=\"color:var(--ink)\">$2,188</b> of real uncollected cash across 700+ courier × zone pairs.",
+  k3:"Orchestrator", p3_h:"Ask. It routes the rest.",
+  p3_p:"You speak plainly; the agent decides which tools to call. Its reasoning travels the route above in real time — and it will stop at the <b>Gate</b> when it needs you.",
+  p3_ph:"Why is FORZA doing so badly in Zacatecoluca — and what should we do?",
+  chip1:"Which are the worst municipality-carrier pairs with solid evidence, and what should we do?",
+  chip2:"Why is FORZA doing so badly in Zacatecoluca according to the Wilson estimator?",
+  chip3:"Check the data first — is any road block or extreme weather affecting El Salvador?",
+  p3_ask:"Ask", p3_empty:"Ask something — and watch the orange dot travel the route above.",
+  p3_demo:"Run the demo question", p3_ans:"Answer", p3_fb:"FALLBACK · RULES ONLY (no LLM)",
+  p3_qd:"{n} action(s) queued — nothing moves until you approve.", p3_open:"Open the Gate",
+  p3_asked:"You asked",
+  p3_foot:"Answers are written by Qwen · every figure inside them arrives from a tool marked",
+  p3_foot2:"· all of it lands in the ledger.",
+  p3_err:"The agent could not be reached: ",
+  k4:"Human gate", p4_h:"Nothing ships without you.",
+  p4_p1:"External effect is blocked <b>in code, not in the prompt</b> —", p4_p2:"can only be set by this screen. Not the model, not a prompt injection.",
+  p4_clear:"The gate is clear.", p4_clear2:"Nothing is waiting. Ask the agent something — anything with external effect will stop right here, physically, until you let it through.",
+  p4_badge:"Human approval required", p4_case:"Case", p4_ev:"Evidence", p4_qid:"Queue id",
+  p4_appr:"Approve & execute", p4_dism:"Dismiss", p4_conf:"Confirm execution — {n}s", p4_now:"Confirm now", p4_exec:"Executing…",
+  p4_hint:"Two-step by design — first click arms, second click, after the countdown, executes.",
+  p4_done:"Barrier lifted. Executed.", p4_done2:"Deterministic artifacts generated — the ledger has the receipt.",
+  p4_rcpt:"See the receipt", p4_emit:"On approval, code emits",
+  p4_emit2:"Numbers are re-queried at generation · emails are drafts — a human sends. Artifacts come out in the panel's language.",
+  p4_e1:"Carrier notice", p4_e2:"Recovery list", p4_e3:"Email drafts", p4_e3b:"never auto-sent",
+  p4_dl:"download ↓", p4_draft:"Draft → ", p4_mailc:"opens in your mail client · never auto-sent",
+  p4_real:"Code emitted — real files", p4_real2:"Numbers were re-queried at generation · emails are drafts.",
+  p4_q:"Critical actions waiting", p4_qs:"click one to review it",
+  p4_orders:"orders",
+  k5:"Optimize & remediate", p5_h:"What the network could yield.",
+  p5_p:"An exact <b>MILP</b> over the Wilson lower bound, under per-carrier capacity. Only pairs with real evidence (n≥30) participate — and the result is a recommendation. The Gate still holds.",
+  p5_what:"What does this do?",
+  p5_ex:"Today each zone is served by a fixed courier. This tool asks: <b>if we could re-deal the cards, which courier should serve each zone?</b> It only uses pairs with enough real evidence (30+ deliveries), respects each courier's capacity (+25% max), and finds the mathematically best assignment — not a guess. The output is a plan a human reviews: <b>nothing changes automatically</b>.",
+  p5_solve:"Solve the board", p5_exact:"PuLP + CBC · exact, not heuristic",
+  p5_l1:"→ filtering pairs · keep n ≥ 30 only", p5_l2:"→ objective · expected deliveries on Wilson LCB 95%",
+  p5_l3:"→ constraints · per-carrier capacity", p5_l4:"→ CBC · branch &amp; bound…", p5_l5:"✓ optimal found",
+  p5_imp:"Projected quarterly impact", p5_more:"more deliveries", p5_cod:"COD recovered / quarter",
+  p5_chg:"carrier changes — that's all", p5_flow:"Reassignment flow", p5_flow2:"n ≥ 30 · target Wilson LCB shown",
+  p5_ship:"shipments", p5_extra:"+{n} deliveries", p5_xl:"Full plan · XLSX", p5_pdf:"Summary · PDF",
+  p5_unav:"Solver unavailable: ",
+  k6:"Chain of custody", p6_h:"Every decision, addressable.",
+  p6_p:"Append-only JSONL — entries are added, never edited. Each action carries the <b>origen_id</b> of the evidence that caused it. Click one to light up the whole chain: question → tool → queue → approval.",
+  p6_live:"Live ledger", p6_ao:"append-only · JSONL",
+  p6_note:"chain of custody · click any origen_id to light up its whole chain · data → decision → artifact, unbroken",
+  p6_clear:"clear",
+  t_queued:"{n} action(s) queued — the agent is waiting at the Gate",
+  t_appr:"Approved & executed — real artifacts generated, receipt in the ledger",
+  t_dism:"Dismissed — nothing left the building",
+  t_errex:"Could not execute: ", t_errdis:"Could not dismiss: ",
+},
+es:{
+  next_scan:"próximo escaneo 04:00", site_foot:"AGENTE VIVO · DATOS REALES (FALLBACK SINTÉTICO, DECLARADO) · SNAPSHOT DEL ESTIMADOR 2026-06-24 · QWEN CLOUD GLOBAL AI HACKATHON — TRACK 4",
+  st_patrol:"En patrulla · vigilando la red", st_reason:"El agente razona…", st_wait:"{n} acción(es) esperando en la Barrera",
+  n_data:"Datos", n_tools:"Tools ƒ", n_agent:"Agente", n_gate:"Barrera", n_act:"Acción", n_ledger:"Registro",
+  legend_ext:"externo · evidencia primero · no verificado", legend_loop:"ciclo proactivo · cron 04:00 · seis países",
+  ev_escaneo:"Escaneo proactivo", ev_pregunta:"Pregunta recibida", ev_tool:"Tool ejecutada",
+  ev_tool_error:"Argumento rechazado — recuperado", ev_respuesta:"Recomendación redactada",
+  ev_pendiente:"En cola de aprobación humana", ev_aprobado:"Aprobado y ejecutado",
+  ev_externo:"Búsqueda externa — sin hallazgos", ev_descartado:"Descartado por el operador",
+  ev_fallback:"Modo fallback — respondieron las reglas", ev_bloqueado:"Bloqueado por la capa de confianza",
+  k1:"Ingesta de datos · vigilancia autónoma", p1_h:"Mientras dormías, él miró.",
+  p1_p:"Cada noche a las 04:00 el agente recorre la red real de WebCorp — seis países, <b>318K órdenes</b>, <b>1.6M eventos de tracking</b> — y ordena lo que encuentra con estadística honesta, no corazonadas.",
+  p1_btn:"Despachar al agente", p1_worst:"Peor par confiable esta noche", p1_raw:"cruda 36.8%",
+  p1_money:"efectivo contra entrega sin cobrar por este único par", p1_fails:"24 entregas fallidas", p1_90:"90 días",
+  p1_speed:"Velocidad de detección", p1_days:"3 días", p1_sec:"segundos",
+  p1_quote:"“No se dan cuenta — todo está en Excel. Como 3 días. O nunca.”",
+  p1_pr1:"El modelo orquesta — nunca calcula un número", p1_pr2:"Cada tasa en pantalla lleva su tamaño de muestra (n)",
+  p1_pr3:"El efecto externo está bloqueado en código hasta que un humano aprueba",
+  p1_cov:"Cobertura, declarada", p1_mun:"municipal", p1_country:"país",
+  p1_covnote:"lo que los datos no ven se dice en voz alta — nunca se finge",
+  k2:"Motor de evidencia", p2_h:"Aquí la suerte no cuenta.",
+  p2_p:"Las tasas crudas mienten con muestras chicas. Todo se ordena por el <b>límite inferior de Wilson</b> — el tamaño de muestra arrastra físicamente el estimado hacia la cautela: un 100% con suerte nunca le gana a un 85% probado.",
+  p2_raw:"Tasa cruda", p2_v1:"Se ve perfecto. No significa nada — una entrega no es un patrón.",
+  p2_v2:"Evidencia real — 53 entregas mantienen alto el límite inferior.",
+  p2_belt:"El cinturón de herramientas", p2_belt2:"cada número llega de aquí, nunca del LLM",
+  p2_t1:"ordena pares mensajería × zona por LCB 95%, cada uno con su n", p2_t2:"serie semanal de efectividad para cualquier par",
+  p2_t3:"alertas operativas activas, priorizadas", p2_t4:"reasignación MILP bajo capacidad por carrier · solo pares con n≥30",
+  p2_t5:"se desbloquea solo tras evidencia interna en el mismo ciclo", p2_t6:"la única tool con efecto externo · dedupe 6h",
+  p2_lock1:"evidencia primero", p2_lock2:"barrera humana",
+  p2_foot:"La misma matemática que ordena secciones de comentarios — apuntada a <b style=\"color:var(--ink)\">$2,188</b> de efectivo real sin cobrar en 700+ pares mensajería × zona.",
+  k3:"Orquestador", p3_h:"Pregunta. Él enruta el resto.",
+  p3_p:"Hablas en lenguaje natural; el agente decide qué herramientas llamar. Su razonamiento viaja por la ruta de arriba en tiempo real — y se detendrá en la <b>Barrera</b> cuando te necesite.",
+  p3_ph:"¿Por qué FORZA está tan mal en Zacatecoluca — y qué deberíamos hacer?",
+  chip1:"¿Cuáles son los peores pares municipio-mensajería con evidencia sólida y qué deberíamos hacer?",
+  chip2:"¿Por qué FORZA está tan mal en Zacatecoluca según el estimador Wilson?",
+  chip3:"Revisa primero los datos: ¿algún bloqueo vial o clima extremo afecta El Salvador?",
+  p3_ask:"Preguntar", p3_empty:"Pregunta algo — y mira el punto naranja viajar por la ruta de arriba.",
+  p3_demo:"Correr la pregunta demo", p3_ans:"Respuesta", p3_fb:"FALLBACK · SOLO REGLAS (sin LLM)",
+  p3_qd:"{n} acción(es) en cola — nada se mueve hasta que apruebes.", p3_open:"Abrir la Barrera",
+  p3_asked:"Preguntaste",
+  p3_foot:"Las respuestas las escribe Qwen · cada cifra dentro llega de una tool marcada",
+  p3_foot2:"· todo queda en el registro.",
+  p3_err:"No se pudo contactar al agente: ",
+  k4:"Barrera humana", p4_h:"Nada sale sin ti.",
+  p4_p1:"El efecto externo está bloqueado <b>en código, no en el prompt</b> —", p4_p2:"solo esta pantalla puede activarlo. Ni el modelo, ni una inyección de prompt.",
+  p4_clear:"La barrera está despejada.", p4_clear2:"No hay nada esperando. Pregúntale algo al agente — cualquier cosa con efecto externo se detendrá aquí, físicamente, hasta que la dejes pasar.",
+  p4_badge:"Requiere aprobación humana", p4_case:"Caso", p4_ev:"Evidencia", p4_qid:"Id en cola",
+  p4_appr:"Aprobar y ejecutar", p4_dism:"Descartar", p4_conf:"Confirmar ejecución — {n}s", p4_now:"Confirmar ahora", p4_exec:"Ejecutando…",
+  p4_hint:"Dos pasos por diseño — el primer clic arma, el segundo, tras la cuenta regresiva, ejecuta.",
+  p4_done:"Barrera levantada. Ejecutado.", p4_done2:"Artefactos determinísticos generados — el registro tiene el recibo.",
+  p4_rcpt:"Ver el recibo", p4_emit:"Al aprobar, el código emite",
+  p4_emit2:"Los números se reconsultan al generar · los correos son borradores — un humano envía. Los artefactos salen en el idioma del panel.",
+  p4_e1:"Notificación al carrier", p4_e2:"Lista de recuperación", p4_e3:"Borradores de correo", p4_e3b:"nunca se envían solos",
+  p4_dl:"descargar ↓", p4_draft:"Borrador → ", p4_mailc:"se abre en tu cliente de correo · nunca se envía solo",
+  p4_real:"El código emitió — archivos reales", p4_real2:"Los números se reconsultaron al generar · los correos son borradores.",
+  p4_q:"Acciones críticas en espera", p4_qs:"haz clic en una para revisarla",
+  p4_orders:"órdenes",
+  k5:"Optimizar y remediar", p5_h:"Lo que la red podría rendir.",
+  p5_p:"Un <b>MILP</b> exacto sobre el límite inferior de Wilson, bajo capacidad por carrier. Solo participan pares con evidencia real (n≥30) — y el resultado es una recomendación. La Barrera sigue en pie.",
+  p5_what:"¿Qué hace esto?",
+  p5_ex:"Hoy cada zona la atiende una mensajería fija. Esta herramienta pregunta: <b>si pudiéramos repartir de nuevo las cartas, ¿qué mensajería debería atender cada zona?</b> Solo usa pares con evidencia real suficiente (30+ entregas), respeta la capacidad de cada mensajería (+25% máx.) y encuentra la mejor asignación matemáticamente posible — no una corazonada. El resultado es un plan que revisa un humano: <b>nada cambia automáticamente</b>.",
+  p5_solve:"Resolver el tablero", p5_exact:"PuLP + CBC · exacto, no heurístico",
+  p5_l1:"→ filtrando pares · solo n ≥ 30", p5_l2:"→ objetivo · entregas esperadas sobre Wilson LCB 95%",
+  p5_l3:"→ restricciones · capacidad por carrier", p5_l4:"→ CBC · branch &amp; bound…", p5_l5:"✓ óptimo encontrado",
+  p5_imp:"Impacto trimestral proyectado", p5_more:"entregas más", p5_cod:"COD recuperado / trimestre",
+  p5_chg:"cambios de carrier — eso es todo", p5_flow:"Flujo de reasignación", p5_flow2:"n ≥ 30 · se muestra el Wilson LCB objetivo",
+  p5_ship:"envíos", p5_extra:"+{n} entregas", p5_xl:"Plan completo · XLSX", p5_pdf:"Resumen · PDF",
+  p5_unav:"Optimizador no disponible: ",
+  k6:"Cadena de custodia", p6_h:"Cada decisión, direccionable.",
+  p6_p:"JSONL de solo-agregar — las entradas se añaden, nunca se editan. Cada acción lleva el <b>origen_id</b> de la evidencia que la causó. Haz clic en uno para iluminar la cadena completa: pregunta → tool → cola → aprobación.",
+  p6_live:"Registro en vivo", p6_ao:"solo-agregar · JSONL",
+  p6_note:"cadena de custodia · haz clic en cualquier origen_id para iluminar su cadena · dato → decisión → artefacto, sin romperse",
+  p6_clear:"limpiar",
+  t_queued:"{n} acción(es) en cola — el agente espera en la Barrera",
+  t_appr:"Aprobado y ejecutado — artefactos reales generados, recibo en el registro",
+  t_dism:"Descartado — nada salió del edificio",
+  t_errex:"No se pudo ejecutar: ", t_errdis:"No se pudo descartar: ",
+},
+fr:{
+  next_scan:"prochain scan 04:00", site_foot:"AGENT EN DIRECT · DONNÉES RÉELLES (REPLI SYNTHÉTIQUE, DÉCLARÉ) · INSTANTANÉ DE L'ESTIMATEUR 2026-06-24 · QWEN CLOUD GLOBAL AI HACKATHON — TRACK 4",
+  st_patrol:"En patrouille · surveille le réseau", st_reason:"L'agent raisonne…", st_wait:"{n} action(s) en attente à la Barrière",
+  n_data:"Données", n_tools:"Outils ƒ", n_agent:"Agent", n_gate:"Barrière", n_act:"Action", n_ledger:"Registre",
+  legend_ext:"externe · preuve d'abord · non vérifié", legend_loop:"boucle proactive · cron 04:00 · six pays",
+  ev_escaneo:"Scan proactif", ev_pregunta:"Question reçue", ev_tool:"Outil exécuté",
+  ev_tool_error:"Argument rejeté — récupéré", ev_respuesta:"Recommandation rédigée",
+  ev_pendiente:"En file d'approbation humaine", ev_aprobado:"Approuvé et exécuté",
+  ev_externo:"Recherche externe — rien trouvé", ev_descartado:"Écarté par l'opérateur",
+  ev_fallback:"Mode repli — les règles ont répondu", ev_bloqueado:"Bloqué par la couche de confiance",
+  k1:"Ingestion de données · veille autonome", p1_h:"Pendant que tu dormais, il regardait.",
+  p1_p:"Chaque nuit à 04h00, l'agent parcourt le réseau réel de WebCorp — six pays, <b>318K commandes</b>, <b>1,6M événements de suivi</b> — et classe ce qu'il trouve avec des statistiques honnêtes, pas des intuitions.",
+  p1_btn:"Dépêcher l'agent", p1_worst:"Pire paire fiable cette nuit", p1_raw:"brut 36,8%",
+  p1_money:"paiement à la livraison non collecté par cette seule paire", p1_fails:"24 livraisons échouées", p1_90:"90 jours",
+  p1_speed:"Vitesse de détection", p1_days:"3 jours", p1_sec:"secondes",
+  p1_quote:"“Ils ne s'en rendent pas compte — tout est dans Excel. Environ 3 jours. Ou jamais.”",
+  p1_pr1:"Le modèle orchestre — il ne calcule jamais un chiffre", p1_pr2:"Chaque taux à l'écran porte sa taille d'échantillon (n)",
+  p1_pr3:"L'effet externe est bloqué dans le code jusqu'à approbation humaine",
+  p1_cov:"Couverture, déclarée", p1_mun:"municipal", p1_country:"pays",
+  p1_covnote:"ce que les données ne voient pas est dit à voix haute — jamais simulé",
+  k2:"Moteur de preuve", p2_h:"Ici, la chance ne compte pas.",
+  p2_p:"Les taux bruts mentent sur les petits échantillons. Tout est classé par la <b>borne inférieure de Wilson</b> — la taille d'échantillon tire l'estimation vers la prudence : un 100% chanceux ne bat jamais un 85% prouvé.",
+  p2_raw:"Taux brut", p2_v1:"Ça semble parfait. Ça ne veut rien dire — une livraison n'est pas un motif.",
+  p2_v2:"Preuve réelle — 53 livraisons maintiennent la borne haute.",
+  p2_belt:"La ceinture d'outils", p2_belt2:"chaque chiffre vient d'ici, jamais du LLM",
+  p2_t1:"classe les paires transporteur × zone par LCB 95%, chacune avec son n", p2_t2:"série hebdomadaire d'efficacité pour toute paire",
+  p2_t3:"alertes opérationnelles actives, priorisées", p2_t4:"réaffectation MILP sous capacité par transporteur · paires n≥30 uniquement",
+  p2_t5:"se déverrouille seulement après preuve interne dans la même boucle", p2_t6:"le seul outil à effet externe · dédup 6h",
+  p2_lock1:"preuve d'abord", p2_lock2:"barrière humaine",
+  p2_foot:"Les mêmes maths qui classent les sections de commentaires — pointées sur <b style=\"color:var(--ink)\">$2,188</b> de cash réel non collecté sur 700+ paires transporteur × zone.",
+  k3:"Orchestrateur", p3_h:"Demande. Il route le reste.",
+  p3_p:"Tu parles naturellement ; l'agent choisit les outils à appeler. Son raisonnement parcourt la route ci-dessus en temps réel — et il s'arrêtera à la <b>Barrière</b> quand il aura besoin de toi.",
+  p3_ph:"Pourquoi FORZA est-il si mauvais à Zacatecoluca — et que faire ?",
+  chip1:"Quelles sont les pires paires municipalité-transporteur avec des preuves solides, et que faire ?",
+  chip2:"Pourquoi FORZA est-il si mauvais à Zacatecoluca selon l'estimateur de Wilson ?",
+  chip3:"Vérifie d'abord les données : un blocage routier ou la météo affecte-t-il le Salvador ?",
+  p3_ask:"Demander", p3_empty:"Demande quelque chose — et regarde le point orange parcourir la route.",
+  p3_demo:"Lancer la question démo", p3_ans:"Réponse", p3_fb:"REPLI · RÈGLES SEULES (sans LLM)",
+  p3_qd:"{n} action(s) en file — rien ne bouge sans ton approbation.", p3_open:"Ouvrir la Barrière",
+  p3_asked:"Tu as demandé",
+  p3_foot:"Les réponses sont écrites par Qwen · chaque chiffre vient d'un outil marqué",
+  p3_foot2:"· tout atterrit dans le registre.",
+  p3_err:"Impossible de joindre l'agent : ",
+  k4:"Barrière humaine", p4_h:"Rien ne part sans toi.",
+  p4_p1:"L'effet externe est bloqué <b>dans le code, pas dans le prompt</b> —", p4_p2:"seul cet écran peut l'activer. Ni le modèle, ni une injection de prompt.",
+  p4_clear:"La barrière est dégagée.", p4_clear2:"Rien n'attend. Demande quelque chose à l'agent — tout ce qui a un effet externe s'arrêtera ici, physiquement, jusqu'à ton feu vert.",
+  p4_badge:"Approbation humaine requise", p4_case:"Cas", p4_ev:"Preuve", p4_qid:"Id en file",
+  p4_appr:"Approuver et exécuter", p4_dism:"Écarter", p4_conf:"Confirmer l'exécution — {n}s", p4_now:"Confirmer maintenant", p4_exec:"Exécution…",
+  p4_hint:"Deux étapes par conception — le premier clic arme, le second, après le compte à rebours, exécute.",
+  p4_done:"Barrière levée. Exécuté.", p4_done2:"Artefacts déterministes générés — le registre a le reçu.",
+  p4_rcpt:"Voir le reçu", p4_emit:"À l'approbation, le code émet",
+  p4_emit2:"Les chiffres sont re-consultés à la génération · les e-mails sont des brouillons — un humain envoie. Les artefacts sortent dans la langue du panneau.",
+  p4_e1:"Avis au transporteur", p4_e2:"Liste de récupération", p4_e3:"Brouillons d'e-mail", p4_e3b:"jamais envoyés seuls",
+  p4_dl:"télécharger ↓", p4_draft:"Brouillon → ", p4_mailc:"s'ouvre dans ton client mail · jamais envoyé seul",
+  p4_real:"Le code a émis — fichiers réels", p4_real2:"Chiffres re-consultés à la génération · les e-mails sont des brouillons.",
+  p4_q:"Actions critiques en attente", p4_qs:"clique sur une pour la revoir",
+  p4_orders:"commandes",
+  k5:"Optimiser et remédier", p5_h:"Ce que le réseau pourrait rendre.",
+  p5_p:"Un <b>MILP</b> exact sur la borne inférieure de Wilson, sous capacité par transporteur. Seules les paires avec preuve réelle (n≥30) participent — et le résultat est une recommandation. La Barrière tient toujours.",
+  p5_what:"À quoi ça sert ?",
+  p5_ex:"Aujourd'hui chaque zone est servie par un transporteur fixe. Cet outil demande : <b>si on pouvait redistribuer les cartes, quel transporteur devrait servir chaque zone ?</b> Il n'utilise que les paires avec assez de preuves réelles (30+ livraisons), respecte la capacité de chaque transporteur (+25% max) et trouve la meilleure affectation mathématiquement possible — pas une intuition. Le résultat est un plan revu par un humain : <b>rien ne change automatiquement</b>.",
+  p5_solve:"Résoudre le plateau", p5_exact:"PuLP + CBC · exact, pas heuristique",
+  p5_l1:"→ filtrage des paires · n ≥ 30 uniquement", p5_l2:"→ objectif · livraisons attendues sur Wilson LCB 95%",
+  p5_l3:"→ contraintes · capacité par transporteur", p5_l4:"→ CBC · branch &amp; bound…", p5_l5:"✓ optimum trouvé",
+  p5_imp:"Impact trimestriel projeté", p5_more:"livraisons en plus", p5_cod:"COD récupéré / trimestre",
+  p5_chg:"changements de transporteur — c'est tout", p5_flow:"Flux de réaffectation", p5_flow2:"n ≥ 30 · Wilson LCB cible affiché",
+  p5_ship:"envois", p5_extra:"+{n} livraisons", p5_xl:"Plan complet · XLSX", p5_pdf:"Résumé · PDF",
+  p5_unav:"Optimiseur indisponible : ",
+  k6:"Chaîne de traçabilité", p6_h:"Chaque décision, adressable.",
+  p6_p:"JSONL en ajout seul — les entrées s'ajoutent, jamais ne s'éditent. Chaque action porte l'<b>origen_id</b> de la preuve qui l'a causée. Clique sur un pour illuminer toute la chaîne : question → outil → file → approbation.",
+  p6_live:"Registre en direct", p6_ao:"ajout seul · JSONL",
+  p6_note:"chaîne de traçabilité · clique sur un origen_id pour illuminer sa chaîne · donnée → décision → artefact, intacte",
+  p6_clear:"effacer",
+  t_queued:"{n} action(s) en file — l'agent attend à la Barrière",
+  t_appr:"Approuvé et exécuté — artefacts réels générés, reçu dans le registre",
+  t_dism:"Écarté — rien n'a quitté le bâtiment",
+  t_errex:"Échec de l'exécution : ", t_errdis:"Échec du rejet : ",
+},
+};
+const T = k => (I18N[LANG] && I18N[LANG][k]) ?? I18N.en[k] ?? k;
+const Tn = (k,n) => T(k).replace("{n}", n);
+function setLang(l){
+  if(!I18N[l]) return;
+  LANG = l; localStorage.setItem("apilot_lang", l);
+  renderLangSw(); traducirChrome(); setStatus(); renderPage();
+}
+function renderLangSw(){
+  const el = document.getElementById("lang-sw");
+  if(el) el.innerHTML = ["en","es","fr"].map(l =>
+    `<button class="${l===LANG?'on':''}" onclick="setLang('${l}')" aria-pressed="${l===LANG}">${l.toUpperCase()}</button>`).join("");
+}
+function traducirChrome(){
+  const ns = document.getElementById("next-scan-txt"); if(ns) ns.textContent = T("next_scan");
+  const foot = document.querySelector(".site-foot"); if(foot) foot.textContent = T("site_foot");
+  const labels = [T("n_data"),T("n_tools"),T("n_agent"),T("n_gate"),T("n_act"),T("n_ledger")];
+  document.querySelectorAll("#routemap .nlabel").forEach((el,i) => { if(labels[i]) el.textContent = labels[i]; });
+  const legs = document.querySelectorAll("#routemap .maplegend");
+  if(legs[0]) legs[0].textContent = T("legend_ext");
+  if(legs[1]) legs[1].textContent = T("legend_loop");
+}
+
 const API = new URLSearchParams(location.search).get("api")
   || (location.protocol.startsWith("http") ? location.origin : "http://localhost:8001");
 async function api(path, opts={}){
@@ -543,6 +832,9 @@ const frOf = x => (x - 95) / (1115 - 95);
 
 function buildMap(){
   const svg = document.getElementById("routemap");
+  const LBL = {patrol:T("n_data"), evidence:T("n_tools"), dispatch:T("n_agent"),
+               gate:T("n_gate"), yield:T("n_act"), custody:T("n_ledger")};
+  NODES.forEach(n => { n.label = LBL[n.id] || n.label; });
   const nodesHtml = NODES.map((n,i) => {
     const r = n.big ? 18 : 14;
     let core;
@@ -576,8 +868,8 @@ function buildMap(){
     <path id="p-spur" class="rail spur drawable" d="M540,84 C572,50 606,28 668,28"/>
     <path id="p-main" class="rail drawable" d="M95,${MAIN_Y} L1115,${MAIN_Y}"/>
     <g class="lockg pop" style="animation-delay:1.3s" transform="translate(659,19)">${ic("lock",17)}</g>
-    <text class="maplegend pop" style="animation-delay:1.4s" x="692" y="31">external · evidence-first · not verified</text>
-    <text class="maplegend pop" style="animation-delay:1.5s" x="600" y="188" text-anchor="middle">proactive loop · cron 04:00 · six countries</text>
+    <text class="maplegend pop" style="animation-delay:1.4s" x="692" y="31">${T("legend_ext")}</text>
+    <text class="maplegend pop" style="animation-delay:1.5s" x="600" y="188" text-anchor="middle">${T("legend_loop")}</text>
     ${nodesHtml}
     <g id="pulse" style="opacity:0">
       <circle class="pr" r="6"/>
@@ -657,9 +949,9 @@ const Pulse = (() => {
 function setStatus(){
   const pill = document.getElementById("status-pill"), txt = document.getElementById("status-txt");
   pill.classList.remove("reasoning","waiting");
-  if(STATE.queue.length){ pill.classList.add("waiting"); txt.textContent = `${STATE.queue.length} action${STATE.queue.length>1?"s":""} waiting at the Gate`; }
-  else if(STATE.thinking){ pill.classList.add("reasoning"); txt.textContent = "Agent reasoning…"; }
-  else { txt.textContent = "On patrol · watching the network"; }
+  if(STATE.queue.length){ pill.classList.add("waiting"); txt.textContent = Tn("st_wait", STATE.queue.length); }
+  else if(STATE.thinking){ pill.classList.add("reasoning"); txt.textContent = T("st_reason"); }
+  else { txt.textContent = T("st_patrol"); }
 }
 function refreshMapState(){
   NODES.forEach(n => {
@@ -692,18 +984,18 @@ function toast(msg){
 
 /* ════════ ledger data ════════ */
 const EV_META = {
-  escaneo:{icon:"radar", c:"#66808A", label:"Proactive scan"},
-  pregunta:{icon:"ask", c:"#37505B", label:"Question received"},
-  tool:{icon:"zap", c:"#F4501E", label:"Tool executed"},
-  tool_error:{icon:"warn", c:"#A03A10", label:"Tool arg rejected — recovered"},
-  respuesta:{icon:"cpu", c:"#0C2430", label:"Recommendation drafted"},
-  pendiente:{icon:"shield", c:"#A03A10", label:"Queued for human approval"},
-  aprobado:{icon:"check", c:"#0C7A57", label:"Approved & executed"},
-  externo:{icon:"search", c:"#66808A", label:"External search — nothing found"},
+  escaneo:{icon:"radar", c:"#66808A", k:"ev_escaneo"},
+  pregunta:{icon:"ask", c:"#37505B", k:"ev_pregunta"},
+  tool:{icon:"zap", c:"#F4501E", k:"ev_tool"},
+  tool_error:{icon:"warn", c:"#A03A10", k:"ev_tool_error"},
+  respuesta:{icon:"cpu", c:"#0C2430", k:"ev_respuesta"},
+  pendiente:{icon:"shield", c:"#A03A10", k:"ev_pendiente"},
+  aprobado:{icon:"check", c:"#0C7A57", k:"ev_aprobado"},
+  externo:{icon:"search", c:"#66808A", k:"ev_externo"},
 };
-EV_META.descartado = {icon:"x", c:"#66808A", label:"Dismissed by operator"};
-EV_META.fallback = {icon:"warn", c:"#A03A10", label:"Fallback mode — rules answered"};
-EV_META.bloqueado = {icon:"lock", c:"#0C2430", label:"Blocked by the trust layer"};
+EV_META.descartado = {icon:"x", c:"#66808A", k:"ev_descartado"};
+EV_META.fallback = {icon:"warn", c:"#A03A10", k:"ev_fallback"};
+EV_META.bloqueado = {icon:"lock", c:"#0C2430", k:"ev_bloqueado"};
 const TIPO_MAP = {
   pregunta:"pregunta", respuesta:"respuesta", tool_ejecutada:"tool",
   tool_error:"tool_error", tool_args_invalidos:"tool_error", max_rondas:"tool_error",
@@ -747,7 +1039,7 @@ function mapPendiente(pl){
     id: pl.id,
     title: a.asunto || "(no subject)",
     msg: a.mensaje || pl.rationale || "",
-    stats: [["Case", caso], ["Evidence", a.origen_id || "—"], ["Queue id", pl.id]],
+    caso, origen: a.origen_id || "—",
   };
 }
 async function cargarPendientes(){
@@ -773,54 +1065,54 @@ function kicker(code, txt){
 /* ── 01 PATROL ── */
 function pagePatrol(){
   return `
-  ${kicker("STN 01","Data intake · autonomous watch")}
+  ${kicker("STN 01",T("k1"))}
   <div class="page-head">
     <div>
-      <h1>While you slept, it looked.</h1>
-      <p>Every night at 04:00 the agent walks WebCorp's real network — six countries, <b>318K orders</b>, <b>1.6M tracking events</b> — and ranks what it finds by honest statistics, not hunches.</p>
+      <h1>${T("p1_h")}</h1>
+      <p>${T("p1_p")}</p>
     </div>
-    <button class="btn btn-ink" onclick="goTo('dispatch')">${ic("cpu",15)} Dispatch the agent</button>
+    <button class="btn btn-ink" onclick="goTo('dispatch')">${ic("cpu",15)} ${T("p1_btn")}</button>
   </div>
   <div class="patrol-grid">
     <div class="card worst-card lift">
       <div class="worst-glow"></div>
       <div style="position:relative">
-        <div class="worst-tag">${ic("warn",14)} Worst reliable pair tonight</div>
+        <div class="worst-tag">${ic("warn",14)} ${T("p1_worst")}</div>
         <div class="worst-num">23.4%</div>
         <div class="worst-pair">Zacatecoluca (SV) × FORZA</div>
-        <div class="worst-math"><s>raw 36.8%</s><span class="arrow">→</span><b>Wilson LCB 95%</b><span>·</span><span>n=38</span></div>
+        <div class="worst-math"><s>${T("p1_raw")}</s><span class="arrow">→</span><b>Wilson LCB 95%</b><span>·</span><span>n=38</span></div>
         <div class="worst-foot"><span class="ftag"><i>ƒ</i> estimador_wilson</span><span class="snap">snapshot 2026-06-24</span></div>
       </div>
     </div>
     <div class="side-stack">
       <div class="card money-card lift" style="animation-delay:.06s">
         <div class="money-v">$2,188</div>
-        <div class="money-l">cash-on-delivery left uncollected by this one pair</div>
-        <div class="money-meta"><span class="snap">24 failed deliveries</span><span class="snap">90 days</span></div>
+        <div class="money-l">${T("p1_money")}</div>
+        <div class="money-meta"><span class="snap">${T("p1_fails")}</span><span class="snap">${T("p1_90")}</span></div>
       </div>
       <div class="card speed-card" style="animation-delay:.12s">
-        <div class="speed-l">Detection speed</div>
-        <div class="speed-row"><span class="from">3 days</span>${ic("arrow",17)}<span class="to">seconds</span></div>
-        <div class="speed-q">"They don't notice — it's all in Excel. About 3 days. Or never."</div>
+        <div class="speed-l">${T("p1_speed")}</div>
+        <div class="speed-row"><span class="from">${T("p1_days")}</span>${ic("arrow",17)}<span class="to">${T("p1_sec")}</span></div>
+        <div class="speed-q">${T("p1_quote")}</div>
       </div>
     </div>
   </div>
   <div class="card promise-card" style="animation-delay:.18s">
     <div class="promise-grid">
-      <div class="promise"><div class="pi" style="background:var(--chalk2);color:var(--ink)">${ic("cpu",15)}</div><span>The model orchestrates — it never computes a number</span></div>
-      <div class="promise"><div class="pi" style="background:var(--verifiedSoft);color:var(--verified)">${ic("gauge",15)}</div><span>Every rate on screen carries its sample size (n)</span></div>
-      <div class="promise"><div class="pi hazard" style="color:#fff">${ic("shield",15)}</div><span>External effect is blocked in code until a human approves</span></div>
+      <div class="promise"><div class="pi" style="background:var(--chalk2);color:var(--ink)">${ic("cpu",15)}</div><span>${T("p1_pr1")}</span></div>
+      <div class="promise"><div class="pi" style="background:var(--verifiedSoft);color:var(--verified)">${ic("gauge",15)}</div><span>${T("p1_pr2")}</span></div>
+      <div class="promise"><div class="pi hazard" style="color:#fff">${ic("shield",15)}</div><span>${T("p1_pr3")}</span></div>
     </div>
   </div>
   <div class="card coverage-card" style="animation-delay:.24s">
-    <span class="coverage-t">Coverage, declared</span>
-    <span class="cov-chip full">${ic("check",11)} GT · municipal</span>
-    <span class="cov-chip full">${ic("check",11)} SV · municipal</span>
-    <span class="cov-chip part">HN · country</span>
-    <span class="cov-chip part">PA · country</span>
-    <span class="cov-chip part">CR · country</span>
-    <span class="cov-chip part">NI · country</span>
-    <span class="cov-note">what the data can't see is said out loud — never faked</span>
+    <span class="coverage-t">${T("p1_cov")}</span>
+    <span class="cov-chip full">${ic("check",11)} GT · ${T("p1_mun")}</span>
+    <span class="cov-chip full">${ic("check",11)} SV · ${T("p1_mun")}</span>
+    <span class="cov-chip part">HN · ${T("p1_country")}</span>
+    <span class="cov-chip part">PA · ${T("p1_country")}</span>
+    <span class="cov-chip part">CR · ${T("p1_country")}</span>
+    <span class="cov-chip part">NI · ${T("p1_country")}</span>
+    <span class="cov-note">${T("p1_covnote")}</span>
   </div>`;
 }
 
@@ -839,26 +1131,26 @@ function gaugeCard(label, raw, wilson, n, good, verdict, delay){
 }
 function pageEvidence(){
   return `
-  ${kicker("STN 02","Evidence engine")}
+  ${kicker("STN 02",T("k2"))}
   <div class="page-head"><div>
-    <h1>Luck doesn't count here.</h1>
-    <p>Raw rates lie at small samples. Everything is ranked by the <b>Wilson lower confidence bound</b> — the sample size physically drags the estimate toward caution, so a lucky 100% never outranks a proven 85%.</p>
+    <h1>${T("p2_h")}</h1>
+    <p>${T("p2_p")}</p>
   </div></div>
   <div class="ev-grid">
-    ${gaugeCard("Chahal × FORZA", 100, 20.7, 1, false, "Looks perfect. Means nothing — one delivery is not a pattern.", 0)}
-    ${gaugeCard("Yupiltepeque × CARGO", 84.9, 72.9, 53, true, "Real evidence — 53 deliveries keep the lower bound high.", .08)}
+    ${gaugeCard("Chahal × FORZA", 100, 20.7, 1, false, T("p2_v1"), 0)}
+    ${gaugeCard("Yupiltepeque × CARGO", 84.9, 72.9, 53, true, T("p2_v2"), .08)}
   </div>
   <div class="card tools-card" style="animation-delay:.16s">
-    <div class="tools-h"><b>The toolbelt</b><span>every number arrives from here, never from the LLM</span></div>
-    <div class="tool-row"><span class="tool-name">estimador_wilson</span><span class="tool-desc">ranks courier × zone pairs by LCB 95%, each with its n</span><span class="ftag"><i>ƒ</i> calc</span></div>
-    <div class="tool-row"><span class="tool-name">efectividad_semanal</span><span class="tool-desc">weekly effectiveness series for any pair</span><span class="ftag"><i>ƒ</i> calc</span></div>
-    <div class="tool-row"><span class="tool-name">alertas</span><span class="tool-desc">active operational alerts, ranked</span><span class="ftag"><i>ƒ</i> calc</span></div>
-    <div class="tool-row"><span class="tool-name">optimizar_asignacion</span><span class="tool-desc">MILP reassignment under carrier capacity · pairs with n≥30 only</span><span class="ftag"><i>ƒ</i> calc</span></div>
-    <div class="tool-row"><span class="tool-name">buscar_contexto_externo</span><span class="tool-desc">unlocks only after internal evidence ran in the same loop</span><span class="tool-lock">${ic("lock",10)} evidence-first</span></div>
-    <div class="tool-row"><span class="tool-name">notificar_operaciones</span><span class="tool-desc">the only tool with external effect · dedupe 6h</span><span class="tool-lock">${ic("lock",10)} human gate</span></div>
+    <div class="tools-h"><b>${T("p2_belt")}</b><span>${T("p2_belt2")}</span></div>
+    <div class="tool-row"><span class="tool-name">estimador_wilson</span><span class="tool-desc">${T("p2_t1")}</span><span class="ftag"><i>ƒ</i> calc</span></div>
+    <div class="tool-row"><span class="tool-name">efectividad_semanal</span><span class="tool-desc">${T("p2_t2")}</span><span class="ftag"><i>ƒ</i> calc</span></div>
+    <div class="tool-row"><span class="tool-name">alertas</span><span class="tool-desc">${T("p2_t3")}</span><span class="ftag"><i>ƒ</i> calc</span></div>
+    <div class="tool-row"><span class="tool-name">optimizar_asignacion</span><span class="tool-desc">${T("p2_t4")}</span><span class="ftag"><i>ƒ</i> calc</span></div>
+    <div class="tool-row"><span class="tool-name">buscar_contexto_externo</span><span class="tool-desc">${T("p2_t5")}</span><span class="tool-lock">${ic("lock",10)} ${T("p2_lock1")}</span></div>
+    <div class="tool-row"><span class="tool-name">notificar_operaciones</span><span class="tool-desc">${T("p2_t6")}</span><span class="tool-lock">${ic("lock",10)} ${T("p2_lock2")}</span></div>
   </div>
   <div class="card ev-foot" style="animation-delay:.24s">${ic("flask",20)}
-    <span>The same math that ranks comment sections — pointed at <b style="color:var(--ink)">$2,188</b> of real uncollected cash across 700+ courier × zone pairs.</span>
+    <span>${T("p2_foot")}</span>
   </div>`;
 }
 
@@ -868,44 +1160,55 @@ function clearFlow(){ flowTimers.forEach(clearTimeout); flowTimers = []; }
 
 function pageDispatch(){
   const thinkCls = STATE.thinking ? "thinking" : "";
+  const askedBar = STATE.thinking && STATE.lastQ ? `
+    <div class="card" style="padding:12px 20px;margin-bottom:16px;display:flex;gap:10px;align-items:center">
+      ${ic("ask",15)}<span style="font-size:12.5px;color:var(--ink2)"><b style="color:var(--ink)">${T("p3_asked")}:</b> ${escq(STATE.lastQ)}</span>
+    </div>` : "";
   let result = "";
   if(STATE.thinking){
-    result = `<div class="card trace-card" id="trace-card"></div>`;
+    result = askedBar + `<div class="card trace-card" id="trace-card"></div>`;
   } else if(STATE.answered){
     result = (STATE.trace.length ? traceRendered() : "") + recReal(STATE.answered);
   } else {
     result = `<div class="card empty">
       <div class="ei">${ic("ask",22)}</div>
-      <div class="et">Ask something — and watch the orange dot travel the route above.</div>
-      <button class="btn btn-ink" style="margin:16px auto 0" onclick="runQuestion()">${ic("zap",14)} Run the demo question</button>
+      <div class="et">${T("p3_empty")}</div>
+      <button class="btn btn-ink" style="margin:16px auto 0" onclick="presetQ('chip2')">${ic("zap",14)} ${T("p3_demo")}</button>
     </div>`;
   }
   return `
-  ${kicker("STN 03","Orchestrator")}
+  ${kicker("STN 03",T("k3"))}
   <div class="page-head"><div>
-    <h1>Ask. It routes the rest.</h1>
-    <p>You speak plainly; the agent decides which tools to call. Its reasoning travels the route above in real time — and it will stop at the <b>Gate</b> when it needs you.</p>
+    <h1>${T("p3_h")}</h1>
+    <p>${T("p3_p")}</p>
   </div></div>
   <div class="card console ${thinkCls}">
     <div class="console-row">
       <div class="agent-face ${thinkCls}"><span class="af-dot"></span></div>
       <div style="flex:1">
-        <textarea id="q" aria-label="Question for the agent" placeholder="Why is FORZA doing so badly in Zacatecoluca — and what should we do?"></textarea>
+        <textarea id="q" aria-label="Question for the agent" placeholder="${escq(T("p3_ph"))}"
+          oninput="STATE.q=this.value"
+          onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();runQuestion();}">${escq(STATE.q)}</textarea>
         <div class="console-foot">
           <div class="console-chips">
-            <button class="chip" onclick="fillQ(this); runQuestion()">Why is FORZA so bad in Zacatecoluca?</button>
-            <button class="chip" onclick="fillQ(this); runQuestion()">Did any road block or extreme weather in Zacatecoluca explain this? Check the data, then search external context.</button>
-            <button class="chip" onclick="fillQ(this); runQuestion()">Which carrier reassignments do you recommend?</button>
+            <button class="chip" onclick="presetQ('chip1')">${T("chip1")}</button>
+            <button class="chip" onclick="presetQ('chip2')">${T("chip2")}</button>
+            <button class="chip" onclick="presetQ('chip3')">${T("chip3")}</button>
           </div>
-          <button class="btn btn-ink" onclick="runQuestion()">${ic("arrow",14)} Ask</button>
+          <button class="btn btn-ink" onclick="runQuestion()">${ic("arrow",14)} ${T("p3_ask")}</button>
         </div>
       </div>
     </div>
   </div>
   ${result}
-  <div class="disp-foot">Answers are written by Qwen · every figure inside them arrives from a tool marked <span class="ftag" style="vertical-align:1px"><i>ƒ</i> calc</span> · all of it lands in the ledger.</div>`;
+  <div class="disp-foot">${T("p3_foot")} <span class="ftag" style="vertical-align:1px"><i>ƒ</i> calc</span> ${T("p3_foot2")}</div>`;
 }
-function fillQ(el){ const q = document.getElementById("q"); if(q) q.value = el.textContent; }
+/* chip: escribe la pregunta traducida en la caja (visible) y la corre */
+function presetQ(key){
+  STATE.q = T(key);
+  const q = document.getElementById("q"); if(q) q.value = STATE.q;
+  runQuestion();
+}
 
 /* La traza es REAL: durante el razonamiento se lee el audit y cada
    evento nuevo entra como un paso — tiempos y contenido verdaderos. */
@@ -922,12 +1225,12 @@ function traceRendered(){
 
 function recReal(r){
   const chips = (r.tools_usadas || []).map(tl => `<span class="ftag"><i>ƒ</i> ${escq(tl.tool)}</span>`).join(" ");
-  const fallbackBadge = r.fallback ? `<div class="nv-badge">${ic("warn",11)} FALLBACK · RULES ONLY (no LLM)</div>` : "";
+  const fallbackBadge = r.fallback ? `<div class="nv-badge">${ic("warn",11)} ${T("p3_fb")}</div>` : "";
   const queued = (r.pendientes || []).length ? `
-      <div class="queued-bar">${ic("shield",17)}<span>${r.pendientes.length} action${r.pendientes.length>1?"s":""} queued — nothing moves until you approve.</span>
-        <button class="btn btn-ghost" style="padding:8px 14px" onclick="goTo('gate')">Open the Gate ${ic("arrow",13)}</button></div>` : "";
+      <div class="queued-bar">${ic("shield",17)}<span>${Tn("p3_qd", r.pendientes.length)}</span>
+        <button class="btn btn-ghost" style="padding:8px 14px" onclick="goTo('gate')">${T("p3_open")} ${ic("arrow",13)}</button></div>` : "";
   return `<div class="card rec-card">
-    <div class="rec-h">${ic("cpu",16)}<b>Answer</b>${chips ? `<span style="margin-left:auto;display:flex;gap:6px;flex-wrap:wrap">${chips}</span>` : ""}</div>
+    <div class="rec-h">${ic("cpu",16)}<b>${T("p3_ans")}</b>${chips ? `<span style="margin-left:auto;display:flex;gap:6px;flex-wrap:wrap">${chips}</span>` : ""}</div>
     <div class="rec-b">
       ${fallbackBadge}
       <div class="rec-lead" style="font-weight:500;font-size:14.5px;line-height:1.65">${mdlite(r.respuesta)}</div>
@@ -948,7 +1251,7 @@ async function pasoTraza(){
     const c = document.getElementById("trace-card");
     nuevos.forEach(e => {
       const m = EV_META[TIPO_MAP[e.tipo] || "tool"];
-      const paso = {icon:m.icon, c:m.c, t:m.label, s:e.detalle.slice(0,90), tms:new Date(e.ts).toTimeString().slice(3,8)};
+      const paso = {icon:m.icon, c:m.c, t:T(m.k), s:e.detalle.slice(0,90), tms:new Date(e.ts).toTimeString().slice(3,8)};
       STATE.trace.push(paso);
       if(c) c.insertAdjacentHTML("beforeend", `
         <div class="tstep">
@@ -961,9 +1264,12 @@ async function pasoTraza(){
 }
 
 async function runQuestion(){
+  if(STATE.thinking) return;   // no re-entrar mientras razona
   clearFlow();
   const qEl = document.getElementById("q");
-  const pregunta = (qEl && qEl.value.trim()) || "Why is FORZA doing so badly in Zacatecoluca — and what should we do?";
+  if(qEl) STATE.q = qEl.value;
+  const pregunta = (STATE.q || "").trim() || T("p3_ph");
+  STATE.lastQ = pregunta;
   STATE.thinking = true; STATE.answered = null; STATE.trace = []; STATE.page = "dispatch";
   vistoAudit = 0;
   setStatus(); refreshMapState(); renderPage();
@@ -974,11 +1280,11 @@ async function runQuestion(){
   });
   const poll = setInterval(pasoTraza, 2000);
   try{
-    const r = await api("/preguntar", {method:"POST", body: JSON.stringify({pregunta, idioma:"en"})});
+    const r = await api("/preguntar", {method:"POST", body: JSON.stringify({pregunta, idioma: LANG})});
     await pasoTraza();
     STATE.answered = r;
   }catch(e){
-    STATE.answered = {respuesta: "The agent could not be reached: " + e.message, fallback: true, tools_usadas: [], pendientes: []};
+    STATE.answered = {respuesta: T("p3_err") + e.message, fallback: true, tools_usadas: [], pendientes: []};
   }finally{
     clearInterval(poll);
     STATE.thinking = false;
@@ -987,7 +1293,7 @@ async function runQuestion(){
     pendFirma = null; await cargarPendientes(); cargarLedger();
     if(STATE.queue.length){
       Pulse.travel(frOf(540), frOf(765), 800, () => Pulse.lockAt(frOf(765)));
-      toast(`${STATE.queue.length} action${STATE.queue.length>1?"s":""} queued — the agent is waiting at the Gate`);
+      toast(Tn("t_queued", STATE.queue.length));
     } else {
       Pulse.patrol();
     }
@@ -996,36 +1302,57 @@ async function runQuestion(){
 
 /* ── 04 GATE ── */
 let gateTimer = null;
+function gateSelItem(){
+  if(!STATE.queue.length) return null;
+  if(STATE.gateSel >= STATE.queue.length) STATE.gateSel = 0;
+  return STATE.queue[STATE.gateSel];
+}
+function selGate(i){
+  STATE.gateSel = i; STATE.gate = "pending"; STATE.gateCd = 3;
+  clearTimeout(gateTimer);
+  renderPage();
+}
 function pageGate(){
-  const item = STATE.queue[0];
+  const item = gateSelItem();
   let body;
   if(!item){
     body = `<div class="card clear">
       <div class="ci">${ic("check",27)}</div>
-      <div class="ct">The gate is clear.</div>
-      <div class="cs">Nothing is waiting. Ask the agent something — anything with external effect will stop right here, physically, until you let it through.</div>
-      <button class="btn btn-ink" style="margin:18px auto 0" onclick="goTo('dispatch')">${ic("cpu",14)} Dispatch the agent</button>
+      <div class="ct">${T("p4_clear")}</div>
+      <div class="cs">${T("p4_clear2")}</div>
+      <button class="btn btn-ink" style="margin:18px auto 0" onclick="goTo('dispatch')">${ic("cpu",14)} ${T("p1_btn")}</button>
     </div>`;
   } else {
-    body = `<div class="gate-grid">
+    // lista COMPLETA de pendientes — todas las acciones críticas, clicables
+    const qlist = STATE.queue.length > 1 ? `
+    <div class="card gq-card">
+      <div class="gq-h">${ic("warn",15)}<b>${T("p4_q")} (${STATE.queue.length})</b><span>${T("p4_qs")}</span></div>
+      ${STATE.queue.map((it,i) => `
+        <div class="gq-row ${i===STATE.gateSel?'on':''}" onclick="selGate(${i})" role="button" tabindex="0">
+          <span class="gq-idx">${String(i+1).padStart(2,"0")}</span>
+          <span class="gq-t">${escq(it.title)}</span>
+          <span class="gq-case">${escq(it.caso)}</span>
+        </div>`).join("")}
+    </div>` : "";
+    body = qlist + `<div class="gate-grid">
       <div class="card gate-card ${STATE.gate==='done'?'done':''}" id="gate-card">
         <div class="boom-track"><div class="boom hazard ${STATE.gate==='done'?'up':''}" id="boom"></div><div class="boom-pivot"></div></div>
         <div class="gate-body" id="gate-body">${gateBody(item)}</div>
       </div>
       <div class="card emit-card" style="animation-delay:.06s">
-        <div class="emit-t">On approval, code emits</div>
-        <div class="emit-s">Numbers are re-queried at generation · emails are drafts — a human sends.</div>
-        <div class="emit-row ${STATE.gate==='done'?'live':''}"><div class="emit-ico" style="color:var(--critical);border-color:#C0322B33">${ic("file",16)}</div><div><div class="emit-n">Carrier notice</div><div class="emit-d">PDF · FORZA</div></div></div>
-        <div class="emit-row ${STATE.gate==='done'?'live':''}"><div class="emit-ico" style="color:var(--verified);border-color:#0C7A5733">${ic("sheet",16)}</div><div><div class="emit-n">Recovery list</div><div class="emit-d">XLSX · 10 orders</div></div></div>
-        <div class="emit-row ${STATE.gate==='done'?'live':''}"><div class="emit-ico" style="color:var(--ink2);border-color:var(--lineHi)">${ic("mail",16)}</div><div><div class="emit-n">Email drafts</div><div class="emit-d">EML ×2 · never auto-sent</div></div></div>
+        <div class="emit-t">${T("p4_emit")}</div>
+        <div class="emit-s">${T("p4_emit2")}</div>
+        <div class="emit-row ${STATE.gate==='done'?'live':''}"><div class="emit-ico" style="color:var(--critical);border-color:#C0322B33">${ic("file",16)}</div><div><div class="emit-n">${T("p4_e1")}</div><div class="emit-d">PDF</div></div></div>
+        <div class="emit-row ${STATE.gate==='done'?'live':''}"><div class="emit-ico" style="color:var(--verified);border-color:#0C7A5733">${ic("sheet",16)}</div><div><div class="emit-n">${T("p4_e2")}</div><div class="emit-d">XLSX</div></div></div>
+        <div class="emit-row ${STATE.gate==='done'?'live':''}"><div class="emit-ico" style="color:var(--ink2);border-color:var(--lineHi)">${ic("mail",16)}</div><div><div class="emit-n">${T("p4_e3")}</div><div class="emit-d">EML ×2 · ${T("p4_e3b")}</div></div></div>
       </div>
     </div>`;
   }
   return `
-  ${kicker("STN 04","Human gate")}
+  ${kicker("STN 04",T("k4"))}
   <div class="page-head"><div>
-    <h1>Nothing ships without you.</h1>
-    <p>External effect is blocked <b>in code, not in the prompt</b> — <code style="font-family:var(--mono);font-size:12px;background:var(--cardTint);border:1px solid var(--line);border-radius:5px;padding:1px 6px">aprobado_por_humano</code> can only be set by this screen. Not the model, not a prompt injection.</p>
+    <h1>${T("p4_h")}</h1>
+    <p>${T("p4_p1")} <code style="font-family:var(--mono);font-size:12px;background:var(--cardTint);border:1px solid var(--line);border-radius:5px;padding:1px 6px">aprobado_por_humano</code> ${T("p4_p2")}</p>
   </div></div>
   ${body}`;
 }
@@ -1033,32 +1360,33 @@ function gateBody(item){
   if(STATE.gate === "done"){
     return `<div class="gate-done-w">
       <div class="gd-ico">${ic("check",26)}</div>
-      <div class="gd-t">Barrier lifted. Executed.</div>
-      <div class="gd-s">Deterministic artifacts generated — the ledger has the receipt.</div>
-      <button class="btn btn-ghost" style="margin:16px auto 0" onclick="goTo('custody')">See the receipt ${ic("arrow",13)}</button>
+      <div class="gd-t">${T("p4_done")}</div>
+      <div class="gd-s">${T("p4_done2")}</div>
+      <button class="btn btn-ghost" style="margin:16px auto 0" onclick="goTo('custody')">${T("p4_rcpt")} ${ic("arrow",13)}</button>
     </div>`;
   }
-  const stats = item.stats.map(([l,v]) => `<div class="gate-stat"><div class="l">${l}</div><div class="v">${v}</div></div>`).join("");
+  const stats = [[T("p4_case"), item.caso], [T("p4_ev"), item.origen], [T("p4_qid"), item.id]]
+    .map(([l,v]) => `<div class="gate-stat"><div class="l">${escq(l)}</div><div class="v">${escq(v)}</div></div>`).join("");
   const actions = STATE.gate === "pending"
     ? `<div class="gate-actions">
-        <button class="btn btn-ink" style="flex:1" onclick="armGate()">Approve &amp; execute</button>
-        <button class="btn btn-ghost" onclick="dismissGate()">Dismiss</button>
+        <button class="btn btn-ink" style="flex:1" onclick="armGate()">${T("p4_appr")}</button>
+        <button class="btn btn-ghost" onclick="dismissGate()">${T("p4_dism")}</button>
       </div>`
     : `<button class="confirm-btn" id="confirm-btn" ${STATE.gateCd>0?'disabled':''} onclick="confirmGate()">
         <span class="confirm-fill" style="width:${(STATE.gateCd/3)*100}%"></span>
-        <span class="confirm-txt">${STATE.gateCd>0 ? 'Confirm execution — '+STATE.gateCd+'s' : 'Confirm now'}</span>
+        <span class="confirm-txt">${STATE.gateCd>0 ? Tn("p4_conf", STATE.gateCd) : T("p4_now")}</span>
       </button>`;
   return `
-    <div class="gate-badge">${ic("shield",12)} Human approval required</div>
-    <div class="gate-title">${item.title}</div>
+    <div class="gate-badge">${ic("shield",12)} ${T("p4_badge")}</div>
+    <div class="gate-title">${escq(item.title)}</div>
     <div class="gate-stats">${stats}</div>
     ${actions}
-    <div class="gate-hint">Two-step by design — first click arms, second click, after the countdown, executes.</div>`;
+    <div class="gate-hint">${T("p4_hint")}</div>`;
 }
 function armGate(){
   STATE.gate = "confirming"; STATE.gateCd = 3;
   const gb = document.getElementById("gate-body");
-  if(gb) gb.innerHTML = gateBody(STATE.queue[0]);
+  if(gb) gb.innerHTML = gateBody(gateSelItem());
   tickGate();
 }
 function tickGate(){
@@ -1068,21 +1396,22 @@ function tickGate(){
     gateTimer = setTimeout(() => {
       STATE.gateCd--;
       const gb = document.getElementById("gate-body");
-      if(gb) gb.innerHTML = gateBody(STATE.queue[0]);
+      if(gb) gb.innerHTML = gateBody(gateSelItem());
       tickGate();
     }, 1000);
   }
 }
 async function confirmGate(){
   if(STATE.gateCd > 0) return;
-  const item = STATE.queue[0]; if(!item) return;
+  const item = gateSelItem(); if(!item) return;
   const btn = document.getElementById("confirm-btn");
-  if(btn){ btn.disabled = true; btn.querySelector(".confirm-txt").textContent = "Executing…"; }
+  if(btn){ btn.disabled = true; btn.querySelector(".confirm-txt").textContent = T("p4_exec"); }
   let res;
   try{
-    res = await api(`/pendientes/${item.id}/aprobar`, {method:"POST"});
+    // el idioma del panel viaja a la remediación: PDF/Excel/correos salen en él
+    res = await api(`/pendientes/${item.id}/aprobar`, {method:"POST", body: JSON.stringify({idioma: LANG})});
   }catch(e){
-    toast("Could not execute: " + e.message);
+    toast(T("t_errex") + e.message);
     STATE.gate = "pending"; renderPage(); return;
   }
   STATE.gate = "done";
@@ -1099,16 +1428,16 @@ async function confirmGate(){
         const esX = a.tipo === "excel";
         const col = esX ? "var(--verified)" : "var(--critical)";
         const icn = esX ? "sheet" : "file";
-        const nom = esX ? `Recovery list · XLSX (${a.ordenes_incluidas || "—"} orders)` : `Carrier notice · ${a.tipo.toUpperCase()}`;
+        const nom = esX ? `${T("p4_e2")} · XLSX (${a.ordenes_incluidas || "—"} ${T("p4_orders")})` : `${T("p4_e1")} · ${a.tipo.toUpperCase()}`;
         return `<a class="emit-row live" style="text-decoration:none;color:inherit" href="${API}/artefactos/${encodeURIComponent(a.archivo)}" target="_blank">
           <div class="emit-ico" style="color:${col};border-color:${col}33">${ic(icn,16)}</div>
-          <div><div class="emit-n">${escq(nom)}</div><div class="emit-d">download ↓</div></div></a>`;
+          <div><div class="emit-n">${escq(nom)}</div><div class="emit-d">${T("p4_dl")}</div></div></a>`;
       }).join("") + (rem.correos || []).map(cor => `
         <a class="emit-row live" style="text-decoration:none;color:inherit" href="${cor.mailto}">
           <div class="emit-ico" style="color:var(--ink2);border-color:var(--lineHi)">${ic("mail",16)}</div>
-          <div><div class="emit-n">Draft → ${escq(cor.para)}</div><div class="emit-d">opens in your mail client · never auto-sent</div></div></a>`).join("");
-      emit.innerHTML = `<div class="emit-t">Code emitted — real files</div>
-        <div class="emit-s">Numbers were re-queried at generation · emails are drafts.</div>` + filas;
+          <div><div class="emit-n">${T("p4_draft")}${escq(cor.para)}</div><div class="emit-d">${T("p4_mailc")}</div></div></a>`).join("");
+      emit.innerHTML = `<div class="emit-t">${T("p4_real")}</div>
+        <div class="emit-s">${T("p4_real2")}</div>` + filas;
     } else {
       document.querySelectorAll(".emit-row").forEach((r,i) => setTimeout(() => r.classList.add("live"), i*220));
     }
@@ -1116,93 +1445,100 @@ async function confirmGate(){
   cargarLedger();
   setTimeout(() => {
     pendFirma = null;
-    STATE.queue = STATE.queue.slice(1); STATE.gate = "pending"; STATE.gateCd = 3;
+    STATE.queue = STATE.queue.filter(x => x.id !== item.id);
+    STATE.gateSel = 0; STATE.gate = "pending"; STATE.gateCd = 3;
     setStatus(); refreshMapState();
+    if(STATE.page === "gate") renderPage();
     Pulse.travel(frOf(765), frOf(950), 600, () =>
       Pulse.travel(frOf(950), frOf(1115), 600, () => STATE.queue.length ? Pulse.lockAt(frOf(765)) : Pulse.patrol()));
-    toast("Approved & executed — real artifacts generated, receipt in the ledger");
+    toast(T("t_appr"));
   }, 2600);
 }
 async function dismissGate(){
-  const item = STATE.queue[0]; if(!item) return;
+  const item = gateSelItem(); if(!item) return;
   try{ await api(`/pendientes/${item.id}/rechazar`, {method:"POST"}); }
-  catch(e){ toast("Could not dismiss: " + e.message); return; }
+  catch(e){ toast(T("t_errdis") + e.message); return; }
   pendFirma = null;
-  STATE.queue = STATE.queue.slice(1); STATE.gate = "pending"; STATE.gateCd = 3;
+  STATE.queue = STATE.queue.filter(x => x.id !== item.id);
+  STATE.gateSel = 0; STATE.gate = "pending"; STATE.gateCd = 3;
   setStatus(); refreshMapState(); renderPage();
   if(!STATE.queue.length) Pulse.patrol();
   cargarLedger();
-  toast("Dismissed — nothing left the building");
+  toast(T("t_dism"));
 }
 
 /* ── 05 YIELD ── */
 let PLAN_REAL = null;   // respuesta real de /tools/optimizar_asignacion
-const SOLVER_LINES = [
-  "→ filtering pairs · keep n ≥ 30 only",
-  "→ objective · expected deliveries on Wilson LCB 95%",
-  "→ constraints · per-carrier capacity",
-  "→ CBC · branch &amp; bound…",
-  "✓ optimal found",
-];
+const solverLines = () => [T("p5_l1"), T("p5_l2"), T("p5_l3"), T("p5_l4"), T("p5_l5")];
+/* explicación en lenguaje simple — para quien no conoce MILP/Wilson */
+function yieldExplainer(){
+  return `
+  <div class="card explain-card" style="animation-delay:.04s">
+    <div class="explain-t">${ic("ask",15)} ${T("p5_what")}</div>
+    <div class="explain-b">${T("p5_ex")}</div>
+  </div>`;
+}
 function pageYield(){
   if(!STATE.solved){
     return `
-    ${kicker("STN 05","Optimize & remediate")}
+    ${kicker("STN 05",T("k5"))}
     <div class="page-head"><div>
-      <h1>What the network could yield.</h1>
-      <p>An exact <b>MILP</b> over the Wilson lower bound, under per-carrier capacity. Only pairs with real evidence (n≥30) participate — and the result is a recommendation. The Gate still holds.</p>
+      <h1>${T("p5_h")}</h1>
+      <p>${T("p5_p")}</p>
     </div></div>
+    ${yieldExplainer()}
     <div class="card solve-card" id="solve-card">
-      <button class="btn btn-ink" style="margin:6px auto 0" onclick="solveBoard()">${ic("zap",15)} Solve the board</button>
-      <div style="font-size:11.5px;color:var(--ink3);margin-top:12px">PuLP + CBC · exact, not heuristic</div>
+      <button class="btn btn-ink" style="margin:6px auto 0" onclick="solveBoard()">${ic("zap",15)} ${T("p5_solve")}</button>
+      <div style="font-size:11.5px;color:var(--ink3);margin-top:12px">${T("p5_exact")}</div>
     </div>`;
   }
   return `
-  ${kicker("STN 05","Optimize & remediate")}
+  ${kicker("STN 05",T("k5"))}
   <div class="page-head"><div>
-    <h1>What the network could yield.</h1>
-    <p>An exact <b>MILP</b> over the Wilson lower bound, under per-carrier capacity. Only pairs with real evidence (n≥30) participate — and the result is a recommendation. The Gate still holds.</p>
+    <h1>${T("p5_h")}</h1>
+    <p>${T("p5_p")}</p>
   </div></div>
+  ${yieldExplainer()}
   <div class="card yield-hero">
     <div class="yh-row">
-      <div><div class="yh-label">Projected quarterly impact</div>
+      <div><div class="yh-label">${T("p5_imp")}</div>
         <div class="yh-big"><span class="yh-plus">+</span><span class="yh-num" id="y-num">0</span></div>
-        <div class="yh-note">more deliveries <b>(+${PLAN_REAL.resumen.mejora_pct}%)</b></div></div>
+        <div class="yh-note">${T("p5_more")} <b>(+${PLAN_REAL.resumen.mejora_pct}%)</b></div></div>
       <div class="yh-sep"></div>
-      <div class="yh-m"><div class="yh-mv" id="y-cod">$0</div><div class="yh-ml">COD recovered / quarter</div></div>
+      <div class="yh-m"><div class="yh-mv" id="y-cod">$0</div><div class="yh-ml">${T("p5_cod")}</div></div>
       <div class="yh-sep"></div>
-      <div class="yh-m"><div class="yh-mv" id="y-chg">0</div><div class="yh-ml">carrier changes — that's all</div></div>
+      <div class="yh-m"><div class="yh-mv" id="y-chg">0</div><div class="yh-ml">${T("p5_chg")}</div></div>
       <div style="margin-left:auto;align-self:flex-end"><span class="ftag"><i>ƒ</i> optimizar_asignacion · MILP</span></div>
     </div>
   </div>
   <div class="card flows" style="animation-delay:.08s">
-    <div class="flows-h"><b>Reassignment flow</b><span>n ≥ 30 · target Wilson LCB shown</span></div>
+    <div class="flows-h"><b>${T("p5_flow")}</b><span>${T("p5_flow2")}</span></div>
     ${(PLAN_REAL.recomendaciones || []).slice(0,6).map(px => `
       <div class="flow">
-        <div class="flow-z"><b>${escq(px.municipio)} (${escq(px.pais)})</b><small>${px.volumen.toLocaleString("en-US")} shipments</small></div>
+        <div class="flow-z"><b>${escq(px.municipio)} (${escq(px.pais)})</b><small>${px.volumen.toLocaleString("en-US")} ${T("p5_ship")}</small></div>
         <div class="flow-mid">
           <span class="pill" style="color:var(--critical);background:var(--criticalSoft);border-color:#C0322B33">${escq(px.carrier_actual)} · ${px.ef_actual_lcb}%</span>
           <div class="flow-rail"><i></i></div>
           ${ic("arrow",14)}
           <span class="pill" style="color:var(--verified);background:var(--verifiedSoft);border-color:#0C7A5733">${escq(px.carrier_recomendado)} · ${px.ef_recomendada_lcb}%</span>
         </div>
-        <div class="flow-c"><div class="flow-ct"><div class="flow-cf" data-c="${px.ef_recomendada_lcb}"></div></div><span class="flow-cp">+${px.entregas_extra_estimadas} deliveries</span></div>
+        <div class="flow-c"><div class="flow-ct"><div class="flow-cf" data-c="${px.ef_recomendada_lcb}"></div></div><span class="flow-cp">${Tn("p5_extra", px.entregas_extra_estimadas)}</span></div>
       </div>`).join("")}
     <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">
       ${(PLAN_REAL.artefactos || []).filter(a=>a.archivo).map(a => `
         <a class="btn btn-ghost" style="padding:9px 15px;text-decoration:none" href="${API}/artefactos/${encodeURIComponent(a.archivo)}" target="_blank">
-          ${ic(a.tipo==="excel"?"sheet":"file",14)} ${a.tipo==="excel"?"Full plan · XLSX":"Summary · "+a.tipo.toUpperCase()} ↓</a>`).join("")}
+          ${ic(a.tipo==="excel"?"sheet":"file",14)} ${a.tipo==="excel"?T("p5_xl"):T("p5_pdf")} ↓</a>`).join("")}
     </div>
   </div>`;
 }
 async function solveBoard(){
   const card = document.getElementById("solve-card");
-  card.innerHTML = `<div class="solver-log">${SOLVER_LINES.map((l,i) =>
+  card.innerHTML = `<div class="solver-log">${solverLines().map((l,i) =>
     `<div style="animation-delay:${i*0.42}s" class="${l.startsWith('✓')?'ok':''}">${l}</div>`).join("")}</div>`;
   try{
     PLAN_REAL = await api("/tools/optimizar_asignacion", {timeout:120000});
   }catch(e){
-    card.innerHTML = `<div style="color:var(--critical);font-size:13px;padding:8px">Solver unavailable: ${escq(e.message)}</div>`;
+    card.innerHTML = `<div style="color:var(--critical);font-size:13px;padding:8px">${T("p5_unav")}${escq(e.message)}</div>`;
     return;
   }
   if(!PLAN_REAL.ok){ card.innerHTML = `<div style="font-size:13px;padding:8px">${escq(PLAN_REAL.razon || "no result")}</div>`; return; }
@@ -1220,7 +1556,7 @@ function pageCustody(){
       <span class="lt">${e.t}</span>
       <div class="li" style="color:${m.c};border-color:${m.c}44">${ic(m.icon,15)}</div>
       <div class="lb">
-        <div class="lt2">${m.label}</div>
+        <div class="lt2">${T(m.k)}</div>
         <div class="ld2">${e.d}</div>
         <div class="ltech">
           ${e.tech.split("·").map(s => s.trim()).map(s =>
@@ -1234,16 +1570,16 @@ function pageCustody(){
     </div>`;
   }).join("");
   return `
-  ${kicker("STN 06","Chain of custody")}
+  ${kicker("STN 06",T("k6"))}
   <div class="page-head"><div>
-    <h1>Every decision, addressable.</h1>
-    <p>Append-only JSONL — entries are added, never edited. Each action carries the <b>origen_id</b> of the evidence that caused it. Click one to light up the whole chain: question → tool → queue → approval.</p>
+    <h1>${T("p6_h")}</h1>
+    <p>${T("p6_p")}</p>
   </div></div>
   <div class="card ledger-card">
-    <div class="ledger-h"><span class="ld"></span><b>Live ledger</b><span>append-only · JSONL</span></div>
+    <div class="ledger-h"><span class="ld"></span><b>${T("p6_live")}</b><span>${T("p6_ao")}</span></div>
     <div class="chain-note ${STATE.chainHi ? 'on':''}">${ic("link",12)}
-      <span>chain of custody · click any origen_id to light up its whole chain · data → decision → artifact, unbroken</span>
-      <button class="origen-chip" style="margin-left:auto" onclick="toggleChain(null)">clear</button>
+      <span>${T("p6_note")}</span>
+      <button class="origen-chip" style="margin-left:auto" onclick="toggleChain(null)">${T("p6_clear")}</button>
     </div>
     <div class="ledger">${entries}</div>
   </div>`;
@@ -1275,6 +1611,8 @@ function renderPage(){
 
 /* ════════ boot ════════ */
 buildMap();
+renderLangSw();
+traducirChrome();
 refreshMapState();
 setStatus();
 renderPage();

@@ -19,6 +19,10 @@ Todo el contenido es deterministico: los numeros vienen del estimador
 Wilson y del endpoint de ordenes, la accion sugerida viene del sistema
 de alertas. El LLM no redacta ni calcula nada aqui.
 
+i18n: los artefactos se generan en el idioma del panel (es|en|fr) —
+el parametro `idioma` llega desde el boton de aprobacion del humano,
+nunca del LLM.
+
 El correo NUNCA se envia automaticamente: se genera el borrador (.txt)
 y un link mailto: para abrirlo en el cliente de correo del humano.
 
@@ -52,13 +56,128 @@ def _slug(s: str) -> str:
 
 
 # ------------------------------------------------------------------
+# i18n de artefactos — el idioma lo elige el humano en el panel.
+# Fallback: espanol. Deterministico: son plantillas, no redaccion LLM.
+# ------------------------------------------------------------------
+_L = {
+    "es": {
+        "pdf_footer": "WebCorp Autopilot · generado tras aprobación humana · ",
+        "pdf_h1": "Solicitud de remediación operativa",
+        "pdf_dirigida": "dirigida a",
+        "pdf_caso": "Caso detectado",
+        "titulo": "Título", "zona": "Zona", "mensajeria": "Mensajería",
+        "muestra": "Muestra (n)", "cruda": "Tasa cruda",
+        "wilson": "Efectividad Wilson LCB 95%", "snapshot": "Snapshot de datos",
+        "no_entregadas": "Órdenes no entregadas detectadas",
+        "accion": "Acción sugerida", "trazabilidad": "Trazabilidad",
+        "pdf_meta": ("Metodología: ranking por límite inferior del intervalo de Wilson (95%), "
+                     "nunca por tasa cruda · Este documento fue generado automáticamente por "
+                     "WebCorp Autopilot <b>después de aprobación humana explícita</b>; los números "
+                     "provienen de herramientas determinísticas, no de un modelo de lenguaje."),
+        "xl_hoja": "Ordenes no entregadas",
+        "xl_cols": ["Orden", "Teléfono", "Municipio", "Depto", "Carrier",
+                    "Estatus", "Subestatus", "COD", "Fecha"],
+        "cc_asunto": "[Autopilot] Gestión call center — {n} órdenes no entregadas · {muni} × {carrier}",
+        "cc_extra": ("Se adjunta el Excel con {n} órdenes no entregadas "
+                     "(orden, teléfono, estatus, COD) para gestión de recuperación."),
+        "carrier_asunto": "[Autopilot] Remediación requerida — {carrier} en {muni}, {depto}",
+        "carrier_extra": "Se adjunta el PDF con el detalle del caso y la metodología.",
+        "sin_fila": "sin fila en el estimador",
+        "saludo": "Estimado equipo,",
+        "intro": "El sistema de monitoreo de WebCorp detectó y un operador humano aprobó escalar el siguiente caso:",
+        "datos_caso": "Datos del caso (snapshot {snapshot}):",
+        "evidencia": "Evidencia",
+        "firma": ("Borrador generado por WebCorp Autopilot tras aprobación humana.\n"
+                  "Este correo NO se envía automáticamente: requiere revisión y envío manual."),
+        "para": "Para", "asunto_lbl": "Asunto",
+        "nota_final": ("Artefactos deterministas generados tras aprobación humana. "
+                       "Los correos son BORRADORES: nunca se envían automáticamente."),
+        "accion_default": "Revisión operativa del par municipio-carrier.",
+    },
+    "en": {
+        "pdf_footer": "WebCorp Autopilot · generated after human approval · ",
+        "pdf_h1": "Operational remediation request",
+        "pdf_dirigida": "addressed to",
+        "pdf_caso": "Detected case",
+        "titulo": "Title", "zona": "Zone", "mensajeria": "Carrier",
+        "muestra": "Sample (n)", "cruda": "Raw rate",
+        "wilson": "Wilson LCB 95% effectiveness", "snapshot": "Data snapshot",
+        "no_entregadas": "Undelivered orders detected",
+        "accion": "Suggested action", "trazabilidad": "Traceability",
+        "pdf_meta": ("Methodology: ranking by the lower bound of the Wilson interval (95%), "
+                     "never by raw rate · This document was generated automatically by "
+                     "WebCorp Autopilot <b>after explicit human approval</b>; every figure "
+                     "comes from deterministic tools, not from a language model."),
+        "xl_hoja": "Undelivered orders",
+        "xl_cols": ["Order", "Phone", "Municipality", "Department", "Carrier",
+                    "Status", "Substatus", "COD", "Date"],
+        "cc_asunto": "[Autopilot] Call-center follow-up — {n} undelivered orders · {muni} × {carrier}",
+        "cc_extra": ("Attached is the Excel with {n} undelivered orders "
+                     "(order, phone, status, COD) for recovery follow-up."),
+        "carrier_asunto": "[Autopilot] Remediation required — {carrier} in {muni}, {depto}",
+        "carrier_extra": "Attached is the PDF with the case detail and methodology.",
+        "sin_fila": "no row in the estimator",
+        "saludo": "Dear team,",
+        "intro": "WebCorp's monitoring system detected — and a human operator approved escalating — the following case:",
+        "datos_caso": "Case data (snapshot {snapshot}):",
+        "evidencia": "Evidence",
+        "firma": ("Draft generated by WebCorp Autopilot after human approval.\n"
+                  "This email is NOT sent automatically: it requires review and manual sending."),
+        "para": "To", "asunto_lbl": "Subject",
+        "nota_final": ("Deterministic artifacts generated after human approval. "
+                       "Emails are DRAFTS: they are never sent automatically."),
+        "accion_default": "Operational review of the municipality-carrier pair.",
+    },
+    "fr": {
+        "pdf_footer": "WebCorp Autopilot · généré après approbation humaine · ",
+        "pdf_h1": "Demande de remédiation opérationnelle",
+        "pdf_dirigida": "adressée à",
+        "pdf_caso": "Cas détecté",
+        "titulo": "Titre", "zona": "Zone", "mensajeria": "Transporteur",
+        "muestra": "Échantillon (n)", "cruda": "Taux brut",
+        "wilson": "Efficacité Wilson LCB 95%", "snapshot": "Instantané des données",
+        "no_entregadas": "Commandes non livrées détectées",
+        "accion": "Action suggérée", "trazabilidad": "Traçabilité",
+        "pdf_meta": ("Méthodologie : classement par la borne inférieure de l'intervalle de Wilson (95%), "
+                     "jamais par le taux brut · Ce document a été généré automatiquement par "
+                     "WebCorp Autopilot <b>après approbation humaine explicite</b> ; chaque chiffre "
+                     "provient d'outils déterministes, pas d'un modèle de langage."),
+        "xl_hoja": "Commandes non livrées",
+        "xl_cols": ["Commande", "Téléphone", "Municipalité", "Département", "Transporteur",
+                    "Statut", "Sous-statut", "COD", "Date"],
+        "cc_asunto": "[Autopilot] Suivi call center — {n} commandes non livrées · {muni} × {carrier}",
+        "cc_extra": ("Ci-joint l'Excel avec {n} commandes non livrées "
+                     "(commande, téléphone, statut, COD) pour le suivi de récupération."),
+        "carrier_asunto": "[Autopilot] Remédiation requise — {carrier} à {muni}, {depto}",
+        "carrier_extra": "Ci-joint le PDF avec le détail du cas et la méthodologie.",
+        "sin_fila": "aucune ligne dans l'estimateur",
+        "saludo": "Chère équipe,",
+        "intro": "Le système de surveillance de WebCorp a détecté — et un opérateur humain a approuvé d'escalader — le cas suivant :",
+        "datos_caso": "Données du cas (instantané {snapshot}) :",
+        "evidencia": "Preuve",
+        "firma": ("Brouillon généré par WebCorp Autopilot après approbation humaine.\n"
+                  "Cet e-mail n'est PAS envoyé automatiquement : il exige une revue et un envoi manuel."),
+        "para": "À", "asunto_lbl": "Objet",
+        "nota_final": ("Artefacts déterministes générés après approbation humaine. "
+                       "Les e-mails sont des BROUILLONS : jamais envoyés automatiquement."),
+        "accion_default": "Revue opérationnelle de la paire municipalité-transporteur.",
+    },
+}
+
+
+def _t(idioma: str) -> dict:
+    return _L.get((idioma or "es").lower()[:2], _L["es"])
+
+
+# ------------------------------------------------------------------
 # Plantillas (deterministicas — solo se llenan espacios con datos
 # ya calculados por las tools)
 # ------------------------------------------------------------------
 
-_CSS_MARCA = """
+def _css_marca(L: dict) -> str:
+    return """
   @page { size: letter; margin: 2cm;
-    @bottom-center { content: "WebCorp Autopilot · generado tras aprobación humana · " string(origen);
+    @bottom-center { content: \"""" + L["pdf_footer"] + """\" string(origen);
                      font-size: 8pt; color: #64748B; } }
   body { font-family: Helvetica, Arial, sans-serif; color: #0F172A; font-size: 11pt; }
   .header { background: linear-gradient(135deg, #2563EB 0%, #14B8A6 100%);
@@ -78,42 +197,39 @@ _CSS_MARCA = """
 """
 
 
-def _html_pdf(datos: dict) -> str:
+def _html_pdf(datos: dict, L: dict) -> str:
     c, f = datos["caso"], datos.get("wilson") or {}
     filas_wilson = ""
     if f:
         filas_wilson = f"""
-        <tr><th>Muestra (n)</th><td>{f.get('n', '—')}</td></tr>
-        <tr><th>Tasa cruda</th><td>{f.get('tasa_cruda_pct', '—')}%</td></tr>
-        <tr><th>Efectividad Wilson LCB 95%</th><td class="rojo">{f.get('wilson_lcb_pct', '—')}%</td></tr>"""
-    return f"""<!DOCTYPE html><html><head><meta charset="utf-8"><style>{_CSS_MARCA}</style></head>
+        <tr><th>{L['muestra']}</th><td>{f.get('n', '—')}</td></tr>
+        <tr><th>{L['cruda']}</th><td>{f.get('tasa_cruda_pct', '—')}%</td></tr>
+        <tr><th>{L['wilson']}</th><td class="rojo">{f.get('wilson_lcb_pct', '—')}%</td></tr>"""
+    return f"""<!DOCTYPE html><html><head><meta charset="utf-8"><style>{_css_marca(L)}</style></head>
 <body>
   <div class="header">
-    <h1>Solicitud de remediación operativa</h1>
-    <p>WebCorp Autopilot · dirigida a: {datos['carrier']} · {datos['fecha_generacion']}</p>
+    <h1>{L['pdf_h1']}</h1>
+    <p>WebCorp Autopilot · {L['pdf_dirigida']}: {datos['carrier']} · {datos['fecha_generacion']}</p>
   </div>
-  <h2>Caso detectado</h2>
+  <h2>{L['pdf_caso']}</h2>
   <table>
-    <tr><th style="width:40%">Título</th><td>{datos['asunto']}</td></tr>
-    <tr><th>Zona</th><td>{c.get('municipio', '—')}, {c.get('depto', '—')} ({c.get('pais', 'GT')})</td></tr>
-    <tr><th>Mensajería</th><td>{datos['carrier']}</td></tr>
+    <tr><th style="width:40%">{L['titulo']}</th><td>{datos['asunto']}</td></tr>
+    <tr><th>{L['zona']}</th><td>{c.get('municipio', '—')}, {c.get('depto', '—')} ({c.get('pais', 'GT')})</td></tr>
+    <tr><th>{L['mensajeria']}</th><td>{datos['carrier']}</td></tr>
     {filas_wilson}
-    <tr><th>Snapshot de datos</th><td>{datos['snapshot']}</td></tr>
-    <tr><th>Órdenes no entregadas detectadas</th><td>{datos['n_ordenes']}</td></tr>
+    <tr><th>{L['snapshot']}</th><td>{datos['snapshot']}</td></tr>
+    <tr><th>{L['no_entregadas']}</th><td>{datos['n_ordenes']}</td></tr>
   </table>
-  <h2>Acción sugerida</h2>
+  <h2>{L['accion']}</h2>
   <div class="accion">{datos['accion']}</div>
   <div class="meta">
-    Trazabilidad: {datos['origen_id']} · Metodología: ranking por límite inferior del intervalo
-    de Wilson (95%), nunca por tasa cruda · Este documento fue generado automáticamente por
-    WebCorp Autopilot <b>después de aprobación humana explícita</b>; los números provienen de
-    herramientas determinísticas, no de un modelo de lenguaje.
+    {L['trazabilidad']}: {datos['origen_id']} · {L['pdf_meta']}
   </div>
 </body></html>"""
 
 
-def _generar_pdf(datos: dict, base: str, outdir: str) -> dict:
-    html = _html_pdf(datos)
+def _generar_pdf(datos: dict, base: str, outdir: str, L: dict) -> dict:
+    html = _html_pdf(datos, L)
     try:
         from weasyprint import HTML  # import perezoso: si falta pango, caemos a HTML
         ruta = os.path.join(outdir, base + ".pdf")
@@ -127,20 +243,19 @@ def _generar_pdf(datos: dict, base: str, outdir: str) -> dict:
                 "nota": f"weasyprint no disponible ({type(e).__name__}); HTML listo para imprimir"}
 
 
-def _generar_excel(datos: dict, base: str, outdir: str) -> dict:
+def _generar_excel(datos: dict, base: str, outdir: str, L: dict) -> dict:
     from openpyxl import Workbook
     from openpyxl.styles import Font, PatternFill
 
     wb = Workbook()
     ws = wb.active
-    ws.title = "Ordenes no entregadas"
+    ws.title = L["xl_hoja"][:31]
     c = datos["caso"]
     ws.append([f"WebCorp Autopilot — {datos['asunto']}"])
-    ws.append([f"Zona: {c.get('municipio','—')}, {c.get('depto','—')} · Carrier: {datos['carrier']}"
-               f" · Snapshot: {datos['snapshot']} · Trazabilidad: {datos['origen_id']}"])
+    ws.append([f"{L['zona']}: {c.get('municipio','—')}, {c.get('depto','—')} · Carrier: {datos['carrier']}"
+               f" · {L['snapshot']}: {datos['snapshot']} · {L['trazabilidad']}: {datos['origen_id']}"])
     ws.append([])
-    encabezado = ["Orden", "Teléfono", "Municipio", "Depto", "Carrier",
-                  "Estatus", "Subestatus", "COD", "Fecha"]
+    encabezado = L["xl_cols"]
     ws.append(encabezado)
     fila_h = ws.max_row
     for col in range(1, len(encabezado) + 1):
@@ -163,45 +278,45 @@ def _generar_excel(datos: dict, base: str, outdir: str) -> dict:
             "ordenes_incluidas": len(datos["ordenes"])}
 
 
-def _borrador_correo(datos: dict, area: str, base: str, outdir: str) -> dict:
+def _borrador_correo(datos: dict, area: str, base: str, outdir: str, L: dict) -> dict:
     """area: 'mensajeria' | 'callcenter' — las dos unicas soportadas."""
     c, f = datos["caso"], datos.get("wilson") or {}
     if area == "callcenter":
         para = EMAIL_CALLCENTER
-        asunto = f"[Autopilot] Gestión call center — {datos['n_ordenes']} órdenes no entregadas · {c.get('municipio','')} × {datos['carrier']}"
-        extra = (f"Se adjunta el Excel con {datos['n_ordenes']} órdenes no entregadas "
-                 f"(orden, teléfono, estatus, COD) para gestión de recuperación.")
+        asunto = L["cc_asunto"].format(n=datos["n_ordenes"], muni=c.get("municipio", ""),
+                                       carrier=datos["carrier"])
+        extra = L["cc_extra"].format(n=datos["n_ordenes"])
     else:
         para = EMAIL_CARRIER_FMT.format(carrier=_slug(datos["carrier"]) or "carrier")
-        asunto = f"[Autopilot] Remediación requerida — {datos['carrier']} en {c.get('municipio','')}, {c.get('depto','')}"
-        extra = "Se adjunta el PDF con el detalle del caso y la metodología."
+        asunto = L["carrier_asunto"].format(carrier=datos["carrier"], muni=c.get("municipio", ""),
+                                            depto=c.get("depto", ""))
+        extra = L["carrier_extra"]
 
     wilson_txt = (f"n={f.get('n','—')} · Wilson LCB 95%: {f.get('wilson_lcb_pct','—')}% "
-                  f"(cruda {f.get('tasa_cruda_pct','—')}%)") if f else "sin fila en el estimador"
-    cuerpo = f"""Estimado equipo,
+                  f"({L['cruda'].lower()} {f.get('tasa_cruda_pct','—')}%)") if f else L["sin_fila"]
+    cuerpo = f"""{L['saludo']}
 
-El sistema de monitoreo de WebCorp detectó y un operador humano aprobó escalar el siguiente caso:
+{L['intro']}
 
 {datos['asunto']}
 
-Datos del caso (snapshot {datos['snapshot']}):
-- Zona: {c.get('municipio','—')}, {c.get('depto','—')} ({c.get('pais','GT')})
-- Mensajería: {datos['carrier']}
-- Evidencia: {wilson_txt}
-- Órdenes no entregadas detectadas: {datos['n_ordenes']}
+{L['datos_caso'].format(snapshot=datos['snapshot'])}
+- {L['zona']}: {c.get('municipio','—')}, {c.get('depto','—')} ({c.get('pais','GT')})
+- {L['mensajeria']}: {datos['carrier']}
+- {L['evidencia']}: {wilson_txt}
+- {L['no_entregadas']}: {datos['n_ordenes']}
 
-Acción sugerida: {datos['accion']}
+{L['accion']}: {datos['accion']}
 
 {extra}
 
-Trazabilidad: {datos['origen_id']}
+{L['trazabilidad']}: {datos['origen_id']}
 --
-Borrador generado por WebCorp Autopilot tras aprobación humana.
-Este correo NO se envía automáticamente: requiere revisión y envío manual.
+{L['firma']}
 """
     ruta = os.path.join(outdir, f"{base}_correo_{area}.txt")
     with open(ruta, "w", encoding="utf-8") as fh:
-        fh.write(f"Para: {para}\nAsunto: {asunto}\n\n{cuerpo}")
+        fh.write(f"{L['para']}: {para}\n{L['asunto_lbl']}: {asunto}\n\n{cuerpo}")
     mailto = f"mailto:{para}?subject={urllib.parse.quote(asunto)}&body={urllib.parse.quote(cuerpo)}"
     return {"tipo": "correo_borrador", "area": area, "para": para,
             "archivo": os.path.basename(ruta), "mailto": mailto}
@@ -210,11 +325,13 @@ Este correo NO se envía automáticamente: requiere revisión y envío manual.
 # ------------------------------------------------------------------
 # Punto de entrada — lo llama notificar_operaciones DESPUES de la
 # aprobacion humana. Recibe todo ya calculado; aqui solo se renderiza.
+# `idioma` viene del panel del humano (es|en|fr), no del LLM.
 # ------------------------------------------------------------------
 def generar(asunto: str, accion: str, origen_id: str, caso: dict,
             wilson: dict = None, snapshot: str = "desconocido",
-            ordenes: list = None) -> dict:
+            ordenes: list = None, idioma: str = "es") -> dict:
     caso = caso or {}
+    L = _t(idioma)
     carrier = (caso.get("carrier") or "").upper()
     if not (caso.get("municipio") and carrier):
         return {"generado": False,
@@ -225,7 +342,7 @@ def generar(asunto: str, accion: str, origen_id: str, caso: dict,
     ts = datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S")
     base = f"remediacion_{_slug(caso['municipio'])}_{_slug(carrier)}_{ts}"
     datos = {
-        "asunto": asunto, "accion": accion or "Revisión operativa del par municipio-carrier.",
+        "asunto": asunto, "accion": accion or L["accion_default"],
         "origen_id": origen_id, "caso": caso, "carrier": carrier, "wilson": wilson,
         "snapshot": snapshot, "ordenes": ordenes, "n_ordenes": len(ordenes),
         "fecha_generacion": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
@@ -233,17 +350,17 @@ def generar(asunto: str, accion: str, origen_id: str, caso: dict,
 
     artefactos = []
     # Regla 1 (codigo, no LLM): caso puntual -> PDF dirigido a la mensajeria.
-    artefactos.append(_generar_pdf(datos, base, outdir))
-    correos = [_borrador_correo(datos, "mensajeria", base, outdir)]
+    artefactos.append(_generar_pdf(datos, base, outdir, L))
+    correos = [_borrador_correo(datos, "mensajeria", base, outdir, L)]
     # Regla 2: hay clientes afectados -> Excel para call center.
     if ordenes:
-        artefactos.append(_generar_excel(datos, base, outdir))
-        correos.append(_borrador_correo(datos, "callcenter", base, outdir))
+        artefactos.append(_generar_excel(datos, base, outdir, L))
+        correos.append(_borrador_correo(datos, "callcenter", base, outdir, L))
 
     return {
         "generado": True,
+        "idioma": (idioma or "es").lower()[:2],
         "artefactos": artefactos,
         "correos": correos,
-        "nota": ("Artefactos deterministas generados tras aprobación humana. "
-                 "Los correos son BORRADORES: nunca se envían automáticamente."),
+        "nota": L["nota_final"],
     }

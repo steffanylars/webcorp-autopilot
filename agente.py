@@ -78,6 +78,11 @@ mas grave. Cuando si la llamaste, presenta su resultado en una seccion aparte \
 etiquetada "Posible contexto externo (NO VERIFICADO)", citando las fuentes \
 (urls) que la tool devolvio — nunca otras. No lo mezcles con los numeros \
 internos ni bases una recomendacion solo en el.
+8. Para desempeno de un municipio/zona x mensajeria (ej. "por que X esta mal \
+en Y"), llama PRIMERO estimador_wilson: es la unica tool con cobertura \
+municipal en GT y SV (filtra con municipio= y/o carrier=). courier_zona solo \
+cubre GT y operacion_paises solo nivel pais — no concluyas "sin cobertura" \
+sin haber consultado estimador_wilson.
 """
 
 
@@ -152,8 +157,10 @@ def listar_pendientes() -> list:
     ]
 
 
-def resolver_pendiente(pid: str, aprobado: bool) -> dict:
-    """El puente del boton Aprobar/Descartar del frontend."""
+def resolver_pendiente(pid: str, aprobado: bool, idioma: str = "es") -> dict:
+    """El puente del boton Aprobar/Descartar del frontend.
+    `idioma` (es|en|fr) viene del panel del humano: los artefactos de
+    remediacion (PDF/Excel/correos) se generan en ese idioma."""
     conn = _pendientes_conn()
     row = conn.execute(
         "SELECT tool, argumentos, rationale FROM pendientes WHERE id=? AND estado='pendiente'",
@@ -164,6 +171,10 @@ def resolver_pendiente(pid: str, aprobado: bool) -> dict:
         return {"ok": False, "razon": f"pendiente {pid} no existe o ya fue resuelto"}
 
     tool, argumentos, rationale = row[0], json.loads(row[1]), row[2]
+    if tool == "notificar_operaciones":
+        # El idioma de los artefactos lo decide el humano que aprueba,
+        # nunca el LLM que encolo la accion.
+        argumentos["idioma"] = (idioma or "es").lower()[:2]
     nuevo_estado = "aprobado" if aprobado else "descartado"
     conn.execute(
         "UPDATE pendientes SET estado=?, resuelto=? WHERE id=?",
