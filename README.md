@@ -6,7 +6,7 @@
 
 An operational decision agent running on the **real order data of WebCorp, a 3PL logistics company operating in 7 Latin American countries** (318K orders, 1.6M tracking events). It takes ambiguous business questions, answers with statistically honest evidence — it never invents a number — and **never executes an action with external effect without explicit human approval**, enforced in code, not in UI.
 
-**Live demo:** http://8.219.56.30/panel/ (no login required — stays up through the full judging window, July 10–31)
+**Demo retired 2026-10-01.** The public instance (formerly at `8.219.56.30`) has been decommissioned. Results with real WebCorp data are shown in the demo video (see below).
 
 ---
 
@@ -96,7 +96,7 @@ export ESTIMADOR_SNAPSHOT_DATE=2026-06-24 # date of your CSV snapshot
 
 The engine is domain-portable by replacing one file: `estimador_municipio_mensajeria.csv` (columns: `pais,depto,municipio,mensajeria,estrato,n,exitos,tasa_cruda,wilson_lcb`). Any operation with a success/failure rate across segments — field service, collections, claims — fits the same shape. Optional: point `WEBCORP_BACKEND_URL` at your own metrics API for the trend/alert tools, and `NOTIFY_WEBHOOK_URL` at a Slack/DingTalk webhook for real notifications (without it, notifications run in transparent demo mode and say so).
 
-**Deployment (as running now):** Alibaba Cloud ECS (Singapore), Ubuntu, `systemd` unit with auto-restart, daily proactive scan via cron hitting `POST /escaneo`.
+**Deployment (as submitted):** Alibaba Cloud ECS (Singapore), Ubuntu, `systemd` unit with auto-restart, daily proactive scan via cron hitting `POST /escaneo`. The cloud instance was decommissioned on 2026-10-01.
 
 > **Note on demo data:** the public instance runs **synthetic demonstration data** whenever the real backend is not reachable — the production MySQL database is *deliberately not deployed* to the public instance (data privacy decision: it belongs to a real, operating business). The backend-dependent tools (`courier_zona`, `productos_real`) fall back automatically to `data/demo_sintetico.json` and **declare it** in their `fuente` field, so the agent says so instead of passing synthetic numbers off as real. Results with real WebCorp data are shown in the demo video, recorded locally with the authorization of the family that owns the business.
 

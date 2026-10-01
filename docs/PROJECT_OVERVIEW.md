@@ -1,7 +1,7 @@
 # Autopilot — Complete Project Overview
 **WebCorp · Qwen Cloud Global AI Hackathon — Track 4 (Autopilot Agent) · July 2026**
 
-> Live demo (no login): **http://8.219.56.30/panel/** · Repo: **github.com/steffanylars/webcorp-autopilot**
+> Demo retired 2026-10-01 · Repo: **github.com/steffanylars/webcorp-autopilot** · Results with real data in the demo video.
 > This document describes the full system and everything it does as of submission day (July 20, 2026).
 
 ---

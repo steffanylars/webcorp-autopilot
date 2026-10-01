@@ -1,7 +1,7 @@
 # WebCorp Autopilot — Dossier del proyecto
 
 **Global AI Hackathon Series with Qwen Cloud · Track 4: Autopilot Agent**
-Repo: https://github.com/steffanylars/WCP-insights · Demo vivo: http://8.219.56.30/panel/ · Licencia MIT
+Repo: https://github.com/steffanylars/webcorp-autopilot · Demo retirado 2026-10-01 · Licencia MIT
 
 ---
 
